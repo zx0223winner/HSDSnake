@@ -27,6 +27,6 @@
 
 ```
 
-![HSDSnake Flowchart](https://github.com/zx0223winner/HSDSnake/blob/main/resources/dag.pdf)
+![HSDSnake Flowchart](https://github.com/zx0223winner/HSDSnake/blob/main/resources/dag.jpg)
 
 Data folder: https://drive.google.com/file/d/15jGPsKRUn_SzXmaIAdXEQcxrychX-d9a/view?usp=sharing
