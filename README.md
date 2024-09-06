@@ -1,8 +1,7 @@
-#- HSDSnake - a pipeline for comprehensive analysis of highly similar duplicates in genomes
+### HSDSnake - a pipeline for comprehensive analysis of highly similar duplicates in genomes
 
 ```
-Des
-```
+
 
 #- Usage: snakemake --profile default all
 # fastqc
@@ -25,4 +24,7 @@ Des
 
 
 # configfile: "Metru-A17-Leaflet_config.yaml"
+
+Des
+```
 
