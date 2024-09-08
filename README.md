@@ -26,55 +26,9 @@
 │   │       └── Arabidopsis_thaliana.stat.txt
 │   ├── hsdfinder
 │   │   ├── Arabidopsis_thaliana.50_100.txt
-│   │   ├── Arabidopsis_thaliana.50_10.txt
-│   │   ├── Arabidopsis_thaliana.50_30.txt
-│   │   ├── Arabidopsis_thaliana.50_50.txt
-│   │   ├── Arabidopsis_thaliana.50_70.txt
-│   │   ├── Arabidopsis_thaliana.60_100.txt
-│   │   ├── Arabidopsis_thaliana.60_10.txt
-│   │   ├── Arabidopsis_thaliana.60_30.txt
-│   │   ├── Arabidopsis_thaliana.60_50.txt
-│   │   ├── Arabidopsis_thaliana.60_70.txt
-│   │   ├── Arabidopsis_thaliana.70_100.txt
-│   │   ├── Arabidopsis_thaliana.70_10.txt
-│   │   ├── Arabidopsis_thaliana.70_30.txt
-│   │   ├── Arabidopsis_thaliana.70_50.txt
-│   │   ├── Arabidopsis_thaliana.70_70.txt
-│   │   ├── Arabidopsis_thaliana.80_100.txt
-│   │   ├── Arabidopsis_thaliana.80_10.txt
-│   │   ├── Arabidopsis_thaliana.80_30.txt
-│   │   ├── Arabidopsis_thaliana.80_50.txt
-│   │   ├── Arabidopsis_thaliana.80_70.txt
-│   │   ├── Arabidopsis_thaliana.90_100.txt
-│   │   ├── Arabidopsis_thaliana.90_10.txt
-│   │   ├── Arabidopsis_thaliana.90_30.txt
-│   │   ├── Arabidopsis_thaliana.90_50.txt
 │   │   └── Arabidopsis_thaliana.90_70.txt
 │   └── kegg
 │       ├── Arabidopsis_thaliana.50_100.kegg.txt
-│       ├── Arabidopsis_thaliana.50_10.kegg.txt
-│       ├── Arabidopsis_thaliana.50_30.kegg.txt
-│       ├── Arabidopsis_thaliana.50_50.kegg.txt
-│       ├── Arabidopsis_thaliana.50_70.kegg.txt
-│       ├── Arabidopsis_thaliana.60_100.kegg.txt
-│       ├── Arabidopsis_thaliana.60_10.kegg.txt
-│       ├── Arabidopsis_thaliana.60_30.kegg.txt
-│       ├── Arabidopsis_thaliana.60_50.kegg.txt
-│       ├── Arabidopsis_thaliana.60_70.kegg.txt
-│       ├── Arabidopsis_thaliana.70_100.kegg.txt
-│       ├── Arabidopsis_thaliana.70_10.kegg.txt
-│       ├── Arabidopsis_thaliana.70_30.kegg.txt
-│       ├── Arabidopsis_thaliana.70_50.kegg.txt
-│       ├── Arabidopsis_thaliana.70_70.kegg.txt
-│       ├── Arabidopsis_thaliana.80_100.kegg.txt
-│       ├── Arabidopsis_thaliana.80_10.kegg.txt
-│       ├── Arabidopsis_thaliana.80_30.kegg.txt
-│       ├── Arabidopsis_thaliana.80_50.kegg.txt
-│       ├── Arabidopsis_thaliana.80_70.kegg.txt
-│       ├── Arabidopsis_thaliana.90_100.kegg.txt
-│       ├── Arabidopsis_thaliana.90_10.kegg.txt
-│       ├── Arabidopsis_thaliana.90_30.kegg.txt
-│       ├── Arabidopsis_thaliana.90_50.kegg.txt
 │       └── Arabidopsis_thaliana.90_70.kegg.txt
 ├── Chlamydomonas_reinhardtii
 │   ├── Chlamydomonas_reinhardtii.dmnd
@@ -93,55 +47,9 @@
 │   │       └── Chlamydomonas_reinhardtii.stat.txt
 │   ├── hsdfinder
 │   │   ├── Chlamydomonas_reinhardtii.50_100.txt
-│   │   ├── Chlamydomonas_reinhardtii.50_10.txt
-│   │   ├── Chlamydomonas_reinhardtii.50_30.txt
-│   │   ├── Chlamydomonas_reinhardtii.50_50.txt
-│   │   ├── Chlamydomonas_reinhardtii.50_70.txt
-│   │   ├── Chlamydomonas_reinhardtii.60_100.txt
-│   │   ├── Chlamydomonas_reinhardtii.60_10.txt
-│   │   ├── Chlamydomonas_reinhardtii.60_30.txt
-│   │   ├── Chlamydomonas_reinhardtii.60_50.txt
-│   │   ├── Chlamydomonas_reinhardtii.60_70.txt
-│   │   ├── Chlamydomonas_reinhardtii.70_100.txt
-│   │   ├── Chlamydomonas_reinhardtii.70_10.txt
-│   │   ├── Chlamydomonas_reinhardtii.70_30.txt
-│   │   ├── Chlamydomonas_reinhardtii.70_50.txt
-│   │   ├── Chlamydomonas_reinhardtii.70_70.txt
-│   │   ├── Chlamydomonas_reinhardtii.80_100.txt
-│   │   ├── Chlamydomonas_reinhardtii.80_10.txt
-│   │   ├── Chlamydomonas_reinhardtii.80_30.txt
-│   │   ├── Chlamydomonas_reinhardtii.80_50.txt
-│   │   ├── Chlamydomonas_reinhardtii.80_70.txt
-│   │   ├── Chlamydomonas_reinhardtii.90_100.txt
-│   │   ├── Chlamydomonas_reinhardtii.90_10.txt
-│   │   ├── Chlamydomonas_reinhardtii.90_30.txt
-│   │   ├── Chlamydomonas_reinhardtii.90_50.txt
 │   │   └── Chlamydomonas_reinhardtii.90_70.txt
 │   └── kegg
 │       ├── Chlamydomonas_reinhardtii.50_100.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.50_10.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.50_30.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.50_50.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.50_70.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.60_100.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.60_10.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.60_30.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.60_50.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.60_70.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.70_100.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.70_10.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.70_30.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.70_50.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.70_70.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.80_100.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.80_10.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.80_30.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.80_50.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.80_70.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.90_100.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.90_10.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.90_30.kegg.txt
-│       ├── Chlamydomonas_reinhardtii.90_50.kegg.txt
 │       └── Chlamydomonas_reinhardtii.90_70.kegg.txt
 └── heatmap_inter
     ├── HSD
