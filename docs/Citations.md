@@ -14,3 +14,4 @@
  3. KEGG Orthology Database: https://www.genome.jp/kegg/ko.html
  4. InterProscan: https://github.com/ebi-pf-team/interproscan
  5. KEGG : https://www.kegg.jp/kegg/
+ 6. Diamond: https://github.com/bbuchfink/diamond
