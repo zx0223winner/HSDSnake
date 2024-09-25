@@ -1,6 +1,6 @@
-# plant-food-research-open/assemblyqc: Documentation
+# zx0223winner/HSDSnake: Documentation
 
-The plant-food-research-open/assemblyqc documentation is split into the following pages:
+The HSDSnake documentation is split into the following pages:
 
 - [Usage](usage.md)
   - An overview of how the pipeline works, how to run it.
