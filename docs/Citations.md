@@ -9,8 +9,8 @@
 
 ### Links to the InterProScan and KEGG
  
- 1. Pfam 34.0 (March 2021, 19179 entries): https://pfam.xfam.org
- 2. InterPro 86.0 (June 2021, 38,913 entries):http://www.ebi.ac.uk/interpro/
+ 1. Pfam 37.0 (Sep 2024, 21,979 entries): https://pfam.xfam.org
+ 2. InterPro 101.0 (Jul 2024, 45,899 entries):http://www.ebi.ac.uk/interpro/
  3. KEGG Orthology Database: https://www.genome.jp/kegg/ko.html
  4. InterProscan: https://github.com/ebi-pf-team/interproscan
  5. KEGG : https://www.kegg.jp/kegg/
