@@ -7,7 +7,6 @@
 
 ## Pipeline Flowchart
 
-polish the flowchart in github!!!
 
 ```
 ├── Arabidopsis_thaliana
@@ -71,7 +70,7 @@ polish the flowchart in github!!!
 %%{init: {
     'theme': 'base',
     'themeVariables': {
-    'fontSize': '52px",
+    'fontSize': '18px",
     'primaryColor': '#9A6421',
     'primaryTextColor': '#ffffff',
     'primaryBorderColor': '#9A6421',
@@ -80,47 +79,43 @@ polish the flowchart in github!!!
     'tertiaryColor': '#ffffff'
   }
 }}%%
-flowchart LR
-  forEachTag(Assembly) ==> VALIDATE_FORMAT[VALIDATE FORMAT]
+flowchart TD
+  
+  PREPARE((PREPARE)) ==> preprocess_fasta[preprocess_fasta]
+  PREPARE ==> diamond_db[diamond_db]
+  PREPARE ==> diamond[ diamond]
+  PREPARE ==> KEGG[KEGG]
 
-  VALIDATE_FORMAT ==> ncbiFCS[NCBI FCS\nADAPTOR]
-  ncbiFCS ==> Check{Check}
+  preprocess_fasta ==> DETECT
+  diamond_db ==> DETECT
+  diamond ==> DETECT
 
-  VALIDATE_FORMAT ==> ncbiGX[NCBI FCS GX]
-  ncbiGX ==> Check
-  Check ==> |Clean|Run(Run)
 
-  Check ==> |Contamination|Skip(Skip All)
-  Skip ==> REPORT
+  DETECT((DETECT)) ==> HSDFinder_preprocess[HSDFinder_preprocess]
+  DETECT ==> HSDFinder[HSDFinder]
+  
 
-  VALIDATE_FORMAT ==> GFF_STATS[GENOMETOOLS GT STAT]
+  HSDFinder_preprocess ==> CURATE
+  HSDFinder ==> CURATE
+  
+  subgraph Automatically_combined
+   CURATE((CURATE)) ==> HSDecipher_batch_run[HSDecipher_batch_run]
+  end
+  HSDecipher_batch_run ==> STASTICS
 
-  Run ==> ASS_STATS[ASSEMBLATHON STATS]
-  Run ==> BUSCO
-  Run ==> TIDK
-  Run ==> LAI
-  Run ==> KRAKEN2
-  Run ==> HIC_CONTACT_MAP[HIC CONTACT MAP]
-  Run ==> MUMMER
-  Run ==> MINIMAP2
-  Run ==> MERQURY
+  STASTICS((STASTICS)) ==> HSDecipher_stastics[HSDecipher_stastics]
+  STASTICS ==> HSDecipher_category[HSDecipher_category]
+  STASTICS ==> merge_stastics[merge_stastics]
 
-  MUMMER ==> CIRCOS
-  MUMMER ==> DOTPLOT
+  HSDecipher_stastics ==> VISUALIZE_and_COMPARE
+  HSDecipher_category ==> VISUALIZE_and_COMPARE
+  merge_stastics ==> VISUALIZE_and_COMPARE
 
-  MINIMAP2 ==> PLOTSR
+  VISUALIZE_and_COMPARE ==> HSDecipher_heatmap_inter_species_prepare[heatmap_inter_species]
+  VISUALIZE_and_COMPARE ==> HSDecipher_heatmap_intra_species[heatmap_intra_species]
 
-  ASS_STATS ==> REPORT
-  GFF_STATS ==> REPORT
-  BUSCO ==> REPORT
-  TIDK ==> REPORT
-  LAI ==> REPORT
-  KRAKEN2 ==> REPORT
-  HIC_CONTACT_MAP ==> REPORT
-  CIRCOS ==> REPORT
-  DOTPLOT ==> REPORT
-  PLOTSR ==> REPORT
-  MERQURY ==> REPORT
+
+
 ```
 
 - [GENOMETOOLS GT GFF3VALIDATOR](https://genometools.org/tools/gt_gff3validator.html): GFF3 validation
