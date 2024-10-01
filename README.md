@@ -7,6 +7,7 @@
 
 ## Pipeline Flowchart
 
+polish the flowchart in github!!!
 
 ```
 ├── Arabidopsis_thaliana
