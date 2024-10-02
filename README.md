@@ -61,7 +61,7 @@ flowchart TD
 
 ## Usage
 
-Refer to [usage](./docs/usage.md) documents for details.
+Refer to [Usage](./docs/Usage.md) documents for details.
 
 > [!NOTE]
 > If you are new to Snakmake, please refer to [this page](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) on how to set-up SnakeMake. Make sure to test the sample data below before running the workflow on actual data.
