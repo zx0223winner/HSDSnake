@@ -399,7 +399,7 @@ rule HSDecipher_heatmap_intra_species:
 	shell:"""
 	mkdir -p {params.HSD_heatmap_dir}/{params.species_name}; \
 	mkdir -p {params.ko_dir}; \
-	sleep 60s; \
+	sleep 120s; \
 	cp {input.KEGG} {params.ko_dir}/; \
 	cp {params.HSD_dir}/* {params.HSD_heatmap_dir}/{params.species_name}/; \
 	cp {params.batch_run} {params.HSD_heatmap_dir}/{params.species_name}/; \
@@ -447,7 +447,7 @@ rule HSDecipher_heatmap_inter_species_prepare:
 	shell:"""
 		mkdir -p {params.HSD_heatmap_dir}; \
 		mkdir -p {params.ko_heatmap_dir}; \
-		sleep 30s; \
+		sleep 90s; \
 		cp {params.batch_run} {params.HSD_heatmap_dir}; \
 		cp {input.KEGG} {params.ko_heatmap_dir}; \
 		hsdecipher \
