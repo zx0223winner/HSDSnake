@@ -55,43 +55,72 @@ heatmap_width: 30
 
 ## 2. [Snakefile](../workflow/Snakefile)
 ### preprocess fasta
+`Purpose`: This step is to generate 
+
+`Example`: data/preprocess_fasta/{sample}.fa
 
 
 ### diamond_db
+`Purpose`: This step is to generate 
 
-	
+`Example`: results/{sample}/{sample}.dmnd
+
+### diamond blastp
+`Purpose`: This step is to generate 
+
+`Example`: results/{sample}/diamond/{sample}.txt
+
 ## interproscan
-
+data/Arabidopsis_thaliana.interproscan.tsv
 
 ## kegg blastkoala
 
+data/Arabidopsis_thaliana.ko.txt
  
 ## HSDfinder preprocess
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/diamond/{sample}.preprocess.txt
 	
 ## hsdfinder
-	
-## kegg category
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/hsdfinder/{sample}.{HSD_identity}_{HSD_variance}.txt
+
+## kegg category
+`Purpose`: This step is to generate 
+
+`Example`: results/{sample}/kegg/{sample}.{HSD_identity}_{HSD_variance}.kegg.txt
 	
 ## hsdecipher statistcs
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/hsdecipher/stats/{sample}.stat.txt
 	
 ## hsdecipher category
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/hsdecipher/stats/{sample}.category.txt
 	
 ## hsdecipher merge statistics
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/hsdecipher/stats/{sample}.complete.stats.txt
 	
 ## hsdecipher batch run
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/hsdecipher/batch_run/{sample}.batch_run.txt
 	
 ## hsdecipher heatmap intra species
+`Purpose`: This step is to generate 
 
+`Example`: results/{sample}/hsdecipher/heatmap/{sample}.output_heatmap.eps
 			
 ## hsdecipher heatmap inter species	
+`Purpose`: This step is to generate 
 
-## Assemblysheet input
+`Example`: results/heatmap_inter/HSD/{sample}.batch_run.txt
 
 
 
