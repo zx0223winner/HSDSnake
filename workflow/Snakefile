@@ -219,7 +219,7 @@ rule HSDFinder:
 		out = "log/hsdfinder/{sample}_{HSD_identity}_{HSD_variance}.out",
 		err = "log/hsdfinder/{sample}_{HSD_identity}_{HSD_variance}.err"
 	shell:"""
-	python3 $PWD{params.dir}HSDFinder.py \
+	hsdfinder \
 		-i {input.tabular} \
 		-p {params.identity} \
 		-l {params.variance} \
@@ -229,6 +229,7 @@ rule HSDFinder:
 > {log.out} \
 2> {log.err}	
 """
+# python3 $PWD{params.dir}HSDFinder.py
 
 rule KEGG:
 	input:
@@ -402,7 +403,7 @@ rule HSDecipher_heatmap_intra_species:
 	cp {input.KEGG} {params.ko_dir}/; \
 	cp {params.HSD_dir}/* {params.HSD_heatmap_dir}/{params.species_name}/; \
 	cp {params.batch_run} {params.HSD_heatmap_dir}/{params.species_name}/; \
-	python3 $PWD{params.dir}HSD_heatmap.py \
+	hsdecipher \
 	-f {params.HSD_heatmap_dir}/{params.species_name} \
 	-k {params.ko_dir} \
 	-r {params.r} \
@@ -414,6 +415,7 @@ rule HSDecipher_heatmap_intra_species:
 > {log.out} \
 2> {log.err}
 """
+# python3 $PWD{params.dir}HSD_heatmap.py
 
 rule HSDecipher_heatmap_inter_species_prepare:
 	input:
@@ -448,7 +450,7 @@ rule HSDecipher_heatmap_inter_species_prepare:
 		sleep 30s; \
 		cp {params.batch_run} {params.HSD_heatmap_dir}; \
 		cp {input.KEGG} {params.ko_heatmap_dir}; \
-		python3 $PWD{params.dir}HSD_heatmap.py \
+		hsdecipher \
 		-f {params.HSD_heatmap_dir}\
 		-k {params.ko_heatmap_dir} \
 		-r {params.r} \
@@ -458,3 +460,4 @@ rule HSDecipher_heatmap_inter_species_prepare:
 > {log.out} \
 2> {log.err}	
 """
+#python3 $PWD{params.dir}HSD_heatmap.py
