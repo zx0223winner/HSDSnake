@@ -212,7 +212,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt)
 
 > [!TIP]
-> [For the specific usage of HSD_statistics.py, please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+> [For the specific usage of HSD_statistics.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
  
 ## hsdecipher category
 `Purpose`: This step is to count the number of HSD with two, three, and more than four categories, which is helpful to evaluate the distribution of groups in HSDs.
@@ -230,7 +230,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt)
 
 > [!TIP]
-> [For the specific usage of HSD_categories.py, please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+> [For the specific usage of HSD_categories.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
  
 ## hsdecipher merge statistics
 `Purpose`: This step is to merge the above analysis.
@@ -263,7 +263,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt](../results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt)
 
 > [!TIP]
-> [For the specific usage of HSD_batch_run, please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+> [For the specific usage of HSD_batch_run, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
  
 ## hsdecipher heatmap intra species
 `Purpose`: This step is able to visualize the collected HSDs in a heatmap and compare the HSDs sharing the same pathway function. This can be done inta-specise and inter-speies heatmaps.
@@ -292,7 +292,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ![image](../results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.jpg)
 
 > [!TIP]
-> [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+> [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
 			
 ## hsdecipher heatmap inter species	
 `Purpose`: This step is able to visualize the collected HSDs in a heatmap and compare the HSDs sharing the same pathway function. This can be done inta-specise and inter-speies heatmaps.
@@ -318,5 +318,5 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ![image](../results/heatmap_inter/HSD.output_heatmap.jpg)
 
 > [!TIP]
-> [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+> [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
 
