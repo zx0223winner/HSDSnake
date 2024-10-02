@@ -6,13 +6,11 @@ samples:
 genomes:
   Arabidopsis_thaliana:
     proteins: "data/Arabidopsis_thaliana.fa"
-    tables: "proteins_4_380024.csv"
     interproscan: "data/Arabidopsis_thaliana.interproscan.tsv"
     KEGG: "data/Arabidopsis_thaliana.ko.txt"
 
   Chlamydomonas_reinhardtii:
     proteins: "data/Chlamydomonas_reinhardtii.fa"
-    tables: "proteins_4_380024.csv"
     interproscan: "data/Chlamydomonas_reinhardtii.interproscan.tsv"
     KEGG: "data/Chlamydomonas_reinhardtii.ko.txt"
 
