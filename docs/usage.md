@@ -52,10 +52,13 @@ heatmap_width: 30
 
 ## 2. [Snakefile](../workflow/Snakefile)
 ### preprocess fasta
-`Purpose`: This step is to generate 
+`Purpose`: This step is to generate a fasta file with short header line.
 
 `Example`: data/preprocess_fasta/Arabidopsis_thaliana.fa
 
+```
+
+```
 
 ### diamond_db
 `Purpose`: This step is to generate 
