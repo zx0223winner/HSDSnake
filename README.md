@@ -116,7 +116,7 @@ snakemake --use-conda --cores all -n
 snakemake --use-conda --cores all
 ```
 
-
+![image](resources/snakemake_screenshot.png)
 
 
 
