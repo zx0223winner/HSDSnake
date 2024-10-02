@@ -11,7 +11,7 @@ You will need to edit the config.yaml file for your own usage. An [example confi
 samples:
   - Arabidopsis_thaliana
   - Chlamydomonas_reinhardtii
- 
+
 genomes:
   Arabidopsis_thaliana:
     proteins: "data/Arabidopsis_thaliana.fa"
@@ -24,8 +24,6 @@ genomes:
     KEGG: "data/Chlamydomonas_reinhardtii.ko.txt"
 
 ####### Here are the directories for the custom scripts and parameters which do not need to modify #######
-
-
 HSDFinder: 
   - "/scripts/hsdfinder/"
 
@@ -48,7 +46,6 @@ HSDecipher: "/scripts/hsdecipher/"
 ####### Feel free to tune these numbers for the heatmap hight and width #######
 
 heatmap_hight: 20 
-
 heatmap_width: 30
 
 ```
@@ -57,18 +54,18 @@ heatmap_width: 30
 ### preprocess fasta
 `Purpose`: This step is to generate 
 
-`Example`: data/preprocess_fasta/{sample}.fa
+`Example`: data/preprocess_fasta/Arabidopsis_thaliana.fa
 
 
 ### diamond_db
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/{sample}.dmnd
+`Example`: results/Arabidopsis_thaliana/Arabidopsis_thaliana.dmnd
 
 ### diamond blastp
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/diamond/{sample}.txt
+`Example`: results/Arabidopsis_thaliana/diamond/Arabidopsis_thaliana.txt
 
 ## interproscan
 data/Arabidopsis_thaliana.interproscan.tsv
@@ -80,47 +77,47 @@ data/Arabidopsis_thaliana.ko.txt
 ## HSDfinder preprocess
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/diamond/{sample}.preprocess.txt
+`Example`: results/Arabidopsis_thaliana/diamond/Arabidopsis_thaliana.preprocess.txt
 	
 ## hsdfinder
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/hsdfinder/{sample}.{HSD_identity}_{HSD_variance}.txt
+`Example`: results/Arabidopsis_thaliana/hsdfinder/Arabidopsis_thaliana.90_10.txt
 
 ## kegg category
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/kegg/{sample}.{HSD_identity}_{HSD_variance}.kegg.txt
+`Example`: results/Arabidopsis_thaliana/kegg/Arabidopsis_thaliana.90_10.kegg.txt
 	
 ## hsdecipher statistcs
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/hsdecipher/stats/{sample}.stat.txt
+`Example`: results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt
 	
 ## hsdecipher category
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/hsdecipher/stats/{sample}.category.txt
+`Example`: results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt
 	
 ## hsdecipher merge statistics
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/hsdecipher/stats/{sample}.complete.stats.txt
+`Example`: results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt
 	
 ## hsdecipher batch run
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/hsdecipher/batch_run/{sample}.batch_run.txt
+`Example`: results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt
 	
 ## hsdecipher heatmap intra species
 `Purpose`: This step is to generate 
 
-`Example`: results/{sample}/hsdecipher/heatmap/{sample}.output_heatmap.eps
+`Example`: results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.eps
 			
 ## hsdecipher heatmap inter species	
 `Purpose`: This step is to generate 
 
-`Example`: results/heatmap_inter/HSD/{sample}.batch_run.txt
+`Example`: results/heatmap_inter/HSD/HSD.output_heatmap.eps
 
 
 
