@@ -1,3 +1,0 @@
-# SnakeMake pipeline parameters
-
-
