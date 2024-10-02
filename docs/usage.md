@@ -121,6 +121,9 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 > [!TIP]
 > It is straightforward to generate the InterProScan output by either checking the respective [ReadMe file](https://interproscan-docs.readthedocs.io/en/latest/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 6-9.
 
+> [!WARNING]
+> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the InterProScan search, i.e., the file under the directory: data/preprocess_fasta/Arabidopsis_thaliana.fa
+
 ## kegg blastkoala
 
 `Purpose`: This step is to generate a KEGG functional category file.
@@ -131,6 +134,9 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 > [!TIP]
 > It is straightforward to generate the kegg blastkoala output by either checking the respective [website](https://www.kegg.jp/blastkoala/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 17-20.
+
+> [!WARNING]
+> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the KEGG Blastkoala search, i.e., the file under the directory: data/preprocess_fasta/Arabidopsis_thaliana.fa
  
 ## HSDfinder preprocess
 `Purpose`: This step is to [debug the previous raised potential issue with using HSDFinder](https://github.com/zx0223winner/HSDFinder?tab=readme-ov-file#how-to-deal-with-error-require-length-of-gene-)
@@ -190,7 +196,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
  
 ## hsdecipher statistcs
 
-`Purpose`: This step is to generate 
+`Purpose`: This step is to calculate the statistics of HSDs via using a variety of HSDFinder thresholds.
 https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 `scripts`: shell script
@@ -204,9 +210,12 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt)
-	
+
+> [!TIP]
+> [For the specific usage of HSD_statistics.py, please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+ 
 ## hsdecipher category
-`Purpose`: This step is to generate 
+`Purpose`: This step is to count the number of HSD with two, three, and more than four categories, which is helpful to evaluate the distribution of groups in HSDs.
 
 `scripts`: shell script
 ```
@@ -219,9 +228,12 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt)
-	
+
+> [!TIP]
+> [For the specific usage of HSD_categories.py, please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+ 
 ## hsdecipher merge statistics
-`Purpose`: This step is to generate 
+`Purpose`: This step is to merge the above analysis.
 
 `scripts`: shell script
 ```
@@ -233,9 +245,10 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ```
 
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt)
-	
+
+ 
 ## hsdecipher batch run
-`Purpose`: This step is to generate 
+`Purpose`: This step can do a series of combination thresholds at once. To minimize the redundancy and to acquire a larger dataset of HSD candidates
 
 `scripts`: shell script
 ```
@@ -248,9 +261,12 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ```
 
 `Output`: [results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt](../results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt)
-	
+
+> [!TIP]
+> [For the specific usage of HSD_batch_run, please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
+ 
 ## hsdecipher heatmap intra species
-`Purpose`: This step is to generate 
+`Purpose`: This step is able to visualize the collected HSDs in a heatmap and compare the HSDs sharing the same pathway function. This can be done inta-specise and inter-speies heatmaps.
 
 `scripts`: shell script
 ```
@@ -275,9 +291,11 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 `Output`: results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.eps
 ![image](../results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.jpg)
 
+> [!TIP]
+> [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
 			
 ## hsdecipher heatmap inter species	
-`Purpose`: This step is to generate 
+`Purpose`: This step is able to visualize the collected HSDs in a heatmap and compare the HSDs sharing the same pathway function. This can be done inta-specise and inter-speies heatmaps.
 
 `scripts`: shell script
 ```
@@ -299,15 +317,6 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 `Output`: results/heatmap_inter/HSD/HSD.output_heatmap.eps
 ![image](../results/heatmap_inter/HSD.output_heatmap.jpg)
 
-
-> [!WARNING]
-> PLOTSR performs a sequence-wise (preferably chromosome-wise) synteny analysis. The order of the sequences for each assembly is inferred from its `synteny_labels` file and the order of sequences in the FASTA file is ignored. As all the assemblies are included in a single plot and the number of sequences from each assembly should be same, sequences after the common minimum number are excluded. Afterwards, the sequences are marked sequentially as `Chr1`, `Chr2`, `Chr3`,... If a label other than `Chr` is desirable, it can be configured with the `synteny_plotsr_seq_label` parameter.
-
 > [!TIP]
-> If you wish to share such profile (such as upload as supplementary material for academic publications), make sure to NOT include cluster specific paths to files, nor institutional specific profiles.
-
-## Core Nextflow arguments
-
-> [!NOTE]
-> These options are part of Nextflow and use a _single_ hyphen (pipeline parameters use a double-hyphen).
+> [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here]([https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher))
 
