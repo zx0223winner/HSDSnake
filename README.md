@@ -63,6 +63,16 @@ flowchart TD
 
 Refer to [usage](./docs/usage.md), [parameters](./docs/parameters.md) and [output](./docs/output.md) documents for details.
 
+> [!NOTE]
+> If you are new to Snakmake, please refer to [this page](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) on how to set-up SnakeMake. Make sure to test the sample data below before running the workflow on actual data.
+
+```
+# Test if you have successfully installed the SnakeMake
+mamba activate snakemake
+snakemake --help
+```
+
+
 Prepare an `config.yaml` file with following columns representing input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt.
 
 ```
@@ -89,35 +99,24 @@ Now, you can run the pipeline using the following commands:
 git clone https://github.com/zx0223winner/HSDSnake.git
 
 # enter the working directory
-cd 
+cd HSDSnake
+```
+> [!NOTE]
+>Due to the size of sample files, please download the test data - `HSDSnake_data.tar.gz` through the [link](https://drive.google.com/file/d/15jGPsKRUn_SzXmaIAdXEQcxrychX-d9a/view?usp=sharing)
+
+```
+# Then decompress the file HSDSnake_data.tar.gz under the HSDSnake directory,
+# This will bring you a data folder with test files ready 
+tar -xvzf HSDSnake_data.tar.gz
+
+# Then you can give a dry run by the following command.
+snakemake --use-conda --cores all -n
+
+# If everthing is OK, then you can test the pipeline by running:
+snakemake --use-conda --cores all
 ```
 
-Data folder: https://drive.google.com/file/d/15jGPsKRUn_SzXmaIAdXEQcxrychX-d9a/view?usp=sharing
 
-
-
-
-#- Usage: snakemake --profile default all
-# fastqc
-# trim-cutadapt
-# fastqc
-# align-samtools, star, bedtools,
-# mark duplicates - picard
-
-#snakemake --profile default all
-#snakemake --use-conda --cores all
-#/storage/proj/expr_train
-#/storage/proj/pea_genome/cram/analyses/proseq_02
-
-#snakemake commom errors: 
-#1. wild card not for all in a rule, 
-#2. the output name doesnot match 
-#3. symbols error e.g., missing , 
-#4 the requirement of the resources are not enough 
-#5.the input file is wrong
-
-
-# configfile: "Metru-A17-Leaflet_config.yaml"
 
 
 
