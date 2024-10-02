@@ -42,15 +42,15 @@ flowchart TD
   subgraph Automatically_combined
    CURATE((CURATE)) ==> HSDecipher_batch_run[HSDecipher_batch_run]
   end
-  HSDecipher_batch_run ==> STASTICS
+  HSDecipher_batch_run ==> STATISTICS
 
-  STASTICS((STASTICS)) ==> HSDecipher_stastics[HSDecipher_stastics]
-  STASTICS ==> HSDecipher_category[HSDecipher_category]
-  STASTICS ==> merge_stastics[merge_stastics]
+  STATISTICS((STATISTICS)) ==> HSDecipher_statistics[HSDecipher_statistics]
+  STATISTICS ==> HSDecipher_category[HSDecipher_category]
+  STATISTICS ==> merge_stastics[merge_statistics]
 
-  HSDecipher_stastics ==> VISUALIZE_and_COMPARE
+  HSDecipher_statistics ==> VISUALIZE_and_COMPARE
   HSDecipher_category ==> VISUALIZE_and_COMPARE
-  merge_stastics ==> VISUALIZE_and_COMPARE
+  merge_statistics ==> VISUALIZE_and_COMPARE
 
   VISUALIZE_and_COMPARE ==> HSDecipher_heatmap_inter_species_prepare[heatmap_inter_species]
   VISUALIZE_and_COMPARE ==> HSDecipher_heatmap_intra_species[heatmap_intra_species]
