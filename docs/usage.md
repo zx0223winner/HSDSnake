@@ -82,43 +82,45 @@ data/Arabidopsis_thaliana.ko.txt
 ## hsdfinder
 `Purpose`: This step is to generate 
 
-`Example`: results/Arabidopsis_thaliana/hsdfinder/Arabidopsis_thaliana.90_10.txt
+`Example`: [results/Arabidopsis_thaliana/hsdfinder/Arabidopsis_thaliana.90_10.txt](../results/Arabidopsis_thaliana/hsdfinder/Arabidopsis_thaliana.90_10.txt)
 
 ## kegg category
 `Purpose`: This step is to generate 
 
-`Example`: results/Arabidopsis_thaliana/kegg/Arabidopsis_thaliana.90_10.kegg.txt
+`Example`: [results/Arabidopsis_thaliana/kegg/Arabidopsis_thaliana.90_10.kegg.txt](../results/Arabidopsis_thaliana/kegg/Arabidopsis_thaliana.90_10.kegg.txt)
 	
 ## hsdecipher statistcs
 `Purpose`: This step is to generate 
 
-`Example`: results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt
+`Example`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt)
 	
 ## hsdecipher category
 `Purpose`: This step is to generate 
 
-`Example`: results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt
+`Example`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt)
 	
 ## hsdecipher merge statistics
 `Purpose`: This step is to generate 
 
-`Example`: results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt
+`Example`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt)
 	
 ## hsdecipher batch run
 `Purpose`: This step is to generate 
 
-`Example`: results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt
+`Example`: [results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt](../results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt)
 	
 ## hsdecipher heatmap intra species
 `Purpose`: This step is to generate 
 
 `Example`: results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.eps
+![image](../results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.jpg)
+
 			
 ## hsdecipher heatmap inter species	
 `Purpose`: This step is to generate 
 
 `Example`: results/heatmap_inter/HSD/HSD.output_heatmap.eps
-
+![image](../results/heatmap_inter/HSD/HSD.output_heatmap.jpg)
 
 
 > [!WARNING]
