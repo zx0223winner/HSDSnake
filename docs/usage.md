@@ -120,7 +120,7 @@ data/Arabidopsis_thaliana.ko.txt
 `Purpose`: This step is to generate 
 
 `Example`: results/heatmap_inter/HSD/HSD.output_heatmap.eps
-![image](../results/heatmap_inter/HSD/HSD.output_heatmap.jpg)
+![image](../results/heatmap_inter/HSD.output_heatmap.jpg)
 
 
 > [!WARNING]
