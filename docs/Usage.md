@@ -320,3 +320,5 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 > [!TIP]
 > [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
 
+> [!NOTE]
+> [To furtherly explain the intra- and inter-species heatmaps created by HSD_heatmap.py, please find here](https://github.com/zx0223winner/HSDecipher/issues/2)
