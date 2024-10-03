@@ -30,7 +30,7 @@ flowchart TD
   preprocess_fasta ==> DETECT
   diamond_db ==> DETECT
   diamond ==> DETECT
-
+  KEGG ==> DETECT
 
   DETECT((DETECT)) ==> HSDFinder_preprocess[HSDFinder_preprocess]
   DETECT ==> HSDFinder[HSDFinder]
@@ -42,11 +42,12 @@ flowchart TD
   subgraph Automatically_combined
    CURATE((CURATE)) ==> HSDecipher_batch_run[HSDecipher_batch_run]
   end
+
   HSDecipher_batch_run ==> STATISTICS
 
   STATISTICS((STATISTICS)) ==> HSDecipher_statistics[HSDecipher_statistics]
   STATISTICS ==> HSDecipher_category[HSDecipher_category]
-  STATISTICS ==> merge_stastics[merge_statistics]
+  STATISTICS ==> merge_statistics[merge_statistics]
 
   HSDecipher_statistics ==> VISUALIZE_and_COMPARE
   HSDecipher_category ==> VISUALIZE_and_COMPARE
