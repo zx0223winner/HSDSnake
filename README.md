@@ -115,10 +115,10 @@ snakemake --use-conda --cores all -n
 # If everthing is OK, then you can test the pipeline by running:
 snakemake --use-conda --cores all
 ```
-### snakemake_part1-2
+#### Snakemake_part1-2
 ![image](resources/snakemake_part1-2.png)
 
-### snakemake_part3
+#### Snakemake_part3
 ![image](resources/snakemake_part3.png)
 
 ##  Citations
