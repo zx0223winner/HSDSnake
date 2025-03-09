@@ -22,12 +22,13 @@
 }}%%
 flowchart TD
   
-  PREPARE((PREPARE)) ==> preprocess_fasta[preprocess_fasta]
+  PREPARE((NCBI_data)) ==> McScanX[McScanX]
   PREPARE ==> diamond_db[diamond_db]
   PREPARE ==> diamond[ diamond]
-  PREPARE ==> KEGG[KEGG]
+  PREPARE ==> CDS[KEGG]
+  PREPARE ==> Interproscan[Interproscan]
 
-  preprocess_fasta ==> DETECT
+  McScanX ==> DETECT
   diamond_db ==> DETECT
   diamond ==> DETECT
 
@@ -115,9 +116,8 @@ snakemake --use-conda --cores all -n
 # If everthing is OK, then you can test the pipeline by running:
 snakemake --use-conda --cores all
 ```
-#### Snakemake_part1-2
+#### Snakemake_part 1-2
 ![image](resources/snakemake_part1-2.png)
-
 #### Snakemake_part3
 ![image](resources/snakemake_part3.png)
 
