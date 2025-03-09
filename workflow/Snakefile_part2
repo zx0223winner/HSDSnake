@@ -1,0 +1,361 @@
+#snakemake --use-conda --cores all -s workflow/Snakefile_part1 -n
+#snakemake --use-conda --cores all -s workflow/Snakefile_part2 -n
+#snakemake --use-conda --cores all -s workflow/Snakefile_part3 -n
+
+# if you know how to set up profile and path use below otherwise the previous command can apply for all users:
+# Breakpoint One: preprocessing the input files
+#snakemake --profile default all -s workflow/Snakefile_part1 -n
+# Breakpoint Two: mcscan and dupfinder procesing
+#snakemake --profile default all -s workflow/Snakefile_part2 -n
+# Breakpoint Three: hsdfinder processing
+#snakemake --profile default all -s workflow/Snakefile_part3 -n
+
+# draw dag plot to have an overview of the snakemake pipeline: snakemake -s workflow/Snakefile_part1 --forceall --rulegraph | dot -Tpdf > dag_part1.pdf
+# Note: Must be careful with the space and Indentation
+
+configfile: "config.yaml"
+
+rule all:
+	input:
+		expand("data/DupGen_finder/{name}_data/{name}.gff",
+			name = config['names']),
+
+	# run the DupGen_finder scripts
+		expand("data/DupGen_finder/{name}_result/{name}.tandem.pairs",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result/{name}.dispersed.pairs",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result/{name}.proximal.pairs",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result/{name}.transposed.pairs",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result/{name}.wgd.pairs",
+			name = config['names']),
+	# get unique duplicate genes
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.tandem.genes-unique",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.dispersed.genes-unique",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.proximal.genes-unique",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.transposed.genes-unique",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.wgd.genes-unique",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.gff.sorted",
+			name = config['names']),
+	# run the ka_ks_analysis script
+		expand("data/DupGen_finder/{name}_result/{name}.kaks",
+			name = config['names']),
+	# run adding_Ka_Ks_into_collinearity
+		expand("data/DupGen_finder/{name}_result_kaks/{name}.kaks",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_kaks/{name}.collinearity.kaks",
+			name = config['names']),		
+		expand("data/DupGen_finder/{name}_result_kaks/{name}.synteny.blocks.ks.info",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_result_kaks/{name}.synteny.blocks.ks.distri.pdf",
+			name = config['names']),
+	# prepare the hsdfinder inputs, processing for sub gene duplication datasets
+		expand("data/hsdfinder/{name}.fa",
+			name = config['names']),
+
+#####detecting WGD > tandem > proximal > transposed > dispersed duplicates #######
+rule DupGen_finder_gff:
+	input:
+		gff = "data/intermediateData/{name}/{name}.gff",
+		blast = "data/intermediateData/{name}/{name}.blast"
+	output:
+		"data/DupGen_finder/{name}_data/{name}.gff"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir1 = "data/intermediateData/{name}",
+		dir2 = "data/DupGen_finder/{name}_data",
+		dir3 = lambda wc: "data/intermediateData/" + config['ncbi_genomes'][wc.name]['outgroup'],
+		dir4 = "scripts/DupGen_finder",
+		dir5 = "data/intermediateData/{name}_DupGen_finder",
+		species_name = "{name}",
+		outgroup_name = lambda wc: config['ncbi_genomes'][wc.name]['outgroup'],
+		out_name = lambda wc: wc.name + "_" + config['ncbi_genomes'][wc.name]['outgroup']
+	log: 
+		out = "log/DupGen_finder_gff/{name}.out",
+		err = "log/DupGen_finder_gff/{name}.err"
+	shell:"""
+	mkdir -p {params.dir2}; \
+	sleep 5s; \
+	cp {input.gff} {params.dir2}/{params.species_name}.gff; \
+	cp {params.dir1}/{params.species_name}.blast {params.dir2}/{params.species_name}.blast; \
+	cp {params.dir3}/{params.outgroup_name}.gff {params.dir2}/{params.outgroup_name}.gff; \
+	cp {params.dir3}/{params.outgroup_name}.blast {params.dir2}/{params.outgroup_name}.blast; \
+	cp {params.dir5}/{params.out_name}.blast {params.dir2}/{params.out_name}.blast; \
+	cat {params.dir1}/{params.species_name}.gff {params.dir2}/{params.outgroup_name}.gff \
+> {params.dir2}/{params.out_name}.gff \
+2> {log.out} \
+3> {log.err}
+"""
+
+# identify the different modes of duplicated gene pairs, https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder.pl
+rule DupGen_finder:
+	input:
+		"data/ncbi/{name}/{name}_protein.faa",
+		blast = "data/intermediateData/{name}/{name}.blast"
+	output:
+		tandem = "data/DupGen_finder/{name}_result/{name}.tandem.pairs",
+		dispersed = "data/DupGen_finder/{name}_result/{name}.dispersed.pairs",
+		proximal = "data/DupGen_finder/{name}_result/{name}.proximal.pairs",
+		transposed = "data/DupGen_finder/{name}_result/{name}.transposed.pairs",
+		WGD = "data/DupGen_finder/{name}_result/{name}.wgd.pairs",
+		collinearity = "data/DupGen_finder/{name}_result/{name}.collinearity"
+	threads:
+		1
+	resources:
+		mem = 2,
+		time = "0:30:0"
+	conda:
+		"envs/mcscanx.yaml"
+	params:
+		dir1 = "data/intermediateData/{name}",
+		dir2 = "data/DupGen_finder/{name}_data",
+		dir3 = lambda wc: "data/intermediateData/" + config['ncbi_genomes'][wc.name]['outgroup'],
+		dir4 = "scripts/DupGen_finder",
+		dir5 = "data/DupGen_finder/{name}_result",
+		species_name = "{name}",
+		outgroup_name = lambda wc: config['ncbi_genomes'][wc.name]['outgroup'],
+		out_name = lambda wc: wc.name + "_" + config['ncbi_genomes'][wc.name]['outgroup']
+	log: 
+		out = "log/DupGen_finder/{name}.out",
+		err = "log/DupGen_finder/{name}.err"
+	shell:"""
+	mkdir -p {params.dir5}; \
+	sleep 30s; \
+	perl {params.dir4}/DupGen_finder.pl \
+	-i {params.dir2} \
+	-t {params.species_name} \
+	-c {params.outgroup_name} \
+	-o {params.dir5} \
+> {log.out} \
+2> {log.err}
+"""
+
+# Get a list of unique genes for each duplication type, https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder-unique.pl 
+rule DupGen_finder_unique:
+	input:
+		"data/ncbi/{name}/{name}_protein.faa",
+		blast = "data/intermediateData/{name}/{name}.blast"
+	output:
+		tandem = "data/DupGen_finder/{name}_result_uniq/{name}.tandem.genes-unique",
+		dispersed = "data/DupGen_finder/{name}_result_uniq/{name}.dispersed.genes-unique",
+		proximal = "data/DupGen_finder/{name}_result_uniq/{name}.proximal.genes-unique",
+		transposed = "data/DupGen_finder/{name}_result_uniq/{name}.transposed.genes-unique",
+		WGD = "data/DupGen_finder/{name}_result_uniq/{name}.wgd.genes-unique",
+		gff = "data/DupGen_finder/{name}_result_uniq/{name}.gff.sorted"
+	threads:
+		1
+	resources:
+		mem = 2,
+		time = "0:30:0"
+	conda:
+		"envs/mcscanx.yaml"
+	params:
+		dir1 = "data/intermediateData/{name}",
+		dir2 = "data/DupGen_finder/{name}_data",
+		dir3 = lambda wc: "data/intermediateData/" + config['ncbi_genomes'][wc.name]['outgroup'],
+		dir4 = "scripts/DupGen_finder",
+		dir5 = "data/DupGen_finder/{name}_result_uniq",
+		species_name = "{name}",
+		outgroup_name = lambda wc: config['ncbi_genomes'][wc.name]['outgroup'],
+		out_name = lambda wc: wc.name + "_" + config['ncbi_genomes'][wc.name]['outgroup']
+	log: 
+		out = "log/DupGen_finder_unique/{name}.out",
+		err = "log/DupGen_finder_unique/{name}.err"
+	shell:"""
+	mkdir -p {params.dir5}; \
+	sleep 30s; \
+	perl {params.dir4}/DupGen_finder-unique.pl \
+	-i {params.dir2} \
+	-t {params.species_name} \
+	-c {params.outgroup_name} \
+	-o {params.dir5} \
+> {log.out} \
+2> {log.err}
+"""
+
+# col_inter = lambda wc: "data/DupGen_finder/" + config['ncbi_genomes'][wc.name]['self'] + "_result/" + config['ncbi_genomes'][wc.name]['self'] +"_" + config['ncbi_genomes'][wc.name]['outgroup'] + ".collinearity"
+rule ka_and_ks_collinearity:
+	input:
+		"data/DupGen_finder/{name}_result/{name}.collinearity"
+	output:
+		"data/DupGen_finder/{name}_result/{name}.kaks"
+	threads:
+		1
+	resources:
+		mem = 2,
+		time = "0:30:0"
+	conda:
+		"envs/bioperl.yaml"
+	params:
+		dir1 = "data/intermediateData/{name}",
+		dir2 = "data/DupGen_finder/{name}_data",
+		dir3 = lambda wc: "data/intermediateData/" + config['ncbi_genomes'][wc.name]['outgroup'],
+		dir4 = "scripts/MCScanX_protocol",
+		dir5 = "data/DupGen_finder/{name}_result",
+		species_name = "{name}",
+		outgroup_name = lambda wc: config['ncbi_genomes'][wc.name]['outgroup'],
+		out_name = lambda wc: wc.name + "_" + config['ncbi_genomes'][wc.name]['outgroup']
+	log: 
+		out = "log/ka_and_ks_collinearity/{name}.out",
+		err = "log/ka_and_ks_collinearity/{name}.err"
+	shell:"""
+	cp {params.dir1}/{params.species_name}.cds {params.dir5}/{params.species_name}.cds; \
+	sleep 30s; \
+	perl {params.dir4}/add_ka_and_ks_to_collinearity_Yn00.pl \
+	-i {input} \
+	-d {params.dir5}/{params.species_name}.cds \
+	-o {output} \
+> {log.out} \
+2> {log.err}
+"""
+
+# due to the perl script: add_ka_and_ks_to_collinearity_Yn00.pl, which may has some temp files left in main dir, which can be safefly removed
+#	rm -p *.aln; \
+#	rm -p *.cds; \
+#	rm -p *.dnd; \
+#	rm -p *.pro; \
+
+rule adding_Ka_Ks_into_collinearity:
+	input:
+		col = "data/DupGen_finder/{name}_result/{name}.collinearity",
+		kaks = "data/DupGen_finder/{name}_result/{name}.kaks"
+	output:
+		"data/DupGen_finder/{name}_result_kaks/{name}.kaks",
+		"data/DupGen_finder/{name}_result_kaks/{name}.collinearity"
+	threads:
+		1
+	resources:
+		mem = 2
+	conda:
+		"envs/bioperl.yaml"
+	params:
+		dir = "data/DupGen_finder/{name}_result_kaks",
+		dir1 = "scripts/identify_Ks_peaks_by_fitting_GMM",
+		dir2 = "data/DupGen_finder/{name}_result",
+		species_name = "{name}"
+	log: 
+		out = "log/adding_Ka_Ks_into_collinearity/{name}.out",
+		err = "log/adding_Ka_Ks_into_collinearity/{name}.err"
+	shell:"""
+	mkdir -p {params.dir}; \
+	cp {input.col} {params.dir}/{params.species_name}.collinearity; \
+	awk -F'\t' '{{print $2"\t"$3"\t"$5"\t"$6"\t"$7"\t"$4}}' {input.kaks} \
+|grep -v -e '^[[:space:]]*$' \
+> {output[0]}
+2> {log.out} \
+3> {log.err}
+"""
+
+rule adding_Ka_Ks_into_collinearity2:
+	input:
+		col = "data/DupGen_finder/{name}_result_kaks/{name}.collinearity",
+		kaks = "data/DupGen_finder/{name}_result_kaks/{name}.kaks"
+	output:
+		"data/DupGen_finder/{name}_result_kaks/{name}.collinearity.kaks"
+	threads:
+		1
+	resources:
+		mem = 2
+	conda:
+		"envs/bioperl.yaml"
+	params:
+		dir1 = "scripts/identify_Ks_peaks_by_fitting_GMM",
+		dir2 = "data/DupGen_finder/{name}_result_kaks",
+		species_name = "{name}"
+	log: 
+		out = "log/adding_Ka_Ks_into_collinearity2/{name}.out",
+		err = "log/adding_Ka_Ks_into_collinearity2/{name}.err"
+	shell:"""
+	perl {params.dir1}/add_ka_ks_to_collinearity_file.pl {params.dir2}/{params.species_name} \
+> {log.out} \
+2> {log.err}
+"""
+
+rule Calculating_Ks_syntenic_block:
+	input:
+		"data/DupGen_finder/{name}_result_kaks/{name}.collinearity.kaks"
+	output:
+		"data/DupGen_finder/{name}_result_kaks/{name}.synteny.blocks.ks.info"
+	threads:
+		1
+	resources:
+		mem = 2
+	conda:
+		"envs/bioperl.yaml"
+	params:
+		dir1 = "scripts/identify_Ks_peaks_by_fitting_GMM",
+		dir2 = "data/DupGen_finder/{name}_result_kaks",
+		species_name = "{name}"
+	log: 
+		out = "log/Calculating_Ks_syntenic_block/{name}.out",
+		err = "log/Calculating_Ks_syntenic_block/{name}.err"
+	shell:"""
+	perl {params.dir1}/compute_ks_for_synteny_blocks.pl {input}; \
+	cp {params.species_name}.synteny.blocks.ks.info {output}; \
+	rm {params.species_name}.synteny.blocks.ks.info \
+> {log.out} \
+2> {log.err}
+"""
+
+#The parameter Components indicates the number of the mixture components, which represent the number of Ks peak. 
+rule Estimating_Ks_peaks:
+	input:
+		"data/DupGen_finder/{name}_result_kaks/{name}.synteny.blocks.ks.info"
+	output:
+		"data/DupGen_finder/{name}_result_kaks/{name}.synteny.blocks.ks.distri.pdf"
+	threads:
+		1
+	resources:
+		mem = 2
+	conda:
+		"envs/biopython.yaml"
+	params:
+		dir1 = "scripts/identify_Ks_peaks_by_fitting_GMM",
+		dir2 = "data/DupGen_finder/{name}_result_kaks",
+		species_name = "{name}",
+		components =2
+	log: 
+		out = "log/Estimating_Ks_peaks/{name}.out",
+		err = "log/Estimating_Ks_peaks/{name}.err"
+	shell:"""
+	perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components} {params.dir2}/{params.species_name} \
+> {log.out} \
+2> {log.err}
+"""
+
+
+######### hsdfinder processing ##########
+rule prepare_hsdfinder_inputs:
+	input:
+		protein = "data/ncbi/{name}/{name}_protein.faa"
+	output:
+		protein = "data/hsdfinder/{name}.fa"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir1 = "data/hsdfinder",
+		dir2 = "data/ncbi"
+	log:
+		out = "log/prepare_hsdfinder_inputs/{name}.out",
+		err = "log/prepare_hsdfinder_inputs/{name}.err"
+	shell:"""
+	mkdir -p {params.dir1}; \
+	awk '{{print $1}}' {input.protein} \
+> {output.protein} \
+2> {log.out} \
+3> {log.err}
+"""
+
+

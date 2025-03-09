@@ -1,0 +1,9 @@
+---
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - mcscanx = 1.0.0

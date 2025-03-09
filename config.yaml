@@ -1,0 +1,75 @@
+# Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
+
+ncbi_assemblies:
+  - GCF_000001735.4
+  - GCF_000002595.2
+
+ncbi_genomes:
+    Athaliana:
+        ncbi_assembly: "data/ncbi_download/GCF_000001735.4.zip"
+        assembly_id: "GCF_000001735.4"      
+        outgroup: "Creinhardtii"
+        interproscan: "data/Athaliana.interproscan.tsv"
+        KEGG: "data/Athaliana.ko.txt"
+#        feature_table: "data/Athaliana.feature_table.txt"
+    
+    Creinhardtii:
+        ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
+        assembly_id: "GCF_000002595.2"
+        outgroup: "Athaliana"
+        interproscan: "data/Creinhardtii.interproscan.tsv"
+        KEGG: "data/Creinhardtii.ko.txt"
+#        feature_table: "data/Creinhardtii.feature_table.txt"
+
+#note:"XX.feature_table.txt" is an backup option to create fakegff
+
+
+names:
+  - Athaliana
+  - Creinhardtii
+
+dup_types:
+  - tandem
+  - dispersed
+  - proximal
+  - transposed
+  - wgd
+  - all
+
+MCScanX_protocol:
+ - "/scripts/MCScanX_protocol"
+
+DupGen_finder:
+ - "/scripts/DupGen_finder"
+ 
+identify_Ks_peaks_by_fitting_GMM: 
+  - "/scripts/identify_Ks_peaks_by_fitting_GMM/"
+
+HSDFinder: 
+  - "/scripts/hsdfinder/"
+
+
+################Above are the directories for fasta, interproscan, ko result you shall modify ##########
+
+HSD_identity:
+- 90
+- 80
+- 70
+- 60
+- 50
+
+HSD_variance:
+- 100
+- 70
+- 50
+- 30
+- 10
+
+HSDecipher: "/scripts/hsdecipher/"
+
+########Feel free to modidy the heatmap hight and width depending on your dataset scale ###############
+
+heatmap_hight: 20 
+
+heatmap_width: 30
+

@@ -1,0 +1,498 @@
+#snakemake --use-conda --cores all -s workflow/Snakefile_part1 -n
+#snakemake --use-conda --cores all -s workflow/Snakefile_part2 -n
+#snakemake --use-conda --cores all -s workflow/Snakefile_part3 -n
+
+# if you know how to set up profile and path use below otherwise the previous command can apply for all users:
+# Breakpoint One: preprocessing the input files
+#snakemake --profile default all -s workflow/Snakefile_part1 -n
+# Breakpoint Two: mcscan and dupfinder procesing
+#snakemake --profile default all -s workflow/Snakefile_part2 -n
+# Breakpoint Three: hsdfinder processing
+#snakemake --profile default all -s workflow/Snakefile_part3 -n
+
+# draw dag plot to have an overview of the snakemake pipeline:  snakemake --forceall --rulegraph | dot -Tpdf > dag.pdf
+# Note: Must be careful with the space and Indentation
+
+configfile: "config.yaml"
+
+rule all:
+	input:
+########### hsdfinder processing for sub gene duplication datasets ###########
+		expand("data/DupGen_finder/{name}_result_uniq/{name}.all.genes-unique",
+			name = config['names']),
+		expand("data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.list",
+			name = config['names'],dup_type = config['dup_types']),
+		expand("data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.fa",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdfinder diamond
+		expand("results/{name}_{dup_type}/{name}_{dup_type}.dmnd",
+			name = config['names'],dup_type = config['dup_types']),
+		expand("results/{name}_{dup_type}/diamond/{name}_{dup_type}.txt",
+			name = config['names'],dup_type = config['dup_types']),
+		expand("results/{name}_{dup_type}/diamond/{name}_{dup_type}.preprocess.txt",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdfinder	
+		expand("results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.{HSD_identity}_{HSD_variance}.txt",
+			name = config['names'], HSD_identity = config['HSD_identity'],HSD_variance = config['HSD_variance'],dup_type = config['dup_types']),
+
+	#kegg category	
+		expand("results/{name}_{dup_type}/kegg/{name}_{dup_type}.{HSD_identity}_{HSD_variance}.kegg.txt",
+			name = config['names'],HSD_identity = config['HSD_identity'],HSD_variance = config['HSD_variance'],dup_type = config['dup_types']),
+
+	#hsdecipher statistcs	
+		expand("results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.stat.txt",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdecipher category	
+		expand("results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.category.txt",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdecipher merge statistics	
+		expand("results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.complete.stats.txt",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdecipher batch run	
+		expand("results/{name}_{dup_type}/hsdecipher/batch_run/{name}_{dup_type}.batch_run.txt",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdecipher heatmap intra species	
+		expand("results/{name}_{dup_type}/hsdecipher/heatmap/{name}_{dup_type}.output_heatmap.eps",
+			name = config['names'],dup_type = config['dup_types']),
+
+	#hsdecipher heatmap inter species	
+		expand("results/heatmap_inter/HSD/{name}_{dup_type}.batch_run.txt",
+			name = config['names'],dup_type = config['dup_types']),
+		expand("results/heatmap_inter/ko/{name}_{dup_type}.ko.txt",
+			name = config['names'],dup_type = config['dup_types']),
+
+rule prepare_duplication_all_list:
+	input:
+		gff_sorted = "data/DupGen_finder/{name}_result_uniq/{name}.gff.sorted",
+		protein = "data/hsdfinder/{name}.fa"
+	output:
+		dup_fake_genes_unique = "data/DupGen_finder/{name}_result_uniq/{name}.all.genes-unique"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir1 = "data/hsdfinder/{name}_all",
+		dir2 = "data/ncbi",
+		all = "data/hsdfinder/{name}_all/{name}.all.fa"
+	log: 
+		out = "log/prepare_duplication_all_list/{name}.out",
+		err = "log/prepare_duplication_all_list/{name}.err"
+	shell:"""
+	mkdir -p {params.dir1}; \
+	cp {input.protein} {params.all}; \
+	sed -e '1i\Duplicate\tchrom\tLocation' {input.gff_sorted} \
+> {output.dup_fake_genes_unique} \
+2> {log.out} \
+3> {log.err}
+"""			
+			
+# create the protein file for each type of duplicates
+rule prepare_duplication_list:
+	input:
+		dup_uniq = "data/DupGen_finder/{name}_result_uniq/{name}.{dup_type}.genes-unique",
+		protein = "data/hsdfinder/{name}.fa"
+	output:
+		dup_list = "data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.list"
+	threads:
+		1
+	resources:
+		mem = 2
+	log: 
+		out = "log/prepare_duplication_list/{name}_{dup_type}.out",
+		err = "log/prepare_duplication_list/{name}_{dup_type}.err"
+	shell:"""
+	sleep 3s; \
+	sed 1d {input.dup_uniq} \
+|awk '{{print $1}}' \
+> {output.dup_list} \
+2> {log.out} \
+3> {log.err}
+"""
+
+
+#########don't use expand() in rule unless you know how it works, https://stackoverflow.com/questions/58187715/using-the-expand-function-in-snakemake-to-perform-a-shell-command-multiple-tim
+
+
+rule prepare_duplication_protein:
+	input:
+		protein = "data/hsdfinder/{name}.fa",
+		dup_list = "data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.list"
+	output:
+		dup_protein = "data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.fa",
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = "scripts/hsdfinder",
+		dir1 = "data/hsdfinder/{name}_{dup_type}",
+	log: 
+		out = "log/prepare_duplication_protein/{name}_{dup_type}.out",
+		err = "log/prepare_duplication_protein/{name}_{dup_type}.err"
+	shell:"""
+	sleep 3s; \
+mkdir -p {params.dir1}; \
+python3 {params.dir}/index_header_to_seq.py \
+	{input.protein} \
+	{input.dup_list} \
+	{output.dup_protein} \
+> {log.out} \
+2> {log.err}
+"""
+
+rule hsdfinder_diamond_db:
+	input:
+		protein = "data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.fa"
+	output:
+		"results/{name}_{dup_type}/{name}_{dup_type}.dmnd"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		db_name_dir = "results/{name}_{dup_type}/{name}_{dup_type}"
+	conda:
+		"envs/diamond.yaml"
+	log:
+		out = "log/hsdfinder_diamond_db/{name}_{dup_type}.out",
+		err = "log/hsdfinder_diamond_db/{name}_{dup_type}.err"
+	shell:"""
+	diamond makedb \
+		--in {input.protein} \
+		-d {params.db_name_dir} \
+> {log.out} \
+2> {log.err}
+"""
+
+rule hsdfinder_diamond:
+	input:
+		protein = "data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.fa",
+		database = "results/{name}_{dup_type}/{name}_{dup_type}.dmnd"
+	output:
+		"results/{name}_{dup_type}/diamond/{name}_{dup_type}.txt"
+	threads:
+		2
+	resources:
+		mem = 4
+	params:
+		db_name_dir = "results/{name}_{dup_type}/{name}_{dup_type}",
+		db_title = "{name}_{dup_type}" 
+	conda:
+		"envs/diamond.yaml"	
+	log:
+		out = "log/hsdfinder_diamond/{name}_{dup_type}.out",
+		err = "log/hsdfinder_diamond/{name}_{dup_type}.err"
+	shell:"""
+		diamond blastp \
+		-d {params.db_name_dir} \
+		-q {input.protein} \
+		-o {output} \
+		-e 1e-10 \
+		-f 6 \
+		-p {threads} \
+		--sensitive \
+> {log.out} \
+2> {log.err}	
+"""
+
+# In rare case, like the key error which is due to in your new blast all-against-all file, you are still missing the length info lines like below if you search it. The Unix command below will help.please refer to https://github.com/zx0223winner/HSDFinder/issues/2
+rule HSDFinder_preprocess:
+	input:
+		tabular = "results/{name}_{dup_type}/diamond/{name}_{dup_type}.txt",
+		protein = "data/hsdfinder/{name}_{dup_type}/{name}.{dup_type}.fa"
+	output:
+		"results/{name}_{dup_type}/diamond/{name}_{dup_type}.preprocess.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = config['HSDFinder']
+	conda:
+		"envs/hsdfinder.yaml"
+	log:
+		out = "log/hsdfinder_preprocess/{name}_{dup_type}.out",
+		err = "log/hsdfinder_preprocess/{name}_{dup_type}.err"
+	shell:"""
+	(awk '/^>/{{if (l!="") print l; print; l=0; next}}{{l+=length($0)}}END{{print l}}' \
+		{input.protein} \
+		|paste - - \
+		|sed 's/>//g' \
+		|awk -F'\t' '{{print $1"\t"$1"\t"100"\t"$2}}' \
+		|cat ;\
+		cat {input.tabular}) \
+		|cat \
+> {output} \
+2> {log.out} \
+3> {log.err}	
+"""
+
+rule HSDFinder:
+	input:
+		tabular = "results/{name}_{dup_type}/diamond/{name}_{dup_type}.preprocess.txt",
+		Interproscan = lambda wc: config['ncbi_genomes'][wc.name]['interproscan']
+	output:
+		"results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.{HSD_identity}_{HSD_variance}.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = config['HSDFinder'],
+		identity = "{HSD_identity}",
+		variance = "{HSD_variance}" 
+	conda:
+		"envs/hsdfinder.yaml"
+	log:
+		out = "log/hsdfinder/{name}_{dup_type}_{HSD_identity}_{HSD_variance}.out",
+		err = "log/hsdfinder/{name}_{dup_type}_{HSD_identity}_{HSD_variance}.err"
+	shell:"""
+	hsdfinder \
+		-i {input.tabular} \
+		-p {params.identity} \
+		-l {params.variance} \
+		-f {input.Interproscan} \
+		-t Pfam \
+		-o {output} \
+> {log.out} \
+2> {log.err}	
+"""
+# python3 $PWD{params.dir}HSDFinder.py
+
+rule KEGG:
+	input:
+		HSD_result = "results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.{HSD_identity}_{HSD_variance}.txt",
+		KEGG = lambda wc: config['ncbi_genomes'][wc.name]['KEGG']
+	output:
+		"results/{name}_{dup_type}/kegg/{name}_{dup_type}.{HSD_identity}_{HSD_variance}.kegg.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = config['HSDFinder'],
+		identity = "{HSD_identity}",
+		variance = "{HSD_variance}" ,
+		species_name = "{name}_{dup_type}"
+	conda:
+		"envs/hsdfinder.yaml"
+	log:
+		out = "log/kegg/{name}_{dup_type}_{HSD_identity}_{HSD_variance}.out",
+		err = "log/kegg/{name}_{dup_type}_{HSD_identity}_{HSD_variance}.err"
+	shell:"""
+	python3 $PWD{params.dir}HSD_to_KEGG.py \
+		-i {input.HSD_result} \
+		-k {input.KEGG} \
+		-n {params.species_name}\
+		-o {output} \
+> {log.out} \
+2> {log.err}	
+"""
+
+rule HSDecipher_stastics:
+	input:
+		"results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.90_10.txt"
+	output:
+		"results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.stat.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = config['HSDecipher'],
+		HSD_dir = "results/{name}_{dup_type}/hsdfinder/",
+		HSD_file_format = "txt"
+	conda:
+		"envs/hsdfinder.yaml"
+	log:
+		out = "log/hsdecipher_stastics/{name}_{dup_type}.out",
+		err = "log/hsdecipher_stastics/{name}_{dup_type}.err"
+	shell:"""
+	python3 $PWD{params.dir}HSD_statistics.py \
+		{params.HSD_dir} \
+		{params.HSD_file_format} \
+		{output} \
+> {log.out} \
+2> {log.err}	
+"""
+
+rule HSDecipher_category:
+	input:
+		"results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.90_10.txt"
+	output:
+		"results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.category.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = config['HSDecipher'],
+		HSD_dir = "results/{name}_{dup_type}/hsdfinder/",
+		HSD_file_format = "txt"
+	conda:
+		"envs/hsdfinder.yaml"
+	log:
+		out = "log/hsdecipher_stats/{name}_{dup_type}.out",
+		err = "log/hsdecipher_stats/{name}_{dup_type}.err"
+	shell:"""
+	python3 $PWD{params.dir}HSD_categories.py \
+		{params.HSD_dir} \
+		{params.HSD_file_format} \
+		{output} \
+> {log.out} \
+2> {log.err}	
+"""
+
+rule merge_stastics:
+	input:
+		stat = "results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.stat.txt",
+		category = "results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.category.txt"
+	output:
+		"results/{name}_{dup_type}/hsdecipher/stats/{name}_{dup_type}.complete.stats.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	log:
+		out = "log/hsdecipher_stastics_merge/{name}_{dup_type}.out",
+		err = "log/hsdecipher_stastics_merge/{name}_{dup_type}.err"
+	shell:"""
+	paste -d"\t" \
+	{input.stat} \
+	{input.category} \
+	> {output} \
+2> {log.out} \
+3> {log.err}	
+"""
+
+rule HSDecipher_batch_run:
+	input:
+		"results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.90_10.txt"
+	output:
+		"results/{name}_{dup_type}/hsdecipher/batch_run/{name}_{dup_type}.batch_run.txt"
+	threads:
+		1
+	resources:
+		mem = 2
+	params:
+		dir = config['HSDecipher'],
+		HSD_dir = "results/{name}_{dup_type}/hsdfinder",
+		HSD_batch_run_dir = "results/{name}_{dup_type}/hsdecipher/batch_run",
+		species_name = "{name}_{dup_type}"
+	conda:
+		"envs/hsdecipher.yaml"
+	log:
+		out = "log/HSDecipher_batch_run/{name}_{dup_type}.out",
+		err = "log/HSDecipher_batch_run/{name}_{dup_type}.err"
+	shell:"""
+	mkdir -p {params.HSD_batch_run_dir}/{params.species_name}; \
+	cp {params.HSD_dir}/* {params.HSD_batch_run_dir}/{params.species_name}/; \
+	python3 $PWD{params.dir}HSD_batch_run.py \
+		-i {params.HSD_batch_run_dir}; \
+	rm -r {params.HSD_batch_run_dir}/{params.species_name} \
+> {log.out} \
+2> {log.err}	
+"""
+
+# sleep 30s is to wait for the previous step to yield {name}.batch_run.txt file, it is depending on the size of your file and speed of CPU. 30s should be enough for genome size likeArabidopsis thalina
+rule HSDecipher_heatmap_intra_species:
+	input:
+		HSD_file = "results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.90_10.txt",
+		KEGG = lambda wc: config['ncbi_genomes'][wc.name]['KEGG'],
+		batch_run = "results/{name}_{dup_type}/hsdecipher/batch_run/{name}_{dup_type}.batch_run.txt"
+	output:
+		"results/{name}_{dup_type}/hsdecipher/heatmap/{name}_{dup_type}.output_heatmap.eps"
+	threads:
+		1
+	resources:
+		mem = 2
+	conda: 
+		"envs/hsdecipher.yaml"
+	params:
+		dir = config['HSDecipher'],
+		HSD_dir = "results/{name}_{dup_type}/hsdfinder",
+		HSD_heatmap_dir = "results/{name}_{dup_type}/hsdecipher/heatmap",
+		species_name = "{name}_{dup_type}",
+		batch_run = "results/{name}_{dup_type}/hsdecipher/batch_run/{name}_{dup_type}.batch_run.txt",
+		r = config['heatmap_hight'],
+		c = config['heatmap_width'],
+		ko_dir = "results/{name}_{dup_type}/hsdecipher/heatmap/ko",
+		heatmap = "{name}_{dup_type}.output_heatmap.eps",
+		tabular = "{name}_{dup_type}.output_heatmap.tsv"
+	log:
+		out = "log/HSDecipher_heatmap/{name}_{dup_type}.out",
+		err = "log/HSDecipher_heatmap/{name}_{dup_type}.err"
+	shell:"""
+	mkdir -p {params.HSD_heatmap_dir}/{params.species_name}; \
+	mkdir -p {params.ko_dir}; \
+	sleep 30s; \
+	cp {input.KEGG} {params.ko_dir}/{params.species_name}.ko.txt; \
+	cp {params.HSD_dir}/* {params.HSD_heatmap_dir}/{params.species_name}/; \
+	cp {input.batch_run} {params.HSD_heatmap_dir}/{params.species_name}/; \
+	hsdecipher \
+	-f {params.HSD_heatmap_dir}/{params.species_name} \
+	-k {params.ko_dir} \
+	-r {params.r} \
+	-c {params.c}; \
+	rm -r {params.ko_dir}; \
+	rm -r {params.HSD_heatmap_dir}/{params.species_name}; \
+	mv {params.heatmap} {params.HSD_heatmap_dir}; \
+	mv {params.tabular} {params.HSD_heatmap_dir}; \
+> {log.out} \
+2> {log.err}
+"""
+# python3 $PWD{params.dir}HSD_heatmap.py
+
+rule HSDecipher_heatmap_inter_species_prepare:
+	input:
+		HSD_file = "results/{name}_{dup_type}/hsdfinder/{name}_{dup_type}.90_10.txt",
+		KEGG = lambda wc: config['ncbi_genomes'][wc.name]['KEGG']
+	output:
+		"results/heatmap_inter/HSD/{name}_{dup_type}.batch_run.txt",
+		"results/heatmap_inter/ko/{name}_{dup_type}.ko.txt"
+	threads:
+		1
+	resources:
+		mem =2
+	conda:
+		"envs/hsdecipher.yaml"
+	params:
+		dir = config['HSDecipher'],
+		batch_run = "results/{name}_{dup_type}/hsdecipher/batch_run/{name}_{dup_type}.batch_run.txt",
+		HSD_heatmap_dir = "results/heatmap_inter/HSD",
+		ko_heatmap_dir = "results/heatmap_inter/ko",
+		ko_dir = "data/",
+		r = config['heatmap_hight'],
+		c = config['heatmap_width'],
+		heatmap = "HSD.output_heatmap.eps",
+		tabular = "HSD.output_heatmap.tsv",
+		HSD_heatmap = "results/heatmap_inter",
+		species_name = "{name}_{dup_type}",
+	log:
+		out = "log/heatmap_inter/{name}_{dup_type}.out",
+		err = "log/heatmap_inter/{name}_{dup_type}.err"
+	shell:"""
+		mkdir -p {params.HSD_heatmap_dir}; \
+		mkdir -p {params.ko_heatmap_dir}; \
+		sleep 90s; \
+		cp {params.batch_run} {params.HSD_heatmap_dir}/{params.species_name}.batch_run.txt; \
+		cp {input.KEGG} {params.ko_heatmap_dir}/{params.species_name}.ko.txt; \
+		hsdecipher \
+		-f {params.HSD_heatmap_dir}\
+		-k {params.ko_heatmap_dir} \
+		-r {params.r} \
+		-c {params.c}; \
+		mv {params.heatmap} {params.HSD_heatmap}||true; \
+		mv {params.tabular} {params.HSD_heatmap}||true; \
+> {log.out} \
+2> {log.err}	
+"""
+#python3 $PWD{params.dir}HSD_heatmap.py
+

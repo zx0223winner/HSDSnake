@@ -1,0 +1,14 @@
+---
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - pandas =1.5.3
+  - scikit-learn
+  - scipy
+  - matplotlib
+  - numpy
+  
