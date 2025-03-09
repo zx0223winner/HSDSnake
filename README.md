@@ -102,7 +102,7 @@ git clone https://github.com/zx0223winner/HSDSnake.git
 cd HSDSnake
 ```
 > [!NOTE]
->Due to the size of sample files, please download the test data - `HSDSnake_data.tar.gz` through the Google drive [link](https://drive.google.com/file/d/15jGPsKRUn_SzXmaIAdXEQcxrychX-d9a/view?usp=sharing)
+>Due to the size of sample files, please download the test data - `HSDSnake_data.tar.gz` through the Google drive [link](https://drive.google.com/file/d/1d-yYkrp4Ce-zN9_s8VGpOO35hpkiu69w/view?usp=sharing)
 
 ```
 # Then decompress the file HSDSnake_data.tar.gz under the HSDSnake directory,
