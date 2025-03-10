@@ -78,7 +78,11 @@ snakemake --help
 ```
 
 > [!NOTE]
-> Begin with a `config.yaml` file as below (detailed all the input files requested for hsdsnake). For demonstration, NCBI assemblies of *A. thaliana* and *C. reinhardtii* can be downloaded via the NCBI link below, please only substitute the species name to yours in the config.yaml file, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt. The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
+> Begin with a `config.yaml` file as below (detailed all the input files requested for hsdsnake).
+> 
+> For demonstration, NCBI assemblies of *A. thaliana* and *C. reinhardtii* are used as examples, please only substitute the species name to yours in the config.yaml file, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt.
+>
+> The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
 
 **config.yaml**
 ```config.yaml
@@ -104,13 +108,17 @@ ncbi_genomes:
 ```
 
 > [!NOTE]
-> To add new species, users can simply put extra lines of species name, ncbi_assembly id and required files in the `config.yaml` file as above. The ncbi_assembly (e.g., GCF_000001735.4.zip) already contains the standard input files such as gff3, cds, protein.fa.
+> Optional: To add new species, users can simply put extra lines of species name, ncbi_assembly id and required files in the `config.yaml` file as above.
+>
+> The ncbi_assembly (e.g., GCF_000001735.4.zip) contains the standard genomic files from NCBI such as gff3, cds, protein.fa. The other two files XX.interproscan.tsv and XX.ko.txt can be acquried from dependencies which was [detailed here in the usage](./docs/Usage.md).
 
 > [!NOTE]
-> To download extra ncbi assembly 'XX.zip' from NCBI, users can substitue the ncbi_assembly id (e.g., GCF_000001735.4) with yours in the command below:
+> Optional: To download extra ncbi assembly 'XX.zip' from NCBI, users can substitue the ncbi_assembly id (e.g., GCF_000001735.4) with yours in the command below:
 
->curl -OJX GET "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genome/accession/GCF_000001735.4/download?include_annotation_type=GENOME_FASTA,GENOME_GFF,RNA_FASTA,CDS_FASTA,PROT_FASTA,SEQUENCE_REPORT&filename=GCF_000001735.4.zip"
+```
+curl -OJX GET "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genome/accession/GCF_000001735.4/download?include_annotation_type=GENOME_FASTA,GENOME_GFF,RNA_FASTA,CDS_FASTA,PROT_FASTA,SEQUENCE_REPORT&filename=GCF_000001735.4.zip"
 
+```
 Now, you can run the pipeline using the following commands:
 
 ```
