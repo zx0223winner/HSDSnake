@@ -78,9 +78,10 @@ snakemake --help
 ```
 
 
-Prepare an `config.yaml` file with following columns representing input files for HSDSnake. For demonstration, NCBI data of *A. thaliana* and *C. reinhardtii* have been used as examples, please only substitute the species name to yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt. Note: The outgroup species in the config.yaml file is used for cross-genome comparison.
+Prepare an `config.yaml` file as below. For demonstration, NCBI assemblies of *A. thaliana* and *C. reinhardtii* can be downloaded via the NCBI link below, please only substitute the species name to yours in the config.yaml file, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt. The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
 
-```
+**config.yaml**
+```config.yaml
 ncbi_assemblies:
   - GCF_000001735.4
   - GCF_000002595.2
@@ -102,6 +103,11 @@ ncbi_genomes:
 
 ```
 
+`Note`: To add new species, users can simply put extra lines of species name, ncbi_assembly id and required files in the `config.yaml` file as above. The ncbi_assembly (e.g., GCF_000001735.4.zip) already contains the standard input files such as gff3, cds, protein.fa.
+
+`Optional`: To download extra ncbi assembly 'XX.zip' from NCBI, users can substitue the ncbi_assembly id (e.g., GCF_000001735.4) with yours in the command below:
+>curl -OJX GET "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genome/accession/GCF_000001735.4/download?include_annotation_type=GENOME_FASTA,GENOME_GFF,RNA_FASTA,CDS_FASTA,PROT_FASTA,SEQUENCE_REPORT&filename=GCF_000001735.4.zip"
+
 Now, you can run the pipeline using the following commands:
 
 ```
@@ -112,7 +118,7 @@ git clone https://github.com/zx0223winner/HSDSnake.git
 cd HSDSnake
 ```
 > [!NOTE]
->Due to the size of sample files, please download the test data - `HSDSnake_data.tar.gz` through the Google drive [link](https://drive.google.com/file/d/1d-yYkrp4Ce-zN9_s8VGpOO35hpkiu69w/view?usp=sharing)
+>Due to the size of sample files (we have prepared users with the standard input files of NCBI genome assemblies for *A. thaliana* and *C. reinhardtii* ), please download the test data - `HSDSnake_data.tar.gz` through the Google drive [link](https://drive.google.com/file/d/1d-yYkrp4Ce-zN9_s8VGpOO35hpkiu69w/view?usp=sharing)
 
 ```
 # Then decompress the file HSDSnake_data.tar.gz under the HSDSnake directory,
