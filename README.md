@@ -21,29 +21,32 @@
   }
 }}%%
 flowchart TD
-  
+
+subgraph SnakeMake_Part_1-2
   PREPARE((PREPARE)) ==> McScanX[McScanX]
   PREPARE ==> diamond_db[diamond_db]
   PREPARE ==> diamond[diamond]
-  PREPARE ==> DupGen_finder[DupGen_finder]
+  PREPARE ==> Data_preprocessing[Data_preprocessing]
   PREPARE ==> KEGG[KEGG]
 
-  McScanX ==> DETECT
-  diamond_db ==> DETECT
-  diamond ==> DETECT
-  DupGen_finder ==> DETECT
+  McScanX ==> DupGen_finder
+  diamond_db ==> DupGen_finder
+  diamond ==> DupGen_finder
+  Data_preprocessing ==> DupGen_finder
 
 
-  DETECT((DETECT)) ==> HSDFinder_preprocess[HSDFinder_preprocess]
-  DETECT ==> HSDFinder[HSDFinder]
-  
+  DupGen_finder((DupGen_finder)) ==> HSDFinder_preprocess[HSDFinder_preprocess]
+  DupGen_finder ==> HSDFinder[HSDFinder]
 
+end  
+
+subgraph SnakeMake_Part_3
   HSDFinder_preprocess ==> CURATE
   HSDFinder ==> CURATE
   
-  subgraph Automatically_combined
-   CURATE((CURATE)) ==> HSDecipher_batch_run[HSDecipher_batch_run]
-  end
+
+  CURATE((CURATE)) ==> HSDecipher_batch_run[HSDecipher_batch_run]
+ 
   HSDecipher_batch_run ==> STATISTICS
 
   STATISTICS((STATISTICS)) ==> HSDecipher_statistics[HSDecipher_statistics]
@@ -56,7 +59,7 @@ flowchart TD
 
   VISUALIZE_and_COMPARE ==> HSDecipher_heatmap_inter_species_prepare[heatmap_inter_species]
   VISUALIZE_and_COMPARE ==> HSDecipher_heatmap_intra_species[heatmap_intra_species]
-
+end
 
 
 ```
