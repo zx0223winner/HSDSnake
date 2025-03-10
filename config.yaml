@@ -1,4 +1,4 @@
-# Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
+# Critical: input files for HSDSnake including the standard NCBI data(cds, gff3,protein.fa) and KEGG as well as Interproscan results, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
 
 ncbi_assemblies:
   - GCF_000001735.4
@@ -21,7 +21,8 @@ ncbi_genomes:
         KEGG: "data/Creinhardtii.ko.txt"
 #        feature_table: "data/Creinhardtii.feature_table.txt"
 
-#note:"XX.feature_table.txt" is an backup option to create fakegff
+# Note:"XX.feature_table.txt" is an backup/optional option to create fakegff for mcscanx input
+# Outgroup: species name is used to suggest other type of gene duplicate (e.g., transposed) which is required by dependencies: mcscanx (https://github.com/wyp1125/MCScanX-transposed) and dupgen-finder(https://github.com/qiao-xin/DupGen_finder) 
 
 
 names:
