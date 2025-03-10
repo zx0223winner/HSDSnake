@@ -78,23 +78,28 @@ snakemake --help
 ```
 
 
-Prepare an `config.yaml` file with following columns representing input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt.
+Prepare an `config.yaml` file with following columns representing input files for HSDSnake. For demonstration, NCBI data of *A. thaliana* and *C. reinhardtii* have been used as examples, please only substitute the species name to yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt. Note: The outgroup species in the config.yaml file is used for cross-genome comparison.
 
 ```
-samples:
-  - Arabidopsis_thaliana
-  - Chlamydomonas_reinhardtii
- 
-genomes:
-  Arabidopsis_thaliana:
-    proteins: "data/Arabidopsis_thaliana.fa"
-    interproscan: "data/Arabidopsis_thaliana.interproscan.tsv"
-    KEGG: "data/Arabidopsis_thaliana.ko.txt"
+ncbi_assemblies:
+  - GCF_000001735.4
+  - GCF_000002595.2
 
-  Chlamydomonas_reinhardtii:
-    proteins: "data/Chlamydomonas_reinhardtii.fa"
-    interproscan: "data/Chlamydomonas_reinhardtii.interproscan.tsv"
-    KEGG: "data/Chlamydomonas_reinhardtii.ko.txt"
+ncbi_genomes:
+    Athaliana:
+        ncbi_assembly: "data/ncbi_download/GCF_000001735.4.zip"
+        assembly_id: "GCF_000001735.4"      
+        outgroup: "Creinhardtii"
+        interproscan: "data/Athaliana.interproscan.tsv"
+        KEGG: "data/Athaliana.ko.txt"
+    
+    Creinhardtii:
+        ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
+        assembly_id: "GCF_000002595.2"
+        outgroup: "Athaliana"
+        interproscan: "data/Creinhardtii.interproscan.tsv"
+        KEGG: "data/Creinhardtii.ko.txt"
+
 ```
 
 Now, you can run the pipeline using the following commands:
@@ -115,10 +120,12 @@ cd HSDSnake
 tar -xvzf HSDSnake_data.tar.gz
 
 # Then you can give a dry run by the following command.
-snakemake --use-conda --cores all -n
+snakemake --use-conda --cores all -s workflow/Snakefile_part1 -n
 
-# If everthing is OK, then you can test the pipeline by running:
-snakemake --use-conda --cores all
+# If everthing is OK, then you can test the pipeline by running one after another:
+snakemake --use-conda --cores all -s workflow/Snakefile_part1
+snakemake --use-conda --cores all -s workflow/Snakefile_part2
+snakemake --use-conda --cores all -s workflow/Snakefile_part3
 ```
 #### Snakemake_part 1-2
 ![image](resources/snakemake_part1-2.png)
