@@ -22,15 +22,16 @@
 }}%%
 flowchart TD
   
-  PREPARE((NCBI_data)) ==> McScanX[McScanX]
+  PREPARE((PREPARE)) ==> McScanX[McScanX]
   PREPARE ==> diamond_db[diamond_db]
-  PREPARE ==> diamond[ diamond]
-  PREPARE ==> CDS[KEGG]
-  PREPARE ==> Interproscan[Interproscan]
+  PREPARE ==> diamond[diamond]
+  PREPARE ==> DupGen_finder[DupGen_finder]
+  PREPARE ==> KEGG[KEGG]
 
   McScanX ==> DETECT
   diamond_db ==> DETECT
   diamond ==> DETECT
+  DupGen_finder ==> DETECT
 
 
   DETECT((DETECT)) ==> HSDFinder_preprocess[HSDFinder_preprocess]
