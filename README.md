@@ -78,7 +78,7 @@ snakemake --help
 ```
 
 > [!NOTE]
->Prepare an `config.yaml` file as below. For demonstration, NCBI assemblies of *A. thaliana* and *C. reinhardtii* can be downloaded via the NCBI link below, please only substitute the species name to yours in the config.yaml file, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt. The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
+> Begin with a `config.yaml` file as below (detailed all the input files requested for hsdsnake). For demonstration, NCBI assemblies of *A. thaliana* and *C. reinhardtii* can be downloaded via the NCBI link below, please only substitute the species name to yours in the config.yaml file, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt. The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
 
 **config.yaml**
 ```config.yaml
