@@ -1,31 +1,64 @@
 # HSDSnake: Usage<!-- omit in toc -->
 
 ## 1. [Config.yaml](../config.yaml) file 
-You will need to edit the config.yaml file for your own usage. An [example config,yaml](../config.yaml) has been provided to test the pipeline.
+You will need to edit the config.yaml file for your own usage. An [example config.yaml](../config.yaml) has been provided to test the pipeline.
 
 > [!WARNING]
 > please only substitute the species name to yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt
 
 ``` conf.yaml
-###### Here are the directories for fasta, interproscan, ko result you shall modify ######
-samples:
-  - Arabidopsis_thaliana
-  - Chlamydomonas_reinhardtii
+# Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
 
-genomes:
-  Arabidopsis_thaliana:
-    proteins: "data/Arabidopsis_thaliana.fa"
-    interproscan: "data/Arabidopsis_thaliana.interproscan.tsv"
-    KEGG: "data/Arabidopsis_thaliana.ko.txt"
+ncbi_assemblies:
+  - GCF_000001735.4
+  - GCF_000002595.2
 
-  Chlamydomonas_reinhardtii:
-    proteins: "data/Chlamydomonas_reinhardtii.fa"
-    interproscan: "data/Chlamydomonas_reinhardtii.interproscan.tsv"
-    KEGG: "data/Chlamydomonas_reinhardtii.ko.txt"
+ncbi_genomes:
+    Athaliana:
+        ncbi_assembly: "data/ncbi_download/GCF_000001735.4.zip"
+        assembly_id: "GCF_000001735.4"      
+        outgroup: "Creinhardtii"
+        interproscan: "data/Athaliana.interproscan.tsv"
+        KEGG: "data/Athaliana.ko.txt"
+#        feature_table: "data/Athaliana.feature_table.txt"
+    
+    Creinhardtii:
+        ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
+        assembly_id: "GCF_000002595.2"
+        outgroup: "Athaliana"
+        interproscan: "data/Creinhardtii.interproscan.tsv"
+        KEGG: "data/Creinhardtii.ko.txt"
+#        feature_table: "data/Creinhardtii.feature_table.txt"
 
-####### Here are the directories for the custom scripts and parameters which do not need to modify #######
+#note:"XX.feature_table.txt" is an backup option to create fakegff
+
+
+names:
+  - Athaliana
+  - Creinhardtii
+
+dup_types:
+  - tandem
+  - dispersed
+  - proximal
+  - transposed
+  - wgd
+  - all
+
+MCScanX_protocol:
+ - "/scripts/MCScanX_protocol"
+
+DupGen_finder:
+ - "/scripts/DupGen_finder"
+ 
+identify_Ks_peaks_by_fitting_GMM: 
+  - "/scripts/identify_Ks_peaks_by_fitting_GMM/"
+
 HSDFinder: 
   - "/scripts/hsdfinder/"
+
+
+################Above are the directories for fasta, interproscan, ko result you shall modify ##########
 
 HSD_identity:
 - 90
@@ -43,14 +76,15 @@ HSD_variance:
 
 HSDecipher: "/scripts/hsdecipher/"
 
-####### Feel free to tune these numbers for the heatmap hight and width #######
+########Feel free to modidy the heatmap hight and width depending on your dataset scale ###############
 
 heatmap_hight: 20 
+
 heatmap_width: 30
 
 ```
 
-## 2. [Snakefile](../workflow/Snakefile)
+## 2. [Snakefile](../workflow/Snakefile_part1)
 ### preprocess fasta
 `Purpose`: This step is to generate a protein fasta file with short header line.
 
