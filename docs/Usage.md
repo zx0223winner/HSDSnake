@@ -363,15 +363,11 @@ Creinhardtii1	XP_042927984.1	24126	29577
 ```
 
 
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> #####detecting WGD > tandem > proximal > transposed > dispersed duplicates #######
-> # identify the different modes of duplicated gene pairs, https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder.pl
+### DupGen_finder
+`Purpose`: This rule can identify different modes of duplicated gene pairs (detecting WGD > tandem > proximal > transposed > dispersed duplicates)
 
 > [!WARNING]
-> The mkCD.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
+> The DupGen_finder.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder.pl
 
 
 `scripts`:
@@ -385,40 +381,77 @@ Creinhardtii1	XP_042927984.1	24126	29577
 	-o {params.dir5} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: 
+```
+		dispersed = "data/DupGen_finder/{name}_result/Athaliana.dispersed.pairs",
+		proximal = "data/DupGen_finder/{name}_result/Athaliana.proximal.pairs",
+		transposed = "data/DupGen_finder/{name}_result/Athaliana.transposed.pairs",
+		WGD = "data/DupGen_finder/Athaliana_result/Athaliana.wgd.pairs",
+		collinearity = "data/DupGen_finder/Athaliana_result/Athaliana.collinearity"
+```
+```
+#tandem = "data/DupGen_finder/Athaliana_result/Athaliana.tandem.pairs",
+Duplicate 1	Location	Duplicate 2	Location	E-value
+NP_001030614.1	Athaliana3:94343	NP_001327831.1	Athaliana3:94343	0.0
+NP_001030615.2	Athaliana3:121120	NP_001078086.1	Athaliana3:122140	5.38e-29
+NP_001030616.1	Athaliana3:127557	NP_186783.1	Athaliana3:127557	1.06e-175
+NP_001030617.1	Athaliana3:137772	NP_186785.1	Athaliana3:137772	1.61e-222
+...
+# WGD > tandem (TD) > proximal(PD) > transposed(TRD) > dispersed duplicates(DSD)
+Types	NO. of gene pairs
+WGD-pairs	3345
+TD-pairs	21673
+PD-pairs	1131
+TRD-pairs	2315
+DSD-pairs	34260
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
 
-
-
-### DupGen_finder_diamond
+### DupGen_finder_unique
 `Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
 
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> [!WARNING]
+> The DupGen_finder-unique.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder-unique.pl
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	perl {params.dir4}/DupGen_finder-unique.pl \
+	-i {params.dir2} \
+	-t {params.species_name} \
+	-c {params.outgroup_name} \
+	-o {params.dir5} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: 
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+		tandem = "data/DupGen_finder/Athaliana_result_uniq/Athaliana.tandem.genes-unique",
+		dispersed = "data/DupGen_finder/Athaliana_result_uniq/Athaliana.dispersed.genes-unique",
+		proximal = "data/DupGen_finder/Athaliana_result_uniq/Athaliana.proximal.genes-unique",
+		transposed = "data/DupGen_finder/Athaliana_result_uniq/Athalianatransposed.genes-unique",
+		WGD = "data/DupGen_finder/Athaliana_result_uniq/Athaliana.wgd.genes-unique",
+		gff = "data/DupGen_finder/Athaliana_result_uniq/Athaliana.gff.sorted"
 ```
 
+```
+#
+Duplicate	chrom	Location
+NP_171609.1	Athaliana1	3760
+NP_001318899.1	Athaliana1	6915
+NP_001321775.1	Athaliana1	6915
+NP_001321776.1	Athaliana1	6915
+NP_001321777.1	Athaliana1	6915
+NP_001030923.1	Athaliana1	7315
+NP_001321778.1	Athaliana1	7315
+
+# WGD > tandem (TD) > proximal(PD) > transposed(TRD) > dispersed duplicates(DSD)
+Types	NO. of gene pairs
+WGD-pairs	3345
+TD-pairs	18322
+PD-pairs	460
+TRD-pairs	2315
+DSD-pairs	3836
+```
 
 
 ### DupGen_finder_diamond
