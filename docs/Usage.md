@@ -603,63 +603,61 @@ Alignment119	Athaliana3&Athaliana5	95	0.920378494623656	0	4241.0	plus
 perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components} {params.dir2}/{params.species_name} \
 ```
 
-`Output`: data/DupGen_finder/Athaliana_result_kaks/[Athaliana.synteny.blocks.ks.distri.pdf](resources/Athaliana.synteny.blocks.ks.distri.png)
+`Output`: data/DupGen_finder/Athaliana_result_kaks/Athaliana.synteny.blocks.ks.distri.pdf
+
+![image](../resources/Athaliana.synteny.blocks.ks.distri.png)
 
 
 
 ## 4. [Snakefile_part3](../workflow/Snakefile_part3)
 
-
-
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+### Prepare_hsdfinder_inputs
+`Purpose`: prepare the input protein sequence for hsdfinder tool
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	mkdir -p {params.dir1}; \
+	awk '{{print $1}}' {input.protein} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/hsdfinder/Athaliana.fa
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+>NP_001030613.1
+MLLSALLTSVGINLGLCFLFFTLYSILRKQPSNVTVYGPRLVKKDGKSQQSNEFNLERLLPTAGWVKRALEPTNDEILSN
+LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 ```
 
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+### Prepare_duplication_all_list
+`Purpose`:  acquire a list of unique gene duplicates for all duplication modes, and then furtherly refined by hsdfinder to acquire higly similiar duplicates (HSDs)
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	mkdir -p {params.dir1}; \
+	cp {input.protein} {params.all}; \
+	sed -e '1i\Duplicate\tchrom\tLocation' {input.gff_sorted} \
+> {output.dup_fake_genes_unique} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: "data/DupGen_finder/Athaliana_result_uniq/Athaliana.all.genes-unique"
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+Duplicate	chrom	Location
+NP_171609.1	Athaliana1	3760
+NP_001318899.1	Athaliana1	6915
+NP_001321775.1	Athaliana1	6915
+NP_001321776.1	Athaliana1	6915
+NP_001321777.1	Athaliana1	6915
+NP_001030923.1	Athaliana1	7315
+NP_001321778.1	Athaliana1	7315
+NP_001322175.1	Athaliana1	11864
 ```
 
-
+????????????
 ### DupGen_finder_diamond
 `Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+# create the protein file for each type of duplicates
 
 > [!NOTE]
 > To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
