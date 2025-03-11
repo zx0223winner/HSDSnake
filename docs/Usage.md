@@ -136,9 +136,9 @@ cp {params.dir1}{params.species_name}/ncbi_dataset/data/{params.assembly_id}/pro
 rm -r {params.dir1}{params.species_name} \
 ```
 
-`Output`: "data/ncbi/Arabidopsis/Arabidopsis_genomic.gff" ; 
-"data/ncbi/Arabidopsis/Arabidopsis_protein.faa";
-"data/ncbi/Arabidopsis/Arabidopsis_cds_from_genomic.fna".
+`Output`: "data/ncbi/Athaliana/Athaliana_genomic.gff" ; 
+"data/ncbi/Athaliana/Athaliana_protein.faa";
+"data/ncbi/Athaliana/Athaliana_cds_from_genomic.fna".
 
 
 ### Preprocessing the gff file (default)
@@ -161,19 +161,25 @@ GET "{params.link}"; \
 mv {params.file} {params.dir} \
 ```
 
-`Input`: data/ncbi/Arabidopsis/Arabidopsis_genomic.gff
+`Input`: data/ncbi/Athaliana/Athaliana_genomic.gff
 
 ```
-# NCBI GFF3 file ?????
-
+##gff-version 3
+#!gff-spec-version 1.21
+#!processor NCBI annotwriter
+#!genome-build TAIR10.1
+#!genome-build-accession NCBI_Assembly:GCF_000001735.4
+#!annotation-source TAIR and Araport 
+##sequence-region NC_003070.9 1 30427671
+##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=3702
+NC_003070.9	RefSeq	region	1	30427671	.	+	.	ID=NC_003070.9:1..30427671;Dbxref=taxon:3702;Name=1;chromosome=1;ecotype=Columbia;gbkey=Src;genome=chromosome;mol_type=genomic DNA
 
 ```
 
 
-`Output`: data/intermediateData/Arabidopsis/Arabidopsis.gff
+`Output`: data/intermediateData/Athaliana/Athaliana.gff
 
 ```
-# fakegff file ??????
 
 
 ```
@@ -199,7 +205,7 @@ cat {input.gff} \
 > {output.fakegff} \
 ```
 
-`Output`: data/intermediateData/Arabidopsis/Arabidopsis.gff-option_one
+`Output`: data/intermediateData/Athaliana/Athaliana.gff-option_one
 
 
 
@@ -220,7 +226,7 @@ sed 1d {input.feature_table} \
 > {output.fakegff} \
 ```
 
-`Output`: data/intermediateData/Arabidopsis/Arabidopsis.gff-option_two
+`Output`: data/intermediateData/Athaliana/Athaliana.gff-option_two
 
 > [!WARNING]
 > To run this rule, user will need uncomment the lines in the snakefile_part1
@@ -243,7 +249,7 @@ sed 1d {input.feature_table} \
 perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 ```
 
-`Output`: data/intermediateData/Arabidopsis/Arabidopsis.cds
+`Output`: data/intermediateData/Athaliana/Athaliana.cds
 
 ```
 ?????
@@ -261,7 +267,7 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 		-d {params.db_name_dir} \
 ```
 
-`Output`: data/ncbiDB/Arabidopsis.dmnd
+`Output`: data/ncbiDB/Athaliana.dmnd
 
 
 
@@ -283,7 +289,7 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 		--max-target-seqs 5 \
 ```
 
-`Output`: data/intermediateData/Arabidopsis/Arabidopsis.blast
+`Output`: data/intermediateData/Athaliana/Athaliana.blast
 
 ```
 ????
@@ -308,10 +314,10 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 		--max-target-seqs 5 \
 ```
 
-`Output`: directory("data/intermediateData/Arabidopsis_DupGen_finder/")
+`Output`: directory("data/intermediateData/Athaliana_DupGen_finder/")
 
 ```
-#Arabidopsis_Creinhardtii.blast
+#Athaliana_Creinhardtii.blast
 ????
 
 ```
@@ -320,7 +326,7 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 ## 3. [Snakefile_part2](../workflow/Snakefile_part2)
 
 ### prepare the gff for DupGen_finder
-`Purpose`: This rule merge the gff files from species and the outgroup species into one (e.g., Arabidopsis_Creinhardtii.gff)
+`Purpose`: This rule merge the gff files from species and the outgroup species into one (e.g., Athaliana_Creinhardtii.gff)
 
 `scripts`:
 ```
@@ -333,7 +339,7 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 > {params.dir2}/{params.out_name}.gff \
 ```
 
-`Output`: data/DupGen_finder/Arabidopsis_data/Arabidopsis_Creinhardtii.gff
+`Output`: data/DupGen_finder/Athaliana_data/Athaliana_Creinhardtii.gff
 
 ```
 ?????
@@ -577,7 +583,7 @@ XX.cds_from_genomic.fna
 	awk '{{print $1}}' {input} \
 ```
 
-`Output`: data/preprocess_fasta/Arabidopsis_thaliana.fa
+`Output`: data/preprocess_fasta/Athaliana_thaliana.fa
 
 ```
 >NP_001030613.1
@@ -600,7 +606,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 		-d {params.db_name_dir} \
 ```
 
-`Output`: results/Arabidopsis_thaliana/Arabidopsis_thaliana.dmnd
+`Output`: results/Athaliana_thaliana/Athaliana_thaliana.dmnd
 
 ### diamond blastp
 `Purpose`: This step is to generate local Diamond blastp all-against-all search which is quicker than BLAST.
@@ -617,7 +623,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 		--sensitive \
 ```
 
-`Output`: results/Arabidopsis_thaliana/diamond/Arabidopsis_thaliana.txt
+`Output`: results/Athaliana_thaliana/diamond/Athaliana_thaliana.txt
 
 > [!NOTE]
 > So we chose the protein sequence to do the Diamond blastp all-against-all search (Buchfink et al., 2015) (defaulted parameters: E-value cut-off ≤ 10-5, blastp -outfmt 6 etc.).
@@ -630,7 +636,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 /interproscan.sh -i proteins_of_your_genome.fasta -f tsv -dp
 
 ```
-`Output` : data/Arabidopsis_thaliana.interproscan.tsv
+`Output` : data/Athaliana_thaliana.interproscan.tsv
 
 > [!Note]
 > The InterProScan (Quevillon et al., 2005, Mitchell et al., 2019) and KEGG (Kanehisa and Goto, 2000b) are the only two dependencies without integrating into the HSDSnake pipeline due to the lack of Conda environment (the latest InterProScan Conda package of 5.59 fails in SnakeMake) and the limitation to web-only access in KEGG, such as BlastKOALA (Kanehisa et al., 2016)).
@@ -639,7 +645,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 > It is straightforward to generate the InterProScan output by either checking the respective [ReadMe file](https://interproscan-docs.readthedocs.io/en/latest/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 6-9.
 
 > [!WARNING]
-> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the InterProScan search, i.e., the file under the directory: data/preprocess_fasta/Arabidopsis_thaliana.fa
+> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the InterProScan search, i.e., the file under the directory: data/preprocess_fasta/Athaliana_thaliana.fa
 
 ## kegg blastkoala
 
@@ -647,13 +653,13 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 `scripts`: local submission
 
-`Output` :data/Arabidopsis_thaliana.ko.txt
+`Output` :data/Athaliana_thaliana.ko.txt
 
 > [!TIP]
 > It is straightforward to generate the kegg blastkoala output by either checking the respective [website](https://www.kegg.jp/blastkoala/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 17-20.
 
 > [!WARNING]
-> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the KEGG Blastkoala search, i.e., the file under the directory: data/preprocess_fasta/Arabidopsis_thaliana.fa
+> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the KEGG Blastkoala search, i.e., the file under the directory: data/preprocess_fasta/Athaliana_thaliana.fa
  
 ## HSDfinder preprocess
 `Purpose`: This step is to [debug the previous raised potential issue with using HSDFinder](https://github.com/zx0223winner/HSDFinder?tab=readme-ov-file#how-to-deal-with-error-require-length-of-gene-)
@@ -671,7 +677,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 ```
 
-`Output`: results/Arabidopsis_thaliana/diamond/Arabidopsis_thaliana.preprocess.txt
+`Output`: results/Athaliana_thaliana/diamond/Athaliana_thaliana.preprocess.txt
 	
 ## hsdfinder
 `Purpose`: This step is the main script to generate  HSDs with different thresholds. 
@@ -688,7 +694,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 ```
 
-`Output`: [results/Arabidopsis_thaliana/hsdfinder/Arabidopsis_thaliana.90_10.txt](../results/Arabidopsis_thaliana/hsdfinder/Arabidopsis_thaliana.90_10.txt)
+`Output`: [results/Athaliana_thaliana/hsdfinder/Athaliana_thaliana.90_10.txt](../results/Athaliana_thaliana/hsdfinder/Athaliana_thaliana.90_10.txt)
 
 > [!TIP]
 > [For the specific usage of HSDFinder tool, please find here](https://github.com/zx0223winner/HSDFinder?tab=readme-ov-file#3-running-hsdfinder)
@@ -706,7 +712,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 ```
 
-`Output`: [results/Arabidopsis_thaliana/kegg/Arabidopsis_thaliana.90_10.kegg.txt](../results/Arabidopsis_thaliana/kegg/Arabidopsis_thaliana.90_10.kegg.txt)
+`Output`: [results/Athaliana_thaliana/kegg/Athaliana_thaliana.90_10.kegg.txt](../results/Athaliana_thaliana/kegg/Athaliana_thaliana.90_10.kegg.txt)
 
 > [!TIP]
 > [For the specific usage of HSD_to_KEGG.py, please read here](https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap)
@@ -726,7 +732,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ```
 
 
-`Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.stat.txt)
+`Output`: [results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.stat.txt](../results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.stat.txt)
 
 > [!TIP]
 > [For the specific usage of HSD_statistics.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
@@ -744,7 +750,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ```
 
 
-`Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.category.txt)
+`Output`: [results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.category.txt](../results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.category.txt)
 
 > [!TIP]
 > [For the specific usage of HSD_categories.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
@@ -761,7 +767,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 ```
 
-`Output`: [results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt](../results/Arabidopsis_thaliana/hsdecipher/stats/Arabidopsis_thaliana.complete.stats.txt)
+`Output`: [results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.complete.stats.txt](../results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.complete.stats.txt)
 
  
 ## hsdecipher batch run
@@ -777,7 +783,7 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 ```
 
-`Output`: [results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt](../results/Arabidopsis_thaliana/hsdecipher/batch_run/Arabidopsis_thaliana.batch_run.txt)
+`Output`: [results/Athaliana_thaliana/hsdecipher/batch_run/Athaliana_thaliana.batch_run.txt](../results/Athaliana_thaliana/hsdecipher/batch_run/Athaliana_thaliana.batch_run.txt)
 
 > [!TIP]
 > [For the specific usage of HSD_batch_run, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
@@ -805,8 +811,8 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 ```
 
-`Output`: results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.eps
-![image](../results/Arabidopsis_thaliana/hsdecipher/heatmap/Arabidopsis_thaliana.output_heatmap.jpg)
+`Output`: results/Athaliana_thaliana/hsdecipher/heatmap/Athaliana_thaliana.output_heatmap.eps
+![image](../results/Athaliana_thaliana/hsdecipher/heatmap/Athaliana_thaliana.output_heatmap.jpg)
 
 > [!TIP]
 > [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
