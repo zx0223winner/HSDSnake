@@ -84,7 +84,258 @@ heatmap_width: 30
 
 ```
 
-## 2. [Snakefile](../workflow/Snakefile_part1)
+## 2. [Snakefile_part1](../workflow/Snakefile_part1)
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+### Download NCBI assemblies
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+
+
+
+
+## 3. [Snakefile_part2](../workflow/Snakefile_part2)
+
+`Purpose`: 
+
+`scripts`:
+```
+
+
+```
+
+`Output`:
+
+```
+
+```
+> [!NOTE]
+> Since
+
+> [!TIP]
+> It is
+
+
+> [!WARNING]
+> To make
+
+
+
+## 4. [Snakefile_part3](../workflow/Snakefile_part3)
+
 ### preprocess fasta
 `Purpose`: This step is to generate a protein fasta file with short header line.
 
