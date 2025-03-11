@@ -242,7 +242,7 @@ sed 1d {input.feature_table} \
 
 ```
 
-### prepare the cds file for calculating the Ka/ks ratio
+### Prepare the cds file for calculating the Ka/ks ratio
 `Purpose`: This rule is preprocessing step for running the McScanX with input data from genomic cds
 
 > [!WARNING]
@@ -263,7 +263,7 @@ AAACACTAGCCGCGACGTTGAAGTAGCCATCAGCGAGGTCAACATCTGTAGCTACGATCCTTGGAACTTGCGCTTCCAGT
 ```
 
 
-### diamond_db_mcscanx
+### Diamond_db_mcscanx
 `Purpose`: This rule build diamond database for blasting the protein sequence 
 
 `scripts`:
@@ -278,7 +278,7 @@ AAACACTAGCCGCGACGTTGAAGTAGCCATCAGCGAGGTCAACATCTGTAGCTACGATCCTTGGAACTTGCGCTTCCAGT
 
 
 
-### diamond_blast_mcscanx
+### Diamond_blast_mcscanx
 `Purpose`: This rule run diamond blastp for the protein sequences against themselves (blastp all vs all)
 
 > [!NOTE]
@@ -337,7 +337,7 @@ NP_001030613.1	XP_042920827.1	25.2	306	224	3	272	573	938	1242	6.41e-26	113
 
 ## 3. [Snakefile_part2](../workflow/Snakefile_part2)
 
-### prepare the gff for DupGen_finder
+### Prepare the gff for DupGen_finder
 `Purpose`: This rule merge the gff files from species and the outgroup species into one (e.g., Athaliana_Creinhardtii.gff)
 
 `scripts`:
@@ -457,7 +457,7 @@ DSD-pairs	3836
 ```
 
 
-### caculating ka_and_ks values from the duplicates pairs
+### Caculating ka_and_ks values from the duplicates pairs
 `Purpose`: This rule can run the PAML package (Yang, Ziheng.Molecular biology and evolution 24.8 (2007): 1586-1591.) to calculate the kaks for the gene pairs.
 
 > [!WARNING]
@@ -496,7 +496,7 @@ NP_173289.1	NP_177545.1	0.0523	0.9223	0.0567	 3e-147
 ```
 
 
-### adding_Ka_Ks_into_collinearity
+### Adding_Ka_Ks_into_collinearity
 `Purpose`: This rule is to preprocess the XX.collinearity and XX.kaks file for the next step
 
 `scripts`:
@@ -529,7 +529,7 @@ NP_173289.1	NP_177545.1	0.0523	0.9223	0.0567	 3e-147
 ```
 
 
-### adding_Ka_Ks_into_collinearity2
+### Adding_Ka_Ks_into_collinearity2
 `Purpose`: This rule can add Ka, Ks, Ka/Ks values into Athaliana.collinearity by using Athaliana.kaks as input, and produce one output file: Athaliana.collinearity.kaks
 
 > [!WARNING]
@@ -590,18 +590,42 @@ Alignment119	Athaliana3&Athaliana5	95	0.920378494623656	0	4241.0	plus
 
 
 ### Estimating Ks peaks from Ks distribution
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-#The parameter Components indicates the number of the mixture components, which represent the number of Ks peak. 
+`Purpose`: This rule can create the Ks distribution of Ks values of syntenic blocks within the genome
 
 > [!WARNING]
-> The compute_ks_for_synteny_blocks.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
+> The plot_syntenic_blocks_ks_distri.py was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
+
+> [!NOTE]
+> The parameter Components indicates the number of the mixture components, which represent the number of Ks peak.
 
 `scripts`:
 ```
 perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components} {params.dir2}/{params.species_name} \
 ```
 
-`Output`: data/DupGen_finder/Athaliana_result_kaks/[Athaliana.synteny.blocks.ks.distri.pdf](resources/Athaliana.synteny.blocks.ks.distri.pdf)
+`Output`: data/DupGen_finder/Athaliana_result_kaks/[Athaliana.synteny.blocks.ks.distri.pdf](resources/Athaliana.synteny.blocks.ks.distri.png)
+
+
+
+## 4. [Snakefile_part3](../workflow/Snakefile_part3)
+
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
 
 ```
 # standard input files from NCBI 
@@ -634,6 +658,32 @@ XX.cds_from_genomic.fna
 ```
 
 
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+
+
 `Purpose`: 
 
 `scripts`:
@@ -658,8 +708,6 @@ XX.cds_from_genomic.fna
 > To make
 
 
-
-## 4. [Snakefile_part3](../workflow/Snakefile_part3)
 
 ### preprocess fasta
 `Purpose`: This step is to generate a protein fasta file with short header line.
