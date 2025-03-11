@@ -150,6 +150,9 @@ rm -r {params.dir1}{params.species_name} \
 > [!TIP]
 > If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways/options to generate the fakegff, check the next rules and substitue the fakegff for whichever works.
 
+> [!WARNING]
+> The mkGFF3.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
+
 `scripts`:
 ```
 mkdir -p {params.dir};\
@@ -229,102 +232,309 @@ sed 1d {input.feature_table} \
 ```
 
 ### prepare the cds file for calculating the Ka/ks ratio
-`Purpose`: This rule is preprocessing step for 
+`Purpose`: This rule is preprocessing step for running the McScanX with input data from genomic cds
 
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> [!WARNING]
+> The mkCD.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
+
 
 `scripts`:
 ```
 perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 ```
 
-`Output`: data/intermediateData/{name}/{name}.cds
+`Output`: data/intermediateData/Arabidopsis/Arabidopsis.cds
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+?????
 ```
 
 
-### Download NCBI assemblies
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+### diamond_db_mcscanx
+`Purpose`: This rule build diamond database for blasting the protein sequence 
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	mkdir -p {params.dir1}; \
+	diamond makedb \
+		--in {params.protein} \
+		-d {params.db_name_dir} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
-
-```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
+`Output`: data/ncbiDB/Arabidopsis.dmnd
 
 
-### Download NCBI assemblies
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+### diamond_blast_mcscanx
+`Purpose`: This rule run diamond blastp for the protein sequences against themselves (blastp all vs all)
 
 > [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
+> --max-target-seqs parameter will impact how many candidate duplicates will be detected
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+		diamond blastp \
+		-d {params.db_name_dir} \
+		-q {params.protein} \
+		-o {output} \
+		-e 1e-10 \
+		-f 6 \
+		-p {threads} \
+		--sensitive \
+		--max-target-seqs 5 \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/intermediateData/Arabidopsis/Arabidopsis.blast
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+????
 ```
 
-### Download NCBI assemblies
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### DupGen_finder_diamond_outgroup
+`Purpose`: This rule run diamond blastp against the outgroup species
 
 > [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
+> The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+		mkdir -p {params.dir}; \
+		diamond blastp \
+		-d {params.db_name_dir} \
+		-q {params.protein} \
+		-o {params.out_name} \
+		-e 1e-10 \
+		-f 6 \
+		-p {threads} \
+		--sensitive \
+		--max-target-seqs 5 \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: directory("data/intermediateData/Arabidopsis_DupGen_finder/")
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+#Arabidopsis_Creinhardtii.blast
+????
+
 ```
-
-
-
-
 
 
 ## 3. [Snakefile_part2](../workflow/Snakefile_part2)
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
+### DupGen_finder_diamond
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+mkdir -p {params.dir};\
+curl -OJX \
+GET "{params.link}"; \
+mv {params.file} {params.dir} \
+```
+
+`Output`: data/ncbi_download/GCF_000001735.4.zip
+
+```
+# standard input files from NCBI 
+XX.genomic.gff
+XX.protein.faa
+XX.cds_from_genomic.fna
+```
+
 
 `Purpose`: 
 
