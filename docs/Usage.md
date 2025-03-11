@@ -458,7 +458,7 @@ DSD-pairs	3836
 
 
 ### caculating ka_and_ks values from the duplicates pairs
-`Purpose`: This rule can add Ka, Ks, Ka/Ks values into Athaliana.collinearity by using Athaliana.kaks as input, and produce one output file: Athaliana.collinearity.kaks
+`Purpose`: This rule can run the PAML package (Yang, Ziheng.Molecular biology and evolution 24.8 (2007): 1586-1591.) to calculate the kaks for the gene pairs.
 
 > [!WARNING]
 > The add_ka_and_ks_to_collinearity_Yn00.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
@@ -474,6 +474,73 @@ DSD-pairs	3836
 ```
 
 `Output`: data/DupGen_finder/Athaliana_result/Athaliana.kaks
+
+```
+NP_001321164.1	NP_001185394.1	0.2543	0.7844	0.3242	  2e-73
+NP_001322884.1	NP_001320573.1	0.2128	0.9219	0.2308	      0
+NP_564051.1	NP_001323057.1	0.1533	0.8397	0.1826	  4e-62
+NP_173281.1	NP_565075.1	0.1210	0.8860	0.1365	      0
+NP_564052.1	NP_001322804.1	0.1003	0.5209	0.1926	 2e-270
+NP_173285.2	NP_001322762.1	0.0908	0.9425	0.0963	 1e-281
+NP_173286.2	NP_683494.2	0.2178	1.3273	0.1641	 4e-131
+NP_173289.1	NP_177545.1	0.0523	0.9223	0.0567	 3e-147
+
+```
+> [!NOTE]
+>  Due to the perl script: add_ka_and_ks_to_collinearity_Yn00.pl, which may has some temp files left in main dir, which can be safefly removed
+```
+#	rm -p *.aln; \
+#	rm -p *.cds; \
+#	rm -p *.dnd; \
+#	rm -p *.pro; \
+```
+
+
+### adding_Ka_Ks_into_collinearity
+`Purpose`: This rule is to preprocess the XX.collinearity and XX.kaks file for the next step
+
+`scripts`:
+```
+	mkdir -p {params.dir}; \
+	cp {input.col} {params.dir}/{params.species_name}.collinearity; \
+	awk -F'\t' '{{print $2"\t"$3"\t"$5"\t"$6"\t"$7"\t"$4}}' {input.kaks} \
+|grep -v -e '^[[:space:]]*$' \
+> {output[0]}
+```
+
+`Output`: data/DupGen_finder/Athaliana_result_kaks/Athaliana.collinearity
+
+```
+############### Parameters ###############
+# MATCH_SCORE: 50
+# MATCH_SIZE: 5
+# GAP_PENALTY: -1
+# OVERLAP_WINDOW: 5
+# E_VALUE: 1e-05
+# MAX GAPS: 25
+############### Statistics ###############
+# Number of collinear genes: 6451, Percentage: 13.40
+# Number of all genes: 48147
+##########################################
+## Alignment 0: score=4086.0 e_value=0 N=91 Athaliana1&Athaliana1 plus
+  0-  0:	NP_001321164.1	NP_001185394.1	  2e-73
+  0-  1:	NP_001322884.1	NP_001320573.1	      0
+  0-  2:	NP_564051.1	NP_001323057.1	  4e-62
+```
+
+
+### adding_Ka_Ks_into_collinearity2
+`Purpose`: This rule can add Ka, Ks, Ka/Ks values into Athaliana.collinearity by using Athaliana.kaks as input, and produce one output file: Athaliana.collinearity.kaks
+
+> [!WARNING]
+> The add_ka_ks_to_collinearity_file.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
+
+`scripts`:
+```
+perl {params.dir1}/add_ka_ks_to_collinearity_file.pl {params.dir2}/{params.species_name} \
+```
+
+`Output`: data/DupGen_finder/Athaliana_result_kaks/Athaliana.collinearity.kaks
 
 ```
 ############### Parameters ###############
@@ -495,93 +562,46 @@ DSD-pairs	3836
 ```
 
 
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### Calculating_Ks_syntenic_block
+`Purpose`: This rule produces one output file: Athaliana.synteny.blocks.ks.info, which contains average Ks values for gene pairs contained in each syntenic block.
 
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
-`scripts`:
-```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
-```
-
-`Output`: data/ncbi_download/GCF_000001735.4.zip
-
-```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
-
-
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> [!WARNING]
+> The compute_ks_for_synteny_blocks.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	perl {params.dir1}/compute_ks_for_synteny_blocks.pl {input}; \
+	cp {params.species_name}.synteny.blocks.ks.info {output}; \
+	rm {params.species_name}.synteny.blocks.ks.info \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/DupGen_finder/Athaliana_result_kaks/Athaliana.synteny.blocks.ks.info
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+Blocks ID	Location	Block Size	Average Ks	e-value	Score	Orientation
+Alignment169	Athaliana5&Athaliana5	16	0.94783125	2.9e-41	719.0	plus
+Alignment105	Athaliana2&Athaliana5	10	2.41932	8.7e-21	430.0	minus
+Alignment159	Athaliana4&Athaliana5	6	1.43243333333333	8.6e-09	262.0	plus
+Alignment9	Athaliana1&Athaliana1	14	1.66228571428571	8.2e-34	640.0	plus
+Alignment148	Athaliana3&Athaliana5	6	0.922966666666667	0	264.0	minus
+Alignment119	Athaliana3&Athaliana5	95	0.920378494623656	0	4241.0	plus
+
 ```
 
 
-### DupGen_finder_diamond
+### Estimating Ks peaks from Ks distribution
 `Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+#The parameter Components indicates the number of the mixture components, which represent the number of Ks peak. 
 
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> [!WARNING]
+> The compute_ks_for_synteny_blocks.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components} {params.dir2}/{params.species_name} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
-
-```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
-
-
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
-`scripts`:
-```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
-```
-
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/DupGen_finder/Athaliana_result_kaks/[Athaliana.synteny.blocks.ks.distri.pdf](resources/Athaliana.synteny.blocks.ks.distri.pdf)
 
 ```
 # standard input files from NCBI 
