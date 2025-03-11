@@ -290,7 +290,7 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 ```
 
 ### DupGen_finder_diamond_outgroup
-`Purpose`: This rule run diamond blastp against the outgroup species
+`Purpose`: This rule runs diamond blastp for the species against the outgroup species
 
 > [!NOTE]
 > The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
@@ -319,42 +319,47 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 
 ## 3. [Snakefile_part2](../workflow/Snakefile_part2)
 
+### prepare the gff for DupGen_finder
+`Purpose`: This rule merge the gff files from species and the outgroup species into one (e.g., Arabidopsis_Creinhardtii.gff)
+
+`scripts`:
+```
+	cp {input.gff} {params.dir2}/{params.species_name}.gff; \
+	cp {params.dir1}/{params.species_name}.blast {params.dir2}/{params.species_name}.blast; \
+	cp {params.dir3}/{params.outgroup_name}.gff {params.dir2}/{params.outgroup_name}.gff; \
+	cp {params.dir3}/{params.outgroup_name}.blast {params.dir2}/{params.outgroup_name}.blast; \
+	cp {params.dir5}/{params.out_name}.blast {params.dir2}/{params.out_name}.blast; \
+	cat {params.dir1}/{params.species_name}.gff {params.dir2}/{params.outgroup_name}.gff \
+> {params.dir2}/{params.out_name}.gff \
+```
+
+`Output`: data/DupGen_finder/Arabidopsis_data/Arabidopsis_Creinhardtii.gff
+
+```
+?????
+```
+
+
 ### DupGen_finder_diamond
 `Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
 
 > [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> #####detecting WGD > tandem > proximal > transposed > dispersed duplicates #######
+> # identify the different modes of duplicated gene pairs, https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder.pl
+
+> [!WARNING]
+> The mkCD.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
+
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
-```
-
-`Output`: data/ncbi_download/GCF_000001735.4.zip
-
-```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
-
-
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
-`scripts`:
-```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	mkdir -p {params.dir5}; \
+	sleep 30s; \
+	perl {params.dir4}/DupGen_finder.pl \
+	-i {params.dir2} \
+	-t {params.species_name} \
+	-c {params.outgroup_name} \
+	-o {params.dir5} \
 ```
 
 `Output`: data/ncbi_download/GCF_000001735.4.zip
