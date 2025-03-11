@@ -45,14 +45,25 @@ dup_types:
   - wgd
   - all
 
+# Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.
 MCScanX_protocol:
  - "/scripts/MCScanX_protocol"
+ - mkGFF3.pl
+ - mkCD.pl
+ - add_ka_and_ks_to_collinearity_Yn00.pl
 
+# Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49.
 DupGen_finder:
  - "/scripts/DupGen_finder"
- 
+ - DupGen_finder-unique.pl
+ - DupGen_finder.pl
+
+# Qiao, Xin, et al. Genome biology 20 (2019): 1-23.
 identify_Ks_peaks_by_fitting_GMM: 
   - "/scripts/identify_Ks_peaks_by_fitting_GMM/"
+  - add_ka_ks_to_collinearity_file.pl
+  - compute_ks_for_synteny_blocks.pl
+  - plot_syntenic_blocks_ks_distri.py 
 
 HSDFinder: 
   - "/scripts/hsdfinder/"
