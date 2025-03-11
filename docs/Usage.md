@@ -180,7 +180,12 @@ NC_003070.9	RefSeq	region	1	30427671	.	+	.	ID=NC_003070.9:1..30427671;Dbxref=tax
 `Output`: data/intermediateData/Athaliana/Athaliana.gff
 
 ```
-
+#fakegff
+Athaliana1	NP_171609.1	3760	5630
+Athaliana1	NP_001318899.1	6915	8666
+Athaliana1	NP_001321777.1	6915	8442
+Athaliana1	NP_001321775.1	6915	8442
+Athaliana1	NP_001321776.1	6915	8419
 
 ```
 
@@ -252,7 +257,9 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 `Output`: data/intermediateData/Athaliana/Athaliana.cds
 
 ```
-?????
+>NP_171609.1
+ATGGAGGATCAAGTTGGGTTTGGGTTCCGTCCGAACGACGAGGAGCTCGTTGGTCACTATCTCCGTAACAAAATCGAAGG
+AAACACTAGCCGCGACGTTGAAGTAGCCATCAGCGAGGTCAACATCTGTAGCTACGATCCTTGGAACTTGCGCTTCCAGT
 ```
 
 
@@ -292,7 +299,9 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 `Output`: data/intermediateData/Athaliana/Athaliana.blast
 
 ```
-????
+NP_001030613.1	NP_001030613.1	100	596	0	0	1	596	1	596	0.0	1155
+NP_001030613.1	NP_001327195.1	100	583	0	0	1	583	47	629	0.0	1132
+NP_001030613.1	NP_186759.2	100	583	0	0	1	583	1	583	0.0	1132
 ```
 
 ### DupGen_finder_diamond_outgroup
@@ -318,7 +327,10 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 
 ```
 #Athaliana_Creinhardtii.blast
-????
+NP_001030613.1	XP_042921808.1	25.3	400	274	7	198	573	492	890	1.12e-28	122
+NP_001030613.1	XP_042921809.1	25.6	312	224	4	272	576	866	1176	3.84e-28	120
+NP_001030613.1	XP_001702326.1	25.4	307	222	5	272	573	775	1079	1.12e-26	115
+NP_001030613.1	XP_042920827.1	25.2	306	224	3	272	573	938	1242	6.41e-26	113
 
 ```
 
@@ -342,7 +354,12 @@ perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 `Output`: data/DupGen_finder/Athaliana_data/Athaliana_Creinhardtii.gff
 
 ```
-?????
+Athaliana5	NP_201563.1	26964891	26965720
+Athaliana5	NP_201564.1	26967535	26969306
+Athaliana5	NP_201565.1	26969546	26970548
+Creinhardtii1	XP_042927982.1	19163	19948
+Creinhardtii1	XP_042927983.1	20398	22476
+Creinhardtii1	XP_042927984.1	24126	29577
 ```
 
 
