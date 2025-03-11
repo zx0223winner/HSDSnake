@@ -408,7 +408,10 @@ DSD-pairs	34260
 ```
 
 ### DupGen_finder_unique
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+`Purpose`: This rule can remove redundant duplicate genes for different modes of duplicated gene pairs ( WGD > tandem > proximal > transposed > dispersed duplicates).
+
+> [!NOTE]
+> To eliminate redundant duplicate genes among different modes,DupGen_finder-unique.pl is a stricter version of DupGen_finder, which can assign each duplicate gene to a unique mode after all of the duplicated gene pairs were classified into different gene duplication types.
 
 > [!WARNING]
 > The DupGen_finder-unique.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder-unique.pl
@@ -434,7 +437,7 @@ DSD-pairs	34260
 ```
 
 ```
-#
+#Athaliana.all.genes-unique
 Duplicate	chrom	Location
 NP_171609.1	Athaliana1	3760
 NP_001318899.1	Athaliana1	6915
@@ -454,27 +457,41 @@ DSD-pairs	3836
 ```
 
 
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### caculating ka_and_ks values from the duplicates pairs
+`Purpose`: This rule can add Ka, Ks, Ka/Ks values into Athaliana.collinearity by using Athaliana.kaks as input, and produce one output file: Athaliana.collinearity.kaks
 
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> [!WARNING]
+> The add_ka_and_ks_to_collinearity_Yn00.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	cp {params.dir1}/{params.species_name}.cds {params.dir5}/{params.species_name}.cds; \
+	sleep 30s; \
+	perl {params.dir4}/add_ka_and_ks_to_collinearity_Yn00.pl \
+	-i {input} \
+	-d {params.dir5}/{params.species_name}.cds \
+	-o {output} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/DupGen_finder/Athaliana_result/Athaliana.kaks
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+############### Parameters ###############
+# MATCH_SCORE: 50
+# MATCH_SIZE: 5
+# GAP_PENALTY: -1
+# OVERLAP_WINDOW: 5
+# E_VALUE: 1e-05
+# MAX GAPS: 25
+############### Statistics ###############
+# Number of collinear genes: 6451, Percentage: 13.40
+# Number of all genes: 48147
+##########################################
+## Alignment 0: score=4086.0 e_value=0 N=91 Athaliana1&Athaliana1 plus
+  0-  0:	NP_001321164.1	NP_001185394.1	  2e-73	0.2543	0.7844	0.3242
+  0-  1:	NP_001322884.1	NP_001320573.1	      0	0.2128	0.9219	0.2308
+  0-  2:	NP_564051.1	NP_001323057.1	  4e-62	0.1533	0.8397	0.1826
+  0-  3:	NP_173281.1	NP_565075.1	      0	0.1210	0.8860	0.1365
 ```
 
 
