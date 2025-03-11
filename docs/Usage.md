@@ -111,11 +111,33 @@ XX.cds_from_genomic.fna
 ```
 
 
-### Download NCBI assemblies
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### Preprocessing the naming of the NCBI assemblies
+`Purpose`: Rename the NCBI genomic assembly to the format which mcscanx and Dupgen-finder can take.
+
+`scripts`:
+```
+mkdir -p {params.dir2}{params.species_name}; \
+unzip {params.dir1}{params.assembly_id}.zip -d {params.dir1}{params.species_name}; \
+sleep 5s; \
+cp {params.dir1}{params.species_name}/ncbi_dataset/data/{params.assembly_id}/cds_from_genomic.fna {params.dir2}{params.species_name}/{params.species_name}_cds_from_genomic.fna; \
+cp {params.dir1}{params.species_name}/ncbi_dataset/data/{params.assembly_id}/genomic.gff {params.dir2}{params.species_name}/{params.species_name}_genomic.gff; \
+cp {params.dir1}{params.species_name}/ncbi_dataset/data/{params.assembly_id}/protein.faa {params.dir2}{params.species_name}/{params.species_name}_protein.faa; \
+rm -r {params.dir1}{params.species_name} \
+```
+
+`Output`: "data/ncbi/Arabidopsis/Arabidopsis_genomic.gff" ; 
+"data/ncbi/Arabidopsis/Arabidopsis_protein.faa";
+"data/ncbi/Arabidopsis/Arabidopsis_cds_from_genomic.fna".
+
+
+### Preprocess the gff file 
+`Purpose`: Create a fakegff from the gff3 which can be recognize by McscanX
 
 > [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> Since the input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it fakegff file
+
+> [!TIP]
+> If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways/options to generate the fakegff, check the next rules and substitue the fakegff for whichever works.
 
 `scripts`:
 ```
@@ -125,39 +147,22 @@ GET "{params.link}"; \
 mv {params.file} {params.dir} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Input`: data/ncbi/Arabidopsis/Arabidopsis_genomic.gff
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
+# NCBI GFF3 file ?????
+
+
 ```
 
 
-### Download NCBI assemblies
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
-`scripts`:
-```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
-```
-
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/intermediateData/Arabidopsis/Arabidopsis.gff
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
+# fakegff file ??????
 
+
+```
 
 
 ### Download NCBI assemblies
