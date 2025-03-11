@@ -130,7 +130,7 @@ rm -r {params.dir1}{params.species_name} \
 "data/ncbi/Arabidopsis/Arabidopsis_cds_from_genomic.fna".
 
 
-### Preprocess the gff file 
+### Preprocessing the gff file (default)
 `Purpose`: Create a fakegff from the gff3 which can be recognize by McscanX
 
 > [!NOTE]
@@ -165,12 +165,15 @@ mv {params.file} {params.dir} \
 ```
 
 
-### # fakegff option ONE
-# Convert gff to bed for easier parsing
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### Preprocessing the gff (option one)
+`Purpose`: This rule use the gff2bed tool to convert gff to bed for easier parsing (the fakegff file) 
 
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+> [!WARNING]
+> To run this rule, user will need uncomment the lines in the snakefile_part1
+```
+	#	expand("data/intermediateData/{name}/{name}.gff-option_one",
+	#		name = config['names']),
+```
 
 `scripts`:
 ```
@@ -182,22 +185,19 @@ cat {input.gff} \
 > {output.fakegff} \
 ```
 
-`Output`: data/intermediateData/{name}/{name}.gff-option_one
-
-```
-
-```
+`Output`: data/intermediateData/Arabidopsis/Arabidopsis.gff-option_one
 
 
-### # fakegff option TWO
-#note:"XX.feature_table.txt" is an backup option to create fakegff, can leave empty if needed.
-#example: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/595/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5_feature_table.txt.gz
 
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### Preprocessing the gff (option Two)
+`Purpose`: This rule can make use of the XX.feature_table.txt from NCBI to generate the fakegff for McScanX as input file.
 
 > [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
+> user will need to put the "XX.feature_table.txt" in the config.yaml file.
+```
+# Example of the XX.feature_table.txt:
+link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/595/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5_feature_table.txt.gz
+```
 `scripts`:
 ```
 sed 1d {input.feature_table} \
@@ -206,18 +206,19 @@ sed 1d {input.feature_table} \
 > {output.fakegff} \
 ```
 
-`Output`: data/intermediateData/{name}/{name}.gff-option_two
+`Output`: data/intermediateData/Arabidopsis/Arabidopsis.gff-option_two
+
+> [!WARNING]
+> To run this rule, user will need uncomment the lines in the snakefile_part1
+```
+	# Other ways to yield the fakegff: featuretable_to_fakegff
+	#	expand("data/intermediateData/{name}/{name}.gff-option_two",
+	#		name = config['names']),
 
 ```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
 
-
-### make_cds
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+### prepare the cds file for calculating the Ka/ks ratio
+`Purpose`: This rule is preprocessing step for 
 
 > [!NOTE]
 > To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
