@@ -165,7 +165,8 @@ mv {params.file} {params.dir} \
 ```
 
 
-### Download NCBI assemblies
+### # fakegff option ONE
+# Convert gff to bed for easier parsing
 `Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
 
 > [!NOTE]
@@ -173,13 +174,39 @@ mv {params.file} {params.dir} \
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+cat {input.gff} \
+| grep -v '^#' \
+| awk '$3 == "gene"' \
+| gff2bed \
+| awk 'BEGIN {{OFS="\t"}} {{print $1,$4,$2,$3}}' \
+> {output.fakegff} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/intermediateData/{name}/{name}.gff-option_one
+
+```
+
+```
+
+
+### # fakegff option TWO
+#note:"XX.feature_table.txt" is an backup option to create fakegff, can leave empty if needed.
+#example: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/595/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5_feature_table.txt.gz
+
+`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
+
+> [!NOTE]
+> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+
+`scripts`:
+```
+sed 1d {input.feature_table} \
+|grep 'mRNA' \
+|awk -F'\t' '$13!=""{{print $7"\t"$13"\t"$8"\t"$9}}' \
+> {output.fakegff} \
+```
+
+`Output`: data/intermediateData/{name}/{name}.gff-option_two
 
 ```
 # standard input files from NCBI 
@@ -189,7 +216,7 @@ XX.cds_from_genomic.fna
 ```
 
 
-### Download NCBI assemblies
+### make_cds
 `Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
 
 > [!NOTE]
@@ -197,37 +224,10 @@ XX.cds_from_genomic.fna
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+perl {params.dir2}/mkCD.pl {params.dir3} {params.species_name} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
-
-```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
-
-
-### Download NCBI assemblies
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
-
-`scripts`:
-```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
-```
-
-`Output`: data/ncbi_download/GCF_000001735.4.zip
+`Output`: data/intermediateData/{name}/{name}.cds
 
 ```
 # standard input files from NCBI 
