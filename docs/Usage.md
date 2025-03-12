@@ -612,7 +612,7 @@ perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components}
 ## 4. [Snakefile_part3](../workflow/Snakefile_part3)
 
 ### Prepare_hsdfinder_inputs
-`Purpose`: prepare the input protein sequence for hsdfinder tool
+`Purpose`: This step is to generate a protein fasta file with short header line.
 
 `scripts`:
 ```
@@ -653,98 +653,27 @@ NP_001321778.1	Athaliana1	7315
 NP_001322175.1	Athaliana1	11864
 ```
 
-????????????
-### DupGen_finder_diamond
-`Purpose`: This rule provides a convenient way to download the standard input files from NCBI. 
 
-# create the protein file for each type of duplicates
-
-> [!NOTE]
-> To avoid repeatly download the ".zip" files with the example file we provided ('HSDSnake_data.tar.gz'), we commented the rule in the snakefile.
+### Prepare hsdfinder diamond database
+`Purpose`: This rule creates diamond database for the next step of all vs all blast.
 
 `scripts`:
 ```
-mkdir -p {params.dir};\
-curl -OJX \
-GET "{params.link}"; \
-mv {params.file} {params.dir} \
+	diamond makedb \
+		--in {input.protein} \
+		-d {params.db_name_dir} \
 ```
 
-`Output`: data/ncbi_download/GCF_000001735.4.zip
-
-```
-# standard input files from NCBI 
-XX.genomic.gff
-XX.protein.faa
-XX.cds_from_genomic.fna
-```
+`Output`: results/Athaliana_tandem/Athaliana_tandem.dmnd
 
 
-
-
-`Purpose`: 
-
-`scripts`:
-```
-
-
-```
-
-`Output`:
-
-```
-
-```
-> [!NOTE]
-> Since
-
-> [!TIP]
-> It is
-
-
-> [!WARNING]
-> To make
-
-
-
-### preprocess fasta
-`Purpose`: This step is to generate a protein fasta file with short header line.
-
-`scripts`: shell script
-```
-	mkdir -p {params.dir}; \
-	awk '{{print $1}}' {input} \
-```
-
-`Output`: data/preprocess_fasta/Athaliana_thaliana.fa
-
-```
->NP_001030613.1
-MLLSALLTSVGINLGLCFLFFTLYSILRKQPSNVTVYGPRLVKKDGKSQQSNEFNLERLLPTAGWVKRALEPTNDEILSN
-LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
-```
+### Prepare the protein for hsdfinder
+`Purpose`: The rule runs the diamond blastp all vs all for each type of gene duplicates (output a tabular format blastp result)
 
 > [!NOTE]
 > Since amino acid substitutions occur less frequently than nucleotide substitutions, the sequence alignments are thereby generally evaluated by amino acid sequences instead of nucleotides, which allows a greater sensitivity (Koonin and Galperin, 2002). 
 
-### diamond_db
-
-
-`Purpose`: This step is to generate the local Diamond database
-
-`scripts`: shell script
-```
-	diamond makedb \
-		--in {input} \
-		-d {params.db_name_dir} \
-```
-
-`Output`: results/Athaliana_thaliana/Athaliana_thaliana.dmnd
-
-### diamond blastp
-`Purpose`: This step is to generate local Diamond blastp all-against-all search which is quicker than BLAST.
-
-`scripts`: shell script
+`scripts`:
 ```
 		diamond blastp \
 		-d {params.db_name_dir} \
@@ -756,45 +685,53 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 		--sensitive \
 ```
 
-`Output`: results/Athaliana_thaliana/diamond/Athaliana_thaliana.txt
+`Output`: results/Athaliana_tandem/diamond/Athaliana_tandem.txt
+
+```
+NP_001030613.1	NP_001030613.1	100	596	0	0	1	596	1	596	0.0	1155
+NP_001030613.1	NP_001327195.1	100	583	0	0	1	583	47	629	0.0	1132
+NP_001030613.1	NP_186759.2	100	583	0	0	1	583	1	583	0.0	1132
+NP_001030613.1	NP_001327194.1	100	468	0	0	116	583	1	468	0.0	917
+```
 
 > [!NOTE]
-> So we chose the protein sequence to do the Diamond blastp all-against-all search (Buchfink et al., 2015) (defaulted parameters: E-value cut-off ≤ 10-5, blastp -outfmt 6 etc.).
+> So we chose the protein sequence to do the Diamond blastp all-against-all search (Buchfink et al., 2015) (defaulted parameters: E-value cut-off ≤ 1e-10, blastp -outfmt 6 etc.).
 
-## interproscan
+## interproscan (dependencies)
 `Purpose`: This step is to generate the protein annotaion file by running interproscan search.
+
+> [!WARNING]
+> The InterProScan (Quevillon et al., 2005, Mitchell et al., 2019) and KEGG (Kanehisa and Goto, 2000b) are the only two dependencies without integrating into the HSDSnake pipeline due to the lack of Conda environment (the latest InterProScan Conda package of 5.59 fails in SnakeMake) and the limitation to web-only access in KEGG, such as BlastKOALA (Kanehisa et al., 2016)).
+
+> [!TIP]
+> It is straightforward to generate the InterProScan output by either checking the respective [ReadMe file](https://interproscan-docs.readthedocs.io/en/latest/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 6-9.
 
 `scripts`: shell script
 ```
 /interproscan.sh -i proteins_of_your_genome.fasta -f tsv -dp
 
 ```
-`Output` : data/Athaliana_thaliana.interproscan.tsv
-
-> [!Note]
-> The InterProScan (Quevillon et al., 2005, Mitchell et al., 2019) and KEGG (Kanehisa and Goto, 2000b) are the only two dependencies without integrating into the HSDSnake pipeline due to the lack of Conda environment (the latest InterProScan Conda package of 5.59 fails in SnakeMake) and the limitation to web-only access in KEGG, such as BlastKOALA (Kanehisa et al., 2016)).
-
-> [!TIP]
-> It is straightforward to generate the InterProScan output by either checking the respective [ReadMe file](https://interproscan-docs.readthedocs.io/en/latest/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 6-9.
+`Output` : data/Athaliana.interproscan.tsv
 
 > [!WARNING]
-> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the InterProScan search, i.e., the file under the directory: data/preprocess_fasta/Athaliana_thaliana.fa
+> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the InterProScan search, i.e., the file under the directory: data/hsdfinder/Athaliana_all/Athaliana.all.fa
 
-## kegg blastkoala
+## kegg blastkoala (dependencies)
 
 `Purpose`: This step is to generate a KEGG functional category file.
 
 `scripts`: local submission
 
-`Output` :data/Athaliana_thaliana.ko.txt
+> [!WARNING]
+> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the KEGG Blastkoala search, i.e., the file under the directory: data/hsdfinder/Athaliana_all/Athaliana.all.fa
+
+`Output` :data/Athaliana.interproscan.ko.txt
 
 > [!TIP]
 > It is straightforward to generate the kegg blastkoala output by either checking the respective [website](https://www.kegg.jp/blastkoala/) or following the [protocol](https://www.sciencedirect.com/science/article/pii/S2666166721003269) at Step 17-20.
 
-> [!WARNING]
-> To make sure the protein sequecne is consistent under different analysis, please use the preprocessed fasta to submit for the KEGG Blastkoala search, i.e., the file under the directory: data/preprocess_fasta/Athaliana_thaliana.fa
  
-## HSDfinder preprocess
+### HSDfinder preprocess
 `Purpose`: This step is to [debug the previous raised potential issue with using HSDFinder](https://github.com/zx0223winner/HSDFinder?tab=readme-ov-file#how-to-deal-with-error-require-length-of-gene-)
 
 `scripts`: shell script
@@ -810,10 +747,10 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 ```
 
-`Output`: results/Athaliana_thaliana/diamond/Athaliana_thaliana.preprocess.txt
+`Output`: results/Athaliana_tandem/diamond/Athaliana_tandem.preprocess.txt
 	
-## hsdfinder
-`Purpose`: This step is the main script to generate  HSDs with different thresholds. 
+### hsdfinder
+`Purpose`: This step is the main script to generate HSDs with different thresholds. 
 
 `scripts`: shell script
 ```
@@ -827,12 +764,30 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 ```
 
-`Output`: [results/Athaliana_thaliana/hsdfinder/Athaliana_thaliana.90_10.txt](../results/Athaliana_thaliana/hsdfinder/Athaliana_thaliana.90_10.txt)
+`Output`: results/Athaliana_tandem/hsdfinder/Athaliana_tandem.90_10.txt
+
+```
+NP_171636.1	NP_171636.1; NP_001154299.1	270; 270	Pfam	PF01967; 	MoaC family; 	2.9E-53; 	IPR002820; 	Molybdopterin cofactor biosynthesis C (MoaC) domain; 
+NP_171639.3	NP_171639.3; NP_001321495.1; NP_001184884.1	1797; 1789; 1787	Pfam	PF12807, PF15044, PF13424; ; 	Translation initiation factor eIF3 subunit 135, Mitochondrial function, CLU-N-term, Tetratricopeptide repeat; ; 	1.9E-22, 1.5E-8, 2.8E-13; ; 	IPR033646, IPR028275, -; ; 	CLU central domain, Clustered mitochondria protein, N-terminal, -; ; 
+```
+```
+Column explanation:
+1. Highly Similar Duplicates (HSDs) identifiers: The first gene model of the duplicate gene copies is used as the HSD identifers in default. (e.g. g735.t1)
+2. Duplicate gene copies (within 10 amino acids, ≥90% pairwise identities)(e.g. g735.t1; g741.t1; g8053.t1)
+3. Amino acid length of duplicate gene copies (aa)(e.g. 744; 744; 747)
+4. Pfam identifier (e.g. PF11999; PF11999; PF11999)
+5. Analysis (e.g. Pfam / PRINTS / Gene3D)
+6. Pfam Description (e.g. Protein of unknown function (DUF3494); Protein of unknown function (DUF3494); Protein of unknown function (DUF3494))
+7. InterPro Entry Identifier (e.g. IPR021884; IPR021884; IPR021884)
+8. InterPro Entry Description (e.g. Ice-binding protein-like ; Ice-binding protein-like ; Ice-binding protein-like)
+```
 
 > [!TIP]
 > [For the specific usage of HSDFinder tool, please find here](https://github.com/zx0223winner/HSDFinder?tab=readme-ov-file#3-running-hsdfinder)
 
-## kegg category
+
+
+### kegg category
 `Purpose`: This step is to apply KEGG functional category on the detected HSDs. 
 
 `scripts`: shell script
@@ -845,12 +800,32 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 
 ```
 
-`Output`: [results/Athaliana_thaliana/kegg/Athaliana_thaliana.90_10.kegg.txt](../results/Athaliana_thaliana/kegg/Athaliana_thaliana.90_10.kegg.txt)
+`Output`: results/Athaliana_tandem/kegg/Athaliana_tandem.90_10.kegg.txt
+
+```
+09101 Carbohydrate metabolism	00010 Glycolysis / Gluconeogenesis [PATH:ko00010]	K01810	GPI, pgi; glucose-6-phosphate isomerase [EC:5.3.1.9]	NP_001332180.1	Athaliana_tandem	NP_199088.1	1
+09101 Carbohydrate metabolism	00010 Glycolysis / Gluconeogenesis [PATH:ko00010]	K00850	pfkA, PFK; 6-phosphofructokinase 1 [EC:2.7.1.11]	NP_200966.2	Athaliana_tandem	NP_200966.2	1
+09101 Carbohydrate metabolism	00010 Glycolysis / Gluconeogenesis [PATH:ko00010]	K03841	FBP, fbp; fructose-1,6-bisphosphatase I [EC:3.1.3.11]	NP_190973.1	Athaliana_tandem	NP_190973.1	1
+```
+
+```
+Column explanation:
+
+   1. The identifier (e.g. 0)
+   2. Pathway category1 (e.g. 09101 Carbohydrate metabolism)
+   3. Pathway category2 (e.g. 00010 Glycolysis / Gluconeogenesis [PATH:ko00010])
+   4. KEGG ko_id (e.g. K13979)
+   5. function (e.g. yahK; alcohol dehydrogenase (NAP+))
+   6. species_name (e.g. UWO241) Chlamydomonas sp. UWO241
+   7. hsds_id (e.g. g1713.t1)
+   8. hsds_num (e.g. 1)
+
+```
 
 > [!TIP]
 > [For the specific usage of HSD_to_KEGG.py, please read here](https://github.com/zx0223winner/HSDSnake/blob/main/docs/Readme-2.md#5-creating-heatmap)
  
-## hsdecipher statistcs
+### hsdecipher statistcs
 
 `Purpose`: This step is to calculate the statistics of HSDs via using a variety of HSDFinder thresholds.
 https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
@@ -865,12 +840,20 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ```
 
 
-`Output`: [results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.stat.txt](../results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.stat.txt)
+`Output`: results/Athaliana_tandem/hsdecipher/stats/Athaliana_tandem.stat.txt
+
+```
+File_name	Candidate_HSDs#	Non-redundant_gene_copies#	Gene_copies#	True_HSDs#	Space#	Incomplete_HSDs#	Capturing_value	Performance_score
+Athaliana_tandem.50_10	6441	18955	19115	5338	6033	1103	82.88	5.2
+Athaliana_tandem.50_100	6904	27790	28570	5341	6323	1563	77.36	3.79
+Athaliana_tandem.50_30	6926	23587	24220	5571	6451	1355	80.44	4.46
+Athaliana_tandem.50_50	6976	25642	26698	5514	6466	1462	79.04	4.12
+```
 
 > [!TIP]
 > [For the specific usage of HSD_statistics.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
  
-## hsdecipher category
+### hsdecipher category
 `Purpose`: This step is to count the number of HSD with two, three, and more than four categories, which is helpful to evaluate the distribution of groups in HSDs.
 
 `scripts`: shell script
@@ -883,12 +866,22 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 ```
 
 
-`Output`: [results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.category.txt](../results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.category.txt)
+`Output`: results/Athaliana_tandem/hsdecipher/stats/Athaliana_tandem.category.txt
+
+```
+File_name	2-group_HSDs#	3-group_HSDs#	>=4-group_HSDs#
+Athaliana_tandem.50_10	3846	1302	1293
+Athaliana_tandem.50_100	3204	1324	2376
+Athaliana_tandem.50_30	3639	1388	1899
+Athaliana_tandem.50_50	3480	1368	2128
+Athaliana_tandem.50_70	3344	1329	2263
+Athaliana_tandem.60_10	4003	1288	1144
+```
 
 > [!TIP]
 > [For the specific usage of HSD_categories.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
  
-## hsdecipher merge statistics
+### hsdecipher merge statistics
 `Purpose`: This step is to merge the above analysis.
 
 `scripts`: shell script
@@ -900,10 +893,16 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 ```
 
-`Output`: [results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.complete.stats.txt](../results/Athaliana_thaliana/hsdecipher/stats/Athaliana_thaliana.complete.stats.txt)
+`Output`: results/Athaliana_tandem/hsdecipher/stats/Athaliana_tandem.complete.stats.txt
 
+```
+File_name	Candidate_HSDs#	Non-redundant_gene_copies#	Gene_copies#	True_HSDs#	Space#	Incomplete_HSDs#	Capturing_value	Performance_score	File_name	2-group_HSDs#	3-group_HSDs#	>=4-group_HSDs#
+Athaliana_tandem.50_10	6441	18955	19115	5338	6033	1103	82.88	5.2	Athaliana_tandem.50_10	3846	1302	1293
+Athaliana_tandem.50_100	6904	27790	28570	5341	6323	1563	77.36	3.79	Athaliana_tandem.50_100	3204	1324	2376
+Athaliana_tandem.50_30	6926	23587	24220	5571	6451	1355	80.44	4.46	Athaliana_tandem.50_30	3639	1388	1899
+```
  
-## hsdecipher batch run
+### hsdecipher batch run
 `Purpose`: This step can do a series of combination thresholds at once. To minimize the redundancy and to acquire a larger dataset of HSD candidates
 
 `scripts`: shell script
@@ -916,12 +915,32 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 
 ```
 
-`Output`: [results/Athaliana_thaliana/hsdecipher/batch_run/Athaliana_thaliana.batch_run.txt](../results/Athaliana_thaliana/hsdecipher/batch_run/Athaliana_thaliana.batch_run.txt)
+`Output`:results/Athaliana_tandem/hsdecipher/batch_run/Athaliana_tandem.batch_run.txt
+
+```
+NP_027726.1	NP_027726.1; NP_001077883.1; NP_001031339.1; NP_973428.1	374; 328; 326; 326	Pfam	; ; ; 	; ; ; 	; ; ; 	; ; ; 	; ; ; 
+NP_028242.1	NP_028242.1; NP_001324370.1; NP_849959.1	307; 224; 224	Pfam	; ; 	; ; 	; ; 	; ; 	; ; 
+NP_029567.1	NP_029567.1; NP_001324173.1; NP_001031444.2; NP_001189635.1; NP_001324174.1	909; 909; 911; 933; 892	Pfam	; ; ; ; 	; ; ; ; 	; ; ; ; 	; ; ; ; 	; ; ; ; 
+NP_029729.1	NP_029729.1; NP_001325198.1; NP_180032.2; NP_180712.1	219; 316; 363; 360	Pfam	; ; ; 	; ; ; 	; ; ; 	; ; ; 	; ; ; 
+```
+
+```
+Column explanation:
+1. Highly Similar Duplicates (HSDs) identifiers: The first gene model of the duplicate gene copies is used as the HSD identifers in default. (e.g. g735.t1)
+2. Duplicate gene copies (within 10 amino acids, ≥90% pairwise identities)(e.g. g735.t1; g741.t1; g8053.t1)
+3. Amino acid length of duplicate gene copies (aa)(e.g. 744; 744; 747)
+4. Pfam identifier (e.g. PF11999; PF11999; PF11999)
+5. Analysis (e.g. Pfam / PRINTS / Gene3D)
+6. Pfam Description (e.g. Protein of unknown function (DUF3494); Protein of unknown function (DUF3494); Protein of unknown function (DUF3494))
+7. InterPro Entry Identifier (e.g. IPR021884; IPR021884; IPR021884)
+8. InterPro Entry Description (e.g. Ice-binding protein-like ; Ice-binding protein-like ; Ice-binding protein-like)
+
+```
 
 > [!TIP]
 > [For the specific usage of HSD_batch_run, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
  
-## hsdecipher heatmap intra species
+### hsdecipher heatmap intra species
 `Purpose`: This step is able to visualize the collected HSDs in a heatmap and compare the HSDs sharing the same pathway function. This can be done inta-specise and inter-speies heatmaps.
 
 `scripts`: shell script
@@ -943,14 +962,20 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 	mv {params.tabular} {params.HSD_heatmap_dir}; \
 
 ```
+`Output`: results/Athaliana_tandem/hsdecipher/heatmap/Athaliana_tandem.output_heatmap.tsv
+`Output`: results/Athaliana_tandem/hsdecipher/heatmap/Athaliana_tandem.output_heatmap.eps
+![image](../resources/Athaliana_tandem.output_heatmap.png)
 
-`Output`: results/Athaliana_thaliana/hsdecipher/heatmap/Athaliana_thaliana.output_heatmap.eps
-![image](../results/Athaliana_thaliana/hsdecipher/heatmap/Athaliana_thaliana.output_heatmap.jpg)
+> [!NOTE]
+> The color matrix in the heatmap represent the number of HSDs being grouped together under the kegg framework.For example, the darker the color means more HSDs who shares the same KEGG ko number with each other. 
+
+> [!WARNING]
+> To best compare the HSDs in heatmap across intra- or inter- species/genomes, the heatmap represents those KEGG ko fucntion shared by at least two comparing targets. In another words, the unique or genome-specific KEGG ko numbers will not show up in the heatmap. For more deatils, user can check the relevant output heatmap tabular file (results/heatmap_inter/HSD.output_heatmap.tsv)
 
 > [!TIP]
 > [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
 			
-## hsdecipher heatmap inter species	
+### hsdecipher heatmap inter species	
 `Purpose`: This step is able to visualize the collected HSDs in a heatmap and compare the HSDs sharing the same pathway function. This can be done inta-specise and inter-speies heatmaps.
 
 `scripts`: shell script
@@ -969,9 +994,15 @@ https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher
 		mv {params.tabular} {params.HSD_heatmap}||true; \
 
 ```
+`Output`: results/heatmap_inter/HSD.output_heatmap.tsv
+`Output`: results/heatmap_inter/HSD.output_heatmap.eps
+![image](../resources/HSD.output_heatmap.png)
 
-`Output`: results/heatmap_inter/HSD/HSD.output_heatmap.eps
-![image](../results/heatmap_inter/HSD.output_heatmap.jpg)
+> [!NOTE]
+> The color matrix in the heatmap represent the number of HSDs being grouped together under the kegg framework.For example, the darker the color means more HSDs who shares the same KEGG ko number with each other. 
+
+> [!WARNING]
+> To best compare the HSDs in heatmap across intra- or inter- species/genomes, the heatmap represents those KEGG ko fucntion shared by at least two comparing targets. In another words, the unique or genome-specific KEGG ko numbers will not show up in the heatmap. For more deatils, user can check the relevant output heatmap tabular file (results/heatmap_inter/HSD.output_heatmap.tsv)
 
 > [!TIP]
 > [For the specific usage of HSD_heatmap.py (i.e., hsdecipher), please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
