@@ -84,6 +84,7 @@ snakemake --help
 >
 > The outgroup species in the config.yaml file is used for cross-genome comparison, which is useful for suggesting other types of duplicates.
 
+## Arguments
 **config.yaml**
 ```config.yaml
 ncbi_assemblies:
@@ -119,6 +120,8 @@ ncbi_genomes:
 curl -OJX GET "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/genome/accession/GCF_000001735.4/download?include_annotation_type=GENOME_FASTA,GENOME_GFF,RNA_FASTA,CDS_FASTA,PROT_FASTA,SEQUENCE_REPORT&filename=GCF_000001735.4.zip"
 
 ```
+## Running
+
 Now, you can run the pipeline using the following commands:
 
 ```
@@ -144,6 +147,17 @@ snakemake --use-conda --cores all -s workflow/Snakefile_part1
 snakemake --use-conda --cores all -s workflow/Snakefile_part2
 snakemake --use-conda --cores all -s workflow/Snakefile_part3
 ```
+
+## Dependency
+
+```
+    Data Processing: fastp, bowtie2, samtools, featureCounts/Subread, umi-tools, bedtools
+    Python modules: pandas, cython, pybedtools, scipy, sklearn, statsmodels, rpy2
+    R libraries: countdata
+
+Test environment: fastp v0.20.0, bedtools v2.27.1, bowtie2 v2.3.5.1, samtools v1.10, featureCounts v2.03
+```
+
 #### Snakemake_part 1-2
 ![image](resources/snakemake_part1-2.png)
 #### Snakemake_part3
