@@ -147,12 +147,8 @@ snakemake --use-conda --cores all -s workflow/Snakefile_part1
 snakemake --use-conda --cores all -s workflow/Snakefile_part2
 snakemake --use-conda --cores all -s workflow/Snakefile_part3
 ```
-
-#### Snakemake_part 1-2
-![image](resources/snakemake_part1-2.png)
-#### Snakemake_part3
-![image](resources/snakemake_part3.png)
-
+#### [Snakemake_part 1-2](resources/snakemake_part1-2.png)
+#### [Snakemake_part3](resources/snakemake_part3.png)
 
 ## Dependencies
 
