@@ -11,7 +11,7 @@ ncbi_genomes:
         outgroup: "Creinhardtii"
         interproscan: "data/Athaliana.interproscan.tsv"
         KEGG: "data/Athaliana.ko.txt"
-#        feature_table: "data/Athaliana.feature_table.txt"
+        feature_table: "data/Athaliana.feature_table.txt"
     
     Creinhardtii:
         ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
@@ -19,7 +19,7 @@ ncbi_genomes:
         outgroup: "Athaliana"
         interproscan: "data/Creinhardtii.interproscan.tsv"
         KEGG: "data/Creinhardtii.ko.txt"
-#        feature_table: "data/Creinhardtii.feature_table.txt"
+        feature_table: "data/Creinhardtii.feature_table.txt"
 
 # Note:"XX.feature_table.txt" is an backup/optional option to create fakegff for mcscanx input
 # Outgroup: species name is used to suggest other type of gene duplicate (e.g., transposed) which is required by dependencies: mcscanx (https://github.com/wyp1125/MCScanX-transposed) and dupgen-finder(https://github.com/qiao-xin/DupGen_finder) 
