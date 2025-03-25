@@ -132,7 +132,7 @@ git clone https://github.com/zx0223winner/HSDSnake.git
 cd HSDSnake
 ```
 > [!NOTE]
->Due to the size of sample files (we have prepared users with the standard input files of NCBI genome assemblies for *A. thaliana* and *C. reinhardtii* ), please download the test data - `HSDSnake_data.tar.gz` through the Google drive [link](https://drive.google.com/file/d/1d-yYkrp4Ce-zN9_s8VGpOO35hpkiu69w/view?usp=sharing)
+>Due to the size of sample files (we have prepared users with the standard input files of NCBI genome assemblies for *A. thaliana* and *C. reinhardtii* ), please download the test data - `HSDSnake_data.tar.gz` through the Google drive [link](https://drive.google.com/file/d/12vn4PqowWs2ug9WWiUNkDI-vzYOUhEgt/view?usp=sharing)
 
 ```
 # Then decompress the file HSDSnake_data.tar.gz under the HSDSnake directory,
@@ -149,7 +149,7 @@ snakemake --use-conda --cores all -s workflow/Snakefile_part3
 ```
 #### [Snakemake_part 1](resources/snakemake_part1.png)
 #### [Snakemake_part 2](resources/snakemake_part2.png)
-#### [Snakemake_part3](resources/snakemake_part3.png)
+#### [Snakemake_part 3](resources/snakemake_part3.png)
 
 ## Dependencies
 
