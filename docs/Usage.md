@@ -397,13 +397,13 @@ NP_001030615.2	Athaliana3:121120	NP_001078086.1	Athaliana3:122140	5.38e-29
 NP_001030616.1	Athaliana3:127557	NP_186783.1	Athaliana3:127557	1.06e-175
 NP_001030617.1	Athaliana3:137772	NP_186785.1	Athaliana3:137772	1.61e-222
 ...
-# WGD > tandem (TD) > proximal(PD) > transposed(TRD) > dispersed duplicates(DSD)
-Types	NO. of gene pairs
-WGD-pairs	3345
-TD-pairs	21673
-PD-pairs	1131
-TRD-pairs	2315
-DSD-pairs	34260
+# WGD > tandem (TD) > proximal(PD) > transposed(TRD) > dispersed duplicates(DD)
+Types    NO. of gene pairs
+WGD-pairs    3317
+TD-pairs    1418
+PD-pairs    1392
+TRD-pairs    4888
+DD-pairs    16404
 
 ```
 
@@ -447,13 +447,13 @@ NP_001321777.1	Athaliana1	6915
 NP_001030923.1	Athaliana1	7315
 NP_001321778.1	Athaliana1	7315
 
-# WGD > tandem (TD) > proximal(PD) > transposed(TRD) > dispersed duplicates(DSD)
+# WGD > tandem (TD) > proximal(PD) > transposed(TRD) > dispersed duplicates(DD)
 Types	NO. of gene pairs
-WGD-pairs	3345
-TD-pairs	18322
-PD-pairs	460
-TRD-pairs	2315
-DSD-pairs	3836
+WGD-pairs	3317
+TD-pairs	1138
+PD-pairs	976
+TRD-pairs	4888
+DD-pairs	8984
 ```
 
 
