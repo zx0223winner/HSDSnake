@@ -1,3 +1,17 @@
+
+### MCScanX
+
+This page contains the data and programs for our protocol paper entitled “Detection of colinear blocks, and synteny and evolutionary analyses based on utilization of MCScanX”
+
+Contact: wyp1125@gmail.com
+
+All data and programs in this protocol are wrapped as a single ZIP file. Click on the following link and start downloading.
+
+MCScanX_protocol.zip 
+
+http://bdx-consulting.com/mcscanx-protocol/
+
+```
 cd /path/to/MCScanX_protocol
 
 #download from NCBI
@@ -150,4 +164,4 @@ cp intermediateData/tc-tc.blastp input/tc.blast
 cp intermediateData/tc.gff input/
 
 perl /path/to/MCScanX-transposed/MCScanX-transposed.pl -i input -t tc -c cd,da -x 2 -o output
-
+```
