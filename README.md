@@ -3,7 +3,7 @@
 
 ## Introduction
 
-**HSDSnake** is a [SnakeMake](https://snakemake.readthedocs.io) pipeline for comprehensive analysis of highly similar duplicates (HSDs) in genomes. The tools are shown in the [Pipeline Flowchart](#pipeline-flowchart) with [Detailed Usage](./docs/Usage.md) for each steps and their references are listed in [Citations.md](/docs/Citations.md).
+**HSDSnake** is a [SnakeMake](https://snakemake.readthedocs.io) pipeline for comprehensive analysis of highly similar duplicates (HSDs) in genomes. The tools are shown in the Pipeline Flowchart with [Detailed Usage](./docs/Usage.md) for each steps and their references are listed in [Citations.md](/docs/Citations.md).
 
 ## [Pipeline Flowchart](resources/HSDSnake_workflow.png)
 
@@ -98,14 +98,14 @@ ncbi_genomes:
         outgroup: "Creinhardtii"
         interproscan: "data/Athaliana.interproscan.tsv"
         KEGG: "data/Athaliana.ko.txt"
-    
+        feature_table: "data/ncbi_download/GCF_000001735.4_TAIR10.1_feature_table.txt.gz"
     Creinhardtii:
         ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
         assembly_id: "GCF_000002595.2"
         outgroup: "Athaliana"
         interproscan: "data/Creinhardtii.interproscan.tsv"
         KEGG: "data/Creinhardtii.ko.txt"
-
+        feature_table: "data/ncbi_download/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5_feature_table.txt.gz"
 ```
 
 > [!NOTE]
