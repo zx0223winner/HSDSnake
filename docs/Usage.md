@@ -121,7 +121,6 @@ XX.protein.faa
 XX.cds_from_genomic.fna
 ```
 
-
 ### Preprocessing the naming of the NCBI assemblies
 `Purpose`: Rename the NCBI genomic assembly to the format which mcscanx and Dupgen-finder can take.
 
@@ -241,6 +240,38 @@ sed 1d {input.feature_table} \
 	#		name = config['names']),
 
 ```
+
+
+### Prepare the primary protein for the input file
+`Purpose`: This rule is preprocessing step for extract the longest transcript encoding for each gene, and use the primary protein for the rest of analysis. 
+
+> [!Note]
+> Due to alternative splicing, the mRNA isoform/transcript can have different length which encoding the protein product with different ID but from same gene. This step is to minimize the misprediction of gene duplicates for those proteins encoded by alternative splicing transcitps having similiar fucntional domains. 
+
+
+`scripts`:
+```
+	python3 {params.dir1}/isoform2one.py {input.feature_table} {output}; \
+	awk '{{print $1}}' {input.protein} \
+```
+
+`Output`: "data/ncbi/{name}_primary/{name}_protein.list", "data/ncbi/{name}_primary/{name}_protein.faa",
+
+```
+# Athaliana_protein.list
+NP_171609.1
+NP_001321775.1
+NP_171611.1
+NP_171612.1
+NP_171613.1
+NP_001320628.
+```
+
+> [!Note]
+> There are rare cases for NCBI without feature table to download (e.g., https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/735/GCF_000001735.4_TAIR10.1/GCF_000001735.4_TAIR10.1_feature_table.txt.gz). 
+> Users can prepare primary protein gene list -  "XX_protein.list" from NCBI website manually, 
+> For example, the proteins column for Chlamydomonas reinhardtii: https://www.ncbi.nlm.nih.gov/datasets/gene/GCF_000002595.2/?gene_type=protein-coding
+
 
 ### Prepare the cds file for calculating the Ka/ks ratio
 `Purpose`: This rule is preprocessing step for running the McScanX with input data from genomic cds
