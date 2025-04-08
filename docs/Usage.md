@@ -4,7 +4,7 @@
 You will need to edit the config.yaml file for your own usage. An [example config.yaml](../config.yaml) has been provided to test the pipeline.
 
 > [!WARNING]
-> please only substitute the species name to yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt
+> please only substitute the species name with yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt
 
 ``` conf.yaml
 # Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
@@ -30,7 +30,7 @@ ncbi_genomes:
         KEGG: "data/Creinhardtii.ko.txt"
 #        feature_table: "data/Creinhardtii.feature_table.txt"
 
-#note:"XX.feature_table.txt" is an backup option to create fakegff
+#note:"XX.feature_table.txt" is a backup option to create fakegff
 
 
 names:
@@ -144,10 +144,10 @@ rm -r {params.dir1}{params.species_name} \
 `Purpose`: Create a fakegff from the gff3 which can be recognize by McscanX
 
 > [!NOTE]
-> Since the input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it fakegff file
+> Since the required input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it fakegff file
 
 > [!TIP]
-> If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways/options to generate the fakegff, check the next rules and substitue the fakegff for whichever works.
+> If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways/options to generate the fakegff, check the next rules and substitue the fakegff with the one works.
 
 > [!WARNING]
 > The mkGFF3.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
@@ -175,7 +175,6 @@ NC_003070.9	RefSeq	region	1	30427671	.	+	.	ID=NC_003070.9:1..30427671;Dbxref=tax
 
 ```
 
-
 `Output`: data/intermediateData/Athaliana/Athaliana.gff
 
 ```
@@ -188,12 +187,11 @@ Athaliana1	NP_001321776.1	6915	8419
 
 ```
 
-
 ### Preprocessing the gff (option one)
-`Purpose`: This rule use the gff2bed tool to convert gff to bed for easier parsing (the fakegff file) 
+`Purpose`: This rule uses the gff2bed tool to convert gff to bed for easier parsing (the fakegff file) 
 
 > [!WARNING]
-> To run this rule, user will need uncomment the lines in the snakefile_part1
+> To run this rule, users will need uncomment the lines in the workflow/snakefile_part1 file
 ```
 	#	expand("data/intermediateData/{name}/{name}.gff-option_one",
 	#		name = config['names']),
@@ -233,7 +231,7 @@ sed 1d {input.feature_table} \
 `Output`: data/intermediateData/Athaliana/Athaliana.gff-option_two
 
 > [!WARNING]
-> To run this rule, user will need uncomment the lines in the snakefile_part1
+> To run this rule, user will need uncommenting the lines in the snakefile_part1
 ```
 	# Other ways to yield the fakegff: featuretable_to_fakegff
 	#	expand("data/intermediateData/{name}/{name}.gff-option_two",
@@ -243,10 +241,10 @@ sed 1d {input.feature_table} \
 
 
 ### Prepare the primary protein for the input file
-`Purpose`: This rule is preprocessing step for extract the longest transcript encoding for each gene, and use the primary protein for the rest of analysis. 
+`Purpose`: This rule is the preprocessing step for extracting the longest transcript encoding for each gene, and use the primary protein for the rest of analysis. 
 
 > [!Note]
-> Due to alternative splicing, the mRNA isoform/transcript can have different length which encoding the protein product with different ID but from same gene. This step is to minimize the misprediction of gene duplicates for those proteins encoded by alternative splicing transcitps having similiar fucntional domains. 
+> Due to alternative splicing, the mRNA isoform/transcript can have different lengths, which encoding the protein product with different ID but from same gene. This step is to minimize the misprediction of gene duplicates for those proteins encoded by alternative splicing transcitps having similiar fucntional domains. 
 
 
 `scripts`:
@@ -277,7 +275,7 @@ NP_001320628.
 `Purpose`: This rule is preprocessing step for running the McScanX with input data from genomic cds
 
 > [!WARNING]
-> The mkCD.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
+> The mkCD.pl was adopted from MCScanX_protocol which is not exactly the same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
 
 
 `scripts`:
@@ -295,7 +293,7 @@ AAACACTAGCCGCGACGTTGAAGTAGCCATCAGCGAGGTCAACATCTGTAGCTACGATCCTTGGAACTTGCGCTTCCAGT
 
 
 ### Diamond_db_mcscanx
-`Purpose`: This rule build diamond database for blasting the protein sequence 
+`Purpose`: This rule builds diamond database for blasting the protein sequence 
 
 `scripts`:
 ```
@@ -310,7 +308,7 @@ AAACACTAGCCGCGACGTTGAAGTAGCCATCAGCGAGGTCAACATCTGTAGCTACGATCCTTGGAACTTGCGCTTCCAGT
 
 
 ### Diamond_blast_mcscanx
-`Purpose`: This rule run diamond blastp for the protein sequences against themselves (blastp all vs all)
+`Purpose`: This rule runs diamond blastp for the protein sequences against themselves (blastp all vs all)
 
 > [!NOTE]
 > --max-target-seqs parameter will impact how many candidate duplicates will be detected
@@ -369,7 +367,7 @@ NP_001030613.1	XP_042920827.1	25.2	306	224	3	272	573	938	1242	6.41e-26	113
 ## 3. [Snakefile_part2](../workflow/Snakefile_part2)
 
 ### Prepare the gff for DupGen_finder
-`Purpose`: This rule merge the gff files from species and the outgroup species into one (e.g., Athaliana_Creinhardtii.gff)
+`Purpose`: This rule merges the gff files from species and the outgroup species into one (e.g., Athaliana_Creinhardtii.gff)
 
 `scripts`:
 ```
@@ -442,7 +440,7 @@ DD-pairs    16208
 `Purpose`: This rule can remove redundant duplicate genes for different modes of duplicated gene pairs ( WGD > tandem > proximal > transposed > dispersed duplicates).
 
 > [!NOTE]
-> To eliminate redundant duplicate genes among different modes,DupGen_finder-unique.pl is a stricter version of DupGen_finder, which can assign each duplicate gene to a unique mode after all of the duplicated gene pairs were classified into different gene duplication types.
+> To eliminate redundant duplicate genes among different modes,DupGen_finder-unique.pl is a stricter version of DupGen_finder, which can assign each duplicate gene to an unique mode after all of the duplicated gene pairs were classified into different gene duplication types.
 
 > [!WARNING]
 > The DupGen_finder-unique.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder-unique.pl
@@ -487,8 +485,7 @@ TRD-pairs    4861
 DD-pairs    7160
 ```
 
-
-### Caculating ka_and_ks values from the duplicates pairs
+### Calculating ka_and_ks values from the duplicates pairs
 `Purpose`: This rule can run the PAML package (Yang, Ziheng.Molecular biology and evolution 24.8 (2007): 1586-1591.) to calculate the kaks for the gene pairs.
 
 > [!WARNING]
@@ -518,7 +515,7 @@ NP_173289.1	NP_177545.1	0.0523	0.9223	0.0567	 3e-147
 
 ```
 > [!NOTE]
->  Due to the perl script: add_ka_and_ks_to_collinearity_Yn00.pl, which may has some temp files left in main dir, which can be safefly removed
+>  Due to the perl script: add_ka_and_ks_to_collinearity_Yn00.pl, which may have some temporary files left in main dir, which can be safefly removed.
 ```
 #	rm -p *.aln; \
 #	rm -p *.cds; \
@@ -564,7 +561,7 @@ NP_173289.1	NP_177545.1	0.0523	0.9223	0.0567	 3e-147
 `Purpose`: This rule can add Ka, Ks, Ka/Ks values into Athaliana.collinearity by using Athaliana.kaks as input, and produce one output file: Athaliana.collinearity.kaks
 
 > [!WARNING]
-> The add_ka_ks_to_collinearity_file.pl was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
+> The add_ka_ks_to_collinearity_file.pl was adopted from DupGen_finder which is not exactly the same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
 
 `scripts`:
 ```
@@ -627,7 +624,7 @@ Alignment119	Athaliana3&Athaliana5	95	0.920378494623656	0	4241.0	plus
 > The plot_syntenic_blocks_ks_distri.py was adopted from DupGen_finder which is not exactly same (Qiao, Xin, et al. Genome biology 20 (2019): 1-23; Wang, Yupeng, et al. Nucleic acids research 40.7 (2012): e49-e49). https://github.com/qiao-xin/Scripts_for_GB/tree/master/identify_Ks_peaks_by_fitting_GMM
 
 > [!NOTE]
-> The parameter Components indicates the number of the mixture components, which represent the number of Ks peak.
+> The parameter 'Components' can indicate the number of the mixture components, which represents the number of Ks peak.
 
 `scripts`:
 ```
@@ -908,6 +905,9 @@ Athaliana_tandem.50_50	3480	1368	2128
 Athaliana_tandem.50_70	3344	1329	2263
 Athaliana_tandem.60_10	4003	1288	1144
 ```
+
+> [!NOTE]
+> The HSD_categories.py can be run individually for the folder results/heatmap_inter/HSD/ to acquire the overall comparison of HSDs categories among different gene duplicate modes (e.g.,Athaliana_tandem.batch_run.txt).
 
 > [!TIP]
 > [For the specific usage of HSD_categories.py, please read here](https://github.com/zx0223winner/HSDecipher#2-whats-hsdecipher)
