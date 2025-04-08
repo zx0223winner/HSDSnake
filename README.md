@@ -5,8 +5,8 @@
 
 **HSDSnake** is a [SnakeMake](https://snakemake.readthedocs.io) pipeline for comprehensive analysis of highly similar duplicates (HSDs) in genomes.
 
-- gene duplicates are categorized into different modes (e.g., dispersed (DD), proximal (PD), tandem (TD), transposed (TRD), and whole genome duplication (WGD))
-- perform the analysis with reliance on sequence similarity (diamond blast all-vs-all), structional annotation (.gff3) and functional annotation (InterPRO, Pfam, KEGG, etc.).
+- Gene duplicates are categorized into different modes (e.g., dispersed (DD), proximal (PD), tandem (TD), transposed (TRD), and whole genome duplication (WGD))
+- Perform the analysis with reliance on sequence similarity (diamond blast all-vs-all), structional annotation (.gff3) and functional annotation (InterPRO, Pfam, KEGG, etc.).
 - The tools are shown in the Pipeline Flowchart with [Detailed Usage](./docs/Usage.md) for each step and their references are listed in [Citations.md](/docs/Citations.md).
 
 ## [Pipeline Flowchart](resources/HSDSnake_workflow.png)
