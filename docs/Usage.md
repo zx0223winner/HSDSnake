@@ -20,18 +20,14 @@ ncbi_genomes:
         outgroup: "Creinhardtii"
         interproscan: "data/Athaliana.interproscan.tsv"
         KEGG: "data/Athaliana.ko.txt"
-#        feature_table: "data/Athaliana.feature_table.txt"
-    
+        feature_table: "data/ncbi_download/GCF_000001735.4_TAIR10.1_feature_table.txt.gz"
     Creinhardtii:
         ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
         assembly_id: "GCF_000002595.2"
         outgroup: "Athaliana"
         interproscan: "data/Creinhardtii.interproscan.tsv"
         KEGG: "data/Creinhardtii.ko.txt"
-#        feature_table: "data/Creinhardtii.feature_table.txt"
-
-#note:"XX.feature_table.txt" is a backup option to create fakegff
-
+        feature_table: "data/ncbi_download/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5_feature_table.txt.gz"
 
 names:
   - Athaliana
