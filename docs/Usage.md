@@ -7,7 +7,8 @@ You will need to edit the config.yaml file for your own usage. An [example confi
 > please only substitute the species name with yours, keep the input file format, such as Arabidopsis_thaliana.fa, Arabidopsis_thaliana.interproscan.tsv, Arabidopsis_thaliana.ko.txt
 
 ``` conf.yaml
-# Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
+# Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format,
+# such as Athaliana.interproscan.tsv, Athaliana.ko.txt
 
 ncbi_assemblies:
   - GCF_000001735.4
