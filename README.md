@@ -9,8 +9,8 @@
 - Perform the analysis with reliance on sequence similarity (diamond blast all-vs-all), structional annotation (.gff3) and functional annotation (InterPRO, Pfam, KEGG, etc.).
 - The tools are shown in the Pipeline Flowchart with [Detailed Usage](./docs/Usage.md) for each step and their references are listed in [Citations.md](/docs/Citations.md).
 
-## [Pipeline Flowchart](resources/HSDSnake_workflow.png)
-
+## [Pipeline Flowchart](resources/pipeline.md)
+![](resources/HSDSnake_workflow.png)
 
 ## Usage
 
