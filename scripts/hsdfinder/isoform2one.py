@@ -10,17 +10,23 @@ if len(sys.argv)!=3: #if the input arguments not 3, showing the usage.
 
 from collections import defaultdict
 my_dict=defaultdict(list)
+my_dict1=defaultdict(list)
+
+outfile=open(sys.argv[2],'w')
 with open(sys.argv[1], 'r') as f:
     lines = f.readlines()
     for line in lines:
         line = line.strip()
-        if line != "" and line.split("\t")[0] == 'mRNA' and line.split("\t")[12] != "": 
-            my_dict[line.split("\t")[15]].append(line) # hash 
+        if line.split("\t")[15] != "":
+            if line != "" and line.split("\t")[0] == 'mRNA' and line.split("\t")[12] != "": 
+                my_dict[line.split("\t")[15]].append(line) # hash 
+        else:
+            my_dict1[line.split("\t")[12]].append(line)
     #print(my_dict)
-outfile=open(sys.argv[2],'w')
+
 for key in my_dict.keys():
     if len(my_dict[key]) == 1:
-        outfile.write(my_dict[key][0]+"\n")
+        outfile.write(my_dict[key][0].split("\t")[12]+"\n")
     else:
         primary_line = ""
         length = 0
@@ -28,6 +34,8 @@ for key in my_dict.keys():
             if int(item.split("\t")[17]) > length:
                 primary_line = item
                 length = int(item.split("\t")[17])
-        outfile.write(primary_line+"\n")
-outfile.close()
+        outfile.write(primary_line.split("\t")[12]+"\n")
 
+for key in my_dict1.keys():
+    outfile.write(str(key) +"\n")
+outfile.close()
