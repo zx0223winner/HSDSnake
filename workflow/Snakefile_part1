@@ -38,11 +38,11 @@ rule all:
 		expand("data/intermediateData/{name}/{name}.gff",
 			name = config['names']),
 	
-	# Other ways to yield the fakegff: gff_to_fakegff
+	# Other ways to yield the mockgff: gff_to_mockgff
 	#	expand("data/intermediateData/{name}/{name}.gff-option_one",
 	#		name = config['names']),
 	
-	# Other ways to yield the fakegff: featuretable_to_fakegff
+	# Other ways to yield the mockgff: featuretable_to_mockgff
 	#	expand("data/intermediateData/{name}/{name}.gff-option_two",
 	#		name = config['names']),
 	
@@ -125,9 +125,9 @@ rm -r {params.dir1}{params.species_name} \
 """
 
 
-# Since the input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it fakegff file
-# If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways to generate the fakegff, check the next rules and substitue the fakegff for which works
-rule generate_fakegff_inputs:
+# Since the input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it mockgff file
+# If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways to generate the mockgff, check the next rules and substitue the mockgff for which works
+rule generate_mockgff_inputs:
 	input:
 		"data/ncbi/{name}/{name}_genomic.gff"
 	output:
@@ -142,8 +142,8 @@ rule generate_fakegff_inputs:
 		dir3 = "data",
 		species_name = "{name}"
 	log: 
-		out = "log/generate_fakegff_inputs/{name}.out",
-		err = "log/generate_fakegff_inputs/{name}.err"
+		out = "log/generate_mockgff_inputs/{name}.out",
+		err = "log/generate_mockgff_inputs/{name}.err"
 	shell:"""
 	mkdir -p {params.dir1}; \
 	perl {params.dir2}/mkGFF3.pl {params.dir3} {params.species_name} \
@@ -151,15 +151,15 @@ rule generate_fakegff_inputs:
 2> {log.err}
 """
 
-# fakegff option ONE
+# mockgff option ONE
 # Convert gff to bed for easier parsing
-rule gff_to_fakegff:
+rule gff_to_mockgff:
 	input:
 		gff = "data/ncbi/{name}/{name}_genomic.gff"
 	output:
-		fakegff = "data/intermediateData/{name}/{name}.gff-option_one"
+		mockgff = "data/intermediateData/{name}/{name}.gff-option_one"
 	log:
-		err = "log/gff_to_fakegff/{name}.err"
+		err = "log/gff_to_mockgff/{name}.err"
 	conda:
 		"envs/bedops.yaml"
 	threads:
@@ -173,19 +173,19 @@ cat {input.gff} \
 | awk '$3 == "gene"' \
 | gff2bed \
 | awk 'BEGIN {{OFS="\t"}} {{print $1,$4,$2,$3}}' \
-> {output.fakegff} \
+> {output.mockgff} \
 2> {log.err}
 """
 
-# fakegff option TWO
-#note:"XX_feature_table.txt" is a backup option to create fakegff
-rule featuretable_to_fakegff:
+# mockgff option TWO
+#note:"XX_feature_table.txt" is a backup option to create mockgff
+rule featuretable_to_mockgff:
     input: 
         feature_table = "data/ncbi/{name}/{name}_feature_table.txt"
     output:
-        fakegff = "data/intermediateData/{name}/{name}.gff-option_two"
+        mockgff = "data/intermediateData/{name}/{name}.gff-option_two"
     log:
-        err = "log/featuretable_to_fakegff/{name}.err"
+        err = "log/featuretable_to_mockgff/{name}.err"
     threads:
         1
     resources:
@@ -195,7 +195,7 @@ rule featuretable_to_fakegff:
 sed 1d {input.feature_table} \
 |grep 'mRNA' \
 |awk -F'\t' '$13!=""{{print $7"\t"$13"\t"$8"\t"$9}}' \
-> {output.fakegff} \
+> {output.mockgff} \
 2> {log.err}
 """
 
