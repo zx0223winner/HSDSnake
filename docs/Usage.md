@@ -138,13 +138,13 @@ rm -r {params.dir1}{params.species_name} \
 
 
 ### Preprocessing the gff file (default)
-`Purpose`: Create a fakegff from the gff3 which can be recognize by McscanX
+`Purpose`: Create a mockgff from the gff3 which can be recognize by McscanX
 
 > [!NOTE]
-> Since the required input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it fakegff file
+> Since the required input .gff file for mcscanx is nether gff3 nor bed file format, for simplity, call it mockgff file
 
 > [!TIP]
-> If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways/options to generate the fakegff, check the next rules and substitue the fakegff with the one works.
+> If the mkGFF3.pl does not work on your gff3 file due to the format of naming, there are other ways/options to generate the mockgff, check the next rules and substitue the mockgff with the one works.
 
 > [!WARNING]
 > The mkGFF3.pl was adopted from MCScanX_protocol which is not exactly same (Wang, Yupeng, et al. Nature Protocols 19.7 (2024): 2206-2229.)
@@ -175,7 +175,7 @@ NC_003070.9	RefSeq	region	1	30427671	.	+	.	ID=NC_003070.9:1..30427671;Dbxref=tax
 `Output`: data/intermediateData/Athaliana/Athaliana.gff
 
 ```
-#fakegff
+#mockgff
 Athaliana1	NP_171609.1	3760	5630
 Athaliana1	NP_001318899.1	6915	8666
 Athaliana1	NP_001321777.1	6915	8442
@@ -185,7 +185,7 @@ Athaliana1	NP_001321776.1	6915	8419
 ```
 
 ### Preprocessing the gff (option one)
-`Purpose`: This rule uses the gff2bed tool to convert gff to bed for easier parsing (the fakegff file) 
+`Purpose`: This rule uses the gff2bed tool to convert gff to bed for easier parsing (the mockgff file) 
 
 > [!WARNING]
 > To run this rule, users will need uncomment the lines in the workflow/snakefile_part1 file
@@ -201,7 +201,7 @@ cat {input.gff} \
 | awk '$3 == "gene"' \
 | gff2bed \
 | awk 'BEGIN {{OFS="\t"}} {{print $1,$4,$2,$3}}' \
-> {output.fakegff} \
+> {output.mockgff} \
 ```
 
 `Output`: data/intermediateData/Athaliana/Athaliana.gff-option_one
@@ -209,7 +209,7 @@ cat {input.gff} \
 
 
 ### Preprocessing the gff (option Two)
-`Purpose`: This rule can make use of the XX.feature_table.txt from NCBI to generate the fakegff for McScanX as input file.
+`Purpose`: This rule can make use of the XX.feature_table.txt from NCBI to generate the mockgff for McScanX as input file.
 
 > [!NOTE]
 > user will need to put the "XX.feature_table.txt" in the config.yaml file.
@@ -222,7 +222,7 @@ link: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/595/GCF_000002595.2_C
 sed 1d {input.feature_table} \
 |grep 'mRNA' \
 |awk -F'\t' '$13!=""{{print $7"\t"$13"\t"$8"\t"$9}}' \
-> {output.fakegff} \
+> {output.mockgff} \
 ```
 
 `Output`: data/intermediateData/Athaliana/Athaliana.gff-option_two
@@ -230,7 +230,7 @@ sed 1d {input.feature_table} \
 > [!WARNING]
 > To run this rule, user will need uncommenting the lines in the snakefile_part1
 ```
-	# Other ways to yield the fakegff: featuretable_to_fakegff
+	# Other ways to yield the mockgff: featuretable_to_mockgff
 	#	expand("data/intermediateData/{name}/{name}.gff-option_two",
 	#		name = config['names']),
 
@@ -661,7 +661,7 @@ LGLDALVFIRVFVFSIRVFSFASVVGIFILLPVNYMGTEFEEFFDLPKKSMDNFSISNVNDGSNKLWIHFCAIYIFTAVV
 	mkdir -p {params.dir1}; \
 	cp {input.protein} {params.all}; \
 	sed -e '1i\Duplicate\tchrom\tLocation' {input.gff_sorted} \
-> {output.dup_fake_genes_unique} \
+> {output.dup_mock_genes_unique} \
 ```
 
 `Output`: "data/DupGen_finder/Athaliana_result_uniq/Athaliana.all.genes-unique"
