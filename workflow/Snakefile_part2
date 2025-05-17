@@ -360,7 +360,7 @@ rule Estimating_Ks_peaks:
 		out = "log/Estimating_Ks_peaks/{name}.out",
 		err = "log/Estimating_Ks_peaks/{name}.err"
 	shell:"""
-	perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components} {params.dir2}/{params.species_name} \
+	python {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components} {params.dir2}/{params.species_name} \
 > {log.out} \
 2> {log.err}
 """
