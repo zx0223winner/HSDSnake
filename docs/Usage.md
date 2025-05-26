@@ -1,4 +1,16 @@
-# HSDSnake: Usage<!-- omit in toc -->
+# HSDSnake: Supplementary materials<!-- omit in toc -->
+
+**Supplementary Figure S1: HSDSnake workflow.**
+* Part 1-2: (A) Prepare the SnakeMake config file which contains the species name, out group name, genomic assembly ID and other input file directories. (B) Detect and classify the gene duplicate pairs into five different duplication types (DD, PD, TD, TRD, and WGD) via the scripts from the DupGen finder and MCScanX protocols. (C) Calculate and visualize the synonymous substitution per substitution site (Ks), non-synonymous substitutions per substitution site (Ka), and their ratios (Ka/Ks) for each gene pair;
+* Part 3: (1) Prepare the SnakeMake config file which contains different types of gene duplicates.  (2) Prepare an InterProScan search result file of your genome in tab-separated values (tsv.). (3) Prepare a gene list with KO annotation from KEGG database. (4) Run the built-in HSDFinder tool and diamond BlastP all-against-all search; this will yield an HSD output file in tab-separated value (tsv.) format. (5) Curate the HSDs using the built-in HSDecipher downstream analysis tool with a combination of thresholds. (6) Evaluate the suitability of the results and visualize the performance outputs in a plot. (7) Visualize the curated HSD results from a single or multiple genome perspective in a heatmap and generate a detailed HSDs functional annotation tabular file. The plot of step 6 was adopted with permission (Zhang et al., 2021b).
+
+
+**Supplementary Text: Usage of SnakeMake pipeline.**
+* Text S1. Introduction for the config.yaml file; 
+* Text S2. Download and preprocess the NCBI assemblies (Snakefile_part1);
+* Text S3. Detect and classify gene duplication categories by DupGen_finder (Snakefile_part2); 
+* Text S4. Refine and visualize the gene duplicates with HSDFiner (Snakefile_part3).
+
 
 ## 1. [Config.yaml](../config.yaml) file 
 You will need to edit the config.yaml file for your own usage. An [example config.yaml](../config.yaml) has been provided to test the pipeline.
