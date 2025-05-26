@@ -1,18 +1,39 @@
 # HSDSnake: Supplementary materials<!-- omit in toc -->
 
-**Supplementary Figure S1: HSDSnake workflow.**
-* Part 1-2: (A) Prepare the SnakeMake config file which contains the species name, out group name, genomic assembly ID and other input file directories. (B) Detect and classify the gene duplicate pairs into five different duplication types (DD, PD, TD, TRD, and WGD) via the scripts from the DupGen finder and MCScanX protocols. (C) Calculate and visualize the synonymous substitution per substitution site (Ks), non-synonymous substitutions per substitution site (Ka), and their ratios (Ka/Ks) for each gene pair;
-* Part 3: (1) Prepare the SnakeMake config file which contains different types of gene duplicates.  (2) Prepare an InterProScan search result file of your genome in tab-separated values (tsv.). (3) Prepare a gene list with KO annotation from KEGG database. (4) Run the built-in HSDFinder tool and diamond BlastP all-against-all search; this will yield an HSD output file in tab-separated value (tsv.) format. (5) Curate the HSDs using the built-in HSDecipher downstream analysis tool with a combination of thresholds. (6) Evaluate the suitability of the results and visualize the performance outputs in a plot. (7) Visualize the curated HSD results from a single or multiple genome perspective in a heatmap and generate a detailed HSDs functional annotation tabular file. The plot of step 6 was adopted with permission (Zhang et al., 2021b).
+>Xi Zhang1,2*, Yining Hu3, David Roy Smith4, Zhenyu Cheng2,5, John M. Archibald1,2*
+
+>1Department of Biochemistry and Molecular Biology, Dalhousie University, Halifax, 
+Nova Scotia, B3H 4R2, Canada.
+>2Institute for Comparative Genomics, Dalhousie University, Halifax, Nova Scotia, 
+B3H 4R2, Canada.
+>3Department of Computer Science, Western University, London, Ontario, N6A 5B7, Canada. 
+>4Department of Biology, Western University, London, Ontario, N6A 5B7, Canada. 
+>5Department of Microbiology and Immunology, Dalhousie University, Halifax, Nova Scotia, Canada.
+
+>*Correspondence: xi.zhang@dal.ca (X.Z.)
+>*Correspondence: john.archibald@dal.ca (J.M.A.)
+>*To whom correspondence should be addressed.
 
 
-**Supplementary Text: Usage of SnakeMake pipeline.**
+## **:chart_with_upwards_trend:Supplementary Figure S1: HSDSnake workflow.**
+* Part 1-2: (A) Prepare the SnakeMake config file which contains the species name, out group name, genomic assembly ID and other input file directories.
+(B) Detect and classify the gene duplicate pairs into five different duplication types (DD, PD, TD, TRD, and WGD) via the scripts from the DupGen finder and MCScanX protocols. (C) Calculate and visualize the synonymous substitution per substitution site (Ks), non-synonymous substitutions per substitution site (Ka), and their ratios (Ka/Ks) for each gene pair;
+
+* Part 3: (1) Prepare the SnakeMake config file which contains different types of gene duplicates.(2) Prepare an InterProScan search result file of your genome in tab-separated values (tsv.).(3) Prepare a gene list with KO annotation from KEGG database. (4) Run the built-in HSDFinder tool and diamond BlastP all-against-all search; this will yield an HSD output file in tab-separated value (tsv.) format. (5) Curate the HSDs using the built-in HSDecipher downstream analysis tool with a combination of thresholds. (6) Evaluate the suitability of the results and visualize the performance outputs in a plot. (7) Visualize the curated HSD results from a single or multiple genome perspective in a heatmap and generate a detailed HSDs functional annotation tabular file. The plot of step 6 was adopted with permission (Zhang et al., 2021b).
+
+![](../resources/HSDSnake_workflow.png)
+
+## **:clipboard:Supplementary Text : Usage of SnakeMake pipeline.**
+
+Contents: 
+
 * Text S1. Introduction for the config.yaml file; 
 * Text S2. Download and preprocess the NCBI assemblies (Snakefile_part1);
 * Text S3. Detect and classify gene duplication categories by DupGen_finder (Snakefile_part2); 
 * Text S4. Refine and visualize the gene duplicates with HSDFiner (Snakefile_part3).
 
 
-## 1. [Config.yaml](../config.yaml) file 
+## Text S1. [Config.yaml](../config.yaml) file 
 You will need to edit the config.yaml file for your own usage. An [example config.yaml](../config.yaml) has been provided to test the pipeline.
 
 > [!WARNING]
@@ -104,7 +125,7 @@ heatmap_width: 30
 
 ```
 
-## 2. [Snakefile_part1](../workflow/Snakefile_part1)
+## Text S2. [Snakefile_part1](../workflow/Snakefile_part1)
 
 
 ### Download NCBI assemblies
@@ -373,7 +394,7 @@ NP_001030613.1	XP_042920827.1	25.2	306	224	3	272	573	938	1242	6.41e-26	113
 ```
 
 
-## 3. [Snakefile_part2](../workflow/Snakefile_part2)
+## Text S3. [Snakefile_part2](../workflow/Snakefile_part2)
 
 ### Prepare the gff for DupGen_finder
 `Purpose`: This rule merges the gff files from species and the outgroup species into one (e.g., Athaliana_Creinhardtii.gff)
@@ -646,7 +667,7 @@ perl {params.dir1}/plot_syntenic_blocks_ks_distri.py {input} {params.components}
 
 
 
-## 4. [Snakefile_part3](../workflow/Snakefile_part3)
+## Text S4. [Snakefile_part3](../workflow/Snakefile_part3)
 
 ### Prepare_hsdfinder_inputs
 `Purpose`: This step is to generate a protein fasta file with short header line.
