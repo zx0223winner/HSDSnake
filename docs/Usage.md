@@ -24,11 +24,6 @@ B3H 4R2, Canada.
 ![](../resources/HSDSnake_workflow.png)
 
 
-* Part 3: (1) Prepare the SnakeMake config file which contains different types of gene duplicates.(2) Prepare an InterProScan search result file of your genome in tab-separated values (tsv.).(3) Prepare a gene list with KO annotation from KEGG database. (4) Run the built-in HSDFinder tool and diamond BlastP all-against-all search; this will yield an HSD output file in tab-separated value (tsv.) format. (5) Curate the HSDs using the built-in HSDecipher downstream analysis tool with a combination of thresholds. (6) Evaluate the suitability of the results and visualize the performance outputs in a plot. (7) Visualize the curated HSD results from a single or multiple genome perspective in a heatmap and generate a detailed HSDs functional annotation tabular file. The plot of step 6 was adopted with permission (Zhang et al., 2021b).
-
-  
-
-
 
 ## **:clipboard:Supplementary Text : Usage of SnakeMake pipeline.**
 
