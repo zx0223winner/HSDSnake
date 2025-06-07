@@ -122,6 +122,6 @@ Test conda environment: diamond v2.1.11, mcscanx v1.0.0, HSDFinder v1.0, HSDecip
  9. McScanX: https://github.com/wyp1125/MCScanX
 
 > [!NOTE]
-> Environment files (.yaml) have already been set up in directory: `workflow/envs/` except InterProScan and KEGG.
+> Environment files (.yaml) have already been set up in directory: `workflow/envs/` except `InterProScan` and `KEGG`.
 
 
