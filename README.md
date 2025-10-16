@@ -12,7 +12,7 @@
 *Zhang et al. "HSDSnake: a user-friendly SnakeMake pipeline for analysis of duplicate genes in eukaryotic genomes." Bioinformatics (2025): btaf325. https://doi.org/10.1093/bioinformatics/btaf325*
 
 > [!NOTE]
->HSDSnake, a SnakeMake-based user-friendly solution that not only integrates tools developed previously, namely the HSDFinder web tool (Zhang et al. 2021b, 2021c), the HSDatabase online platform (Zhang et al. 2022), and HSDecipher (Zhang et al. 2023), but also integrates scripts from other recently developed methods and tools, such as DupGen_finder (Qiao et al. 2019) and MCScanX (Wang et al. 2024). 
+>HSDSnake not only integrates tools developed previously, namely the HSDFinder web tool (Zhang et al. 2021b, 2021c), the HSDatabase online platform (Zhang et al. 2022), and HSDecipher (Zhang et al. 2023), but also integrates scripts from other recently developed methods and tools, such as DupGen_finder (Qiao et al. 2019) and MCScanX (Wang et al. 2024). 
 
 ## [Pipeline Flowchart](resources/pipeline.md)
 ![](resources/HSDSnake_workflow.png)
