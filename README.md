@@ -7,6 +7,7 @@
 
 - Gene duplicates are categorized into different categories (e.g., dispersed (DD), proximal (PD), tandem (TD), transposed (TRD), and whole genome duplication (WGD))
 - Perform the analysis with reliance on sequence similarity (diamond blast all-vs-all), structional annotation (.gff3) and functional annotation (InterPRO, Pfam, KEGG, etc.).
+- Detected gene duplicates can be visualized within a KEGG functional pathway framework and the substitution rates (Ka, Ks, and their Ka/Ks ratio) can be analyzed for all the duplicate gene pairs. 
 - The tools are shown in the Pipeline Flowchart with [Detailed Usage](./docs/Usage.md) for each step and their references are listed in [Citations.md](/docs/Citations.md).
 
 *Zhang et al. "HSDSnake: a user-friendly SnakeMake pipeline for analysis of duplicate genes in eukaryotic genomes." Bioinformatics (2025): btaf325. https://doi.org/10.1093/bioinformatics/btaf325*
