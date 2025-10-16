@@ -14,10 +14,10 @@
 > [!NOTE]
 > **[Listing of historic resources](/docs/Citations.md)** 
 1. **HSDFinder** - an interative web tool for gene duplicates classification and visualization. *(Zhang et al. 2021, Frontiers in Bioinformatics)*  http://hsdfinder.com 
-2. **HSDFinder protocol** - a hands-on protcol for the step-by-step guide using HSDFinder. *(Zhang et al. 2021, Star Protocols (Cell Press))*
+2. **HSDFinder protocol** - a hands-on protcol for the step-by-step guide using HSDFinder. *(Zhang et al. 2021, StarProtocols (Cell Press))*
 3. **HSDatabase** - an online database for gene duplicates from around forty species in animal and plant genomes with built-in blast feature, NCBI genome browser, gene copy comparision in KEGG and Pfam. *(Zhang et al. 2022, Database (Oxford Press))* http://hsdfinder.com/database
-4. **Review for the duplication tools** - An Mini-review of online resources for intra-species detection of gene duplications. *(Zhang et al. 2022, Frontiers in Genetics)*
-4. **HSDecipher** - an updated protocol for downstream analysis of gene duplicates. *(Zhang et al. 2023,Star Protocols (Cell Press))*
+4. **Review for the duplication tools** - A mini-review of online resources for intra-species detection of gene duplications. *(Zhang et al. 2022, Frontiers in Genetics)*
+4. **HSDecipher** - an updated protocol for downstream analysis of gene duplicates. *(Zhang et al. 2023, StarProtocols (Cell Press))*
 5. **HSDSnake** - a Snakemake pipeline tool for classifying duplicate pairs, computing Ka/Ks ratios and function comparison (such as PFAM, KEGG etc.) from inter- and intra-species. It not only integrates tools developed previously, namely the resources as described above, but also integrates scripts from other recently developed methods and tools, such as DupGen_finder and MCScanX. *(Zhang et al. 2025, Database (Oxford Press))*
 
 
