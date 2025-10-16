@@ -14,7 +14,7 @@
 ## 
 > [!NOTE]
 > **[Listing of historic resources](/docs/Citations.md)** 
-1. **HSDFinder** - an interative web tool for gene duplicates classification and visualization. *(Zhang et al. 2021, Frontiers in Bioinformatics)*  http://hsdfinder.com 
+2020. **HSDFinder** - an interative web tool for gene duplicates classification and visualization. *(Zhang et al. 2021, Frontiers in Bioinformatics)*  http://hsdfinder.com 
 2. **HSDFinder protocol** - a hands-on protcol for the step-by-step guide using HSDFinder. *(Zhang et al. 2021, StarProtocols (Cell Press))*
 3. **HSDatabase** - an online database for gene duplicates from around forty species in animal and plant genomes with built-in blast feature, NCBI genome browser, gene copy comparision in KEGG and Pfam. *(Zhang et al. 2022, Database (Oxford Press))* http://hsdfinder.com/database
 4. **Review for the duplication tools** - A mini-review of online resources for intra-species detection of gene duplications. *(Zhang et al. 2022, Frontiers in Genetics)*
