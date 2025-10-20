@@ -137,4 +137,10 @@ Test conda environment: diamond v2.1.11, mcscanx v1.0.0, HSDFinder v1.0, HSDecip
 > [!NOTE]
 > Environment files (.yaml) have already been set up in directory: `workflow/envs/` except `InterProScan` and `KEGG`.
 
+                        
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/zx0223winner/HSDSnake.svg?background=%23FFFFFF&axis=%23e7a41e&line=%23e76060)](https://starchart.cc/zx0223winner/HSDSnake)
+
+                    
+
 
