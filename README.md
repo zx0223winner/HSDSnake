@@ -1,8 +1,8 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥5.7.0-brightgreen.svg)](https://snakemake.readthedocs.io)
 [![run with conda ](http://img.shields.io/badge/run%20with-conda%20-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 <!-- -->
-[![Issues](https://img.shields.io/github/issues/zx0223winner/hsdsnake)](https://github.com/zx0223winner/hsdsnake/issues)
 [![Stars](https://img.shields.io/github/stars/zx0223winner/HSDSnake)](https://github.com/zx0223winner/HSDSnake/stargazers)
+[![Issues](https://img.shields.io/github/issues/zx0223winner/hsdsnake)](https://github.com/zx0223winner/hsdsnake/issues)
 [![DOI](https://zenodo.org/badge/615052960.svg)](https://doi.org/10.5281/zenodo.15521945)
 
 
