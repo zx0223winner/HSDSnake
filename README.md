@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="resources/hsdsnake_logo_color.png" alt="Description" width="400" />
+  <img src="resources/hsdsnake_logo_color.png" alt="Description" width="300" />
 </p>
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥5.7.0-brightgreen.svg)](https://snakemake.readthedocs.io)
