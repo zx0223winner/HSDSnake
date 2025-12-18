@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="resources/hsdsnake_logo_color.png" alt="Description" width="400" />
+</p>
+
 [![Snakemake](https://img.shields.io/badge/snakemake-≥5.7.0-brightgreen.svg)](https://snakemake.readthedocs.io)
 [![run with conda ](http://img.shields.io/badge/run%20with-conda%20-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 <!-- -->
@@ -142,6 +147,8 @@ Test conda environment: diamond v2.1.11, mcscanx v1.0.0, HSDFinder v1.0, HSDecip
 > [!NOTE]
 > Environment files (.yaml) have already been set up in directory: `workflow/envs/` except `InterProScan` and `KEGG`.
 
+### Declaration of generative AI and AI-assisted technologies 
+GitHub tool logo generation. Author reviewed and edited the content as needed and takes full responsibility for the content.
                         
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/zx0223winner/HSDSnake.svg?background=%23FFFFFF&axis=%23e7a41e&line=%23e76060)](https://starchart.cc/zx0223winner/HSDSnake)
