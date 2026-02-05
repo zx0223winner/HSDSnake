@@ -158,6 +158,7 @@ rule DupGen_finder:
 	shell:"""
 	mkdir -p {params.dir5}; \
 	chmod 775 {params.file}; \
+	chmod 775 {params.MCScanX}; \
 	sh {params.file}; \
 	source ~/.bashrc; \
 	sleep 30s; \
