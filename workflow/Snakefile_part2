@@ -159,6 +159,7 @@ rule DupGen_finder:
 	mkdir -p {params.dir5}; \
 	chmod 775 {params.file}; \
 	sh {params.file}; \
+	source ~/.bashrc; \
 	sleep 30s; \
 	perl {params.dir4}/DupGen_finder.pl \
 	-i {params.dir2} \
