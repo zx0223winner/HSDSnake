@@ -8,7 +8,7 @@
 <!-- -->
 [![Stars](https://img.shields.io/github/stars/zx0223winner/HSDSnake)](https://github.com/zx0223winner/HSDSnake/stargazers)
 [![Issues](https://img.shields.io/github/issues/zx0223winner/hsdsnake)](https://github.com/zx0223winner/hsdsnake/issues)
-[![DOI](https://zenodo.org/badge/615052960.svg)](https://doi.org/10.5281/zenodo.15521945)
+[![DOI](https://zenodo.org/badge/615052960.svg)](https://doi.org/10.5281/zenodo.18509877)
 
 
 ## Introduction
