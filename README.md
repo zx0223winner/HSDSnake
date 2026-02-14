@@ -11,6 +11,8 @@
 [![DOI](https://zenodo.org/badge/615052960.svg)](https://doi.org/10.5281/zenodo.18509877)
 
 
+The development version v3.1 is gong to make use of AGAT to acquire primary trsncript which might be more stable for different standard gff3 file. But more tests will be needed, I will explore different genomes to see if any bugs. 
+
 ## Introduction
 
 **HSDSnake** is a [SnakeMake](https://snakemake.readthedocs.io) pipeline for comprehensive analysis of highly similar duplicates (HSDs) in genomes.
