@@ -13,8 +13,11 @@
 > [!Note]
 > **Important updates**
 > The development version v3.1 is targting for non-model species, such as those annotated via Augustus.
+> 
 > This version is very different from the main branch one, to test it you need a seperate folder to download the codes from here (Development branch).
+> 
 > Version v3.1 applies AGAT to acquire primary protein, and CDS, uses Beddrop to acqurire MCScanX gff, it is still under testing, and may still have some errors.
+> 
 > Although you will see words like ncbi in script, bear in mind this development version v3.1 is only for your customzed genome assembly data, nothing to do with NCBI.
  
 
