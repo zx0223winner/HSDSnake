@@ -64,33 +64,33 @@ rule all:
 
 #####detecting WGD > tandem > proximal > transposed > dispersed duplicates #######
 
-rule primary_protein_gff:
-	input:
-		gff = "data/intermediateData/{name}/{name}.gff",
-		primary_list = "data/ncbi/{name}_primary/{name}_protein.list"
-	output:
-		"data/intermediateData/{name}/{name}_primary.gff",
-	threads:
-		1
-	resources:
-		mem = 2
-	params:
-		dir1 = "data/intermediateData/{name}",
-	log: 
-		out = "log/primary_protein_gff/{name}.out",
-		err = "log/primary_protein_gff/{name}.err"
-	shell:"""
-	awk 'NR==FNR{{a[$2]=$0;next}}{{print a[$1]}}' {input.gff} {input.primary_list} \
-> {output} \
-2> {log.out} \
-3> {log.err}
-"""
+# rule primary_protein_gff:
+# 	input:
+# 		gff = "data/intermediateData/{name}/{name}.gff",
+# 		primary_list = "data/ncbi/{name}_primary/{name}_protein.list"
+# 	output:
+# 		"data/intermediateData/{name}/{name}_primary.gff",
+# 	threads:
+# 		1
+# 	resources:
+# 		mem = 2
+# 	params:
+# 		dir1 = "data/intermediateData/{name}",
+# 	log: 
+# 		out = "log/primary_protein_gff/{name}.out",
+# 		err = "log/primary_protein_gff/{name}.err"
+# 	shell:"""
+# 	awk 'NR==FNR{{a[$2]=$0;next}}{{print a[$1]}}' {input.gff} {input.primary_list} \
+# > {output} \
+# 2> {log.out} \
+# 3> {log.err}
+# """
 
 rule DupGen_finder_gff:
 	input:
 		gff = "data/intermediateData/{name}/{name}_primary.gff",
 		blast = "data/intermediateData/{name}/{name}.blast",
-		primary_list = "data/ncbi/{name}_primary/{name}_protein.list"
+		#primary_list = "data/ncbi/{name}_primary/{name}_protein.list"
 	output:
 		"data/DupGen_finder/{name}_data/{name}.gff"
 	threads:
@@ -151,7 +151,8 @@ rule DupGen_finder:
 		species_name = "{name}",
 		outgroup_name = lambda wc: config['ncbi_genomes'][wc.name]['outgroup'],
 		out_name = lambda wc: wc.name + "_" + config['ncbi_genomes'][wc.name]['outgroup'],
-		file = "scripts/DupGen_finder/set_PATH.sh"
+		file = "scripts/DupGen_finder/set_PATH.sh",
+		MCScanX = "scripts/DupGen_finder/MCScanX"
 	log: 
 		out = "log/DupGen_finder/{name}.out",
 		err = "log/DupGen_finder/{name}.err"
@@ -275,8 +276,8 @@ rule adding_Ka_Ks_into_collinearity:
 		dir2 = "data/DupGen_finder/{name}_result",
 		species_name = "{name}"
 	log: 
-		out = "log/adding_Ka_Ks_into_collinearity/{name}.out",
-		err = "log/adding_Ka_Ks_into_collinearity/{name}.err"
+		out = "log/adding_Ka_Ks_into_collinearity/{name}.out1",
+		err = "log/adding_Ka_Ks_into_collinearity/{name}.err1"
 	shell:"""
 	mkdir -p {params.dir};\
 	cp {input.col} {params.dir}/{params.species_name}.collinearity;\
