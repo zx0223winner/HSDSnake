@@ -1,30 +1,22 @@
 # Critical: input files for HSDSnake, please only substitute the species name to yours, keep the input file format, such as Athaliana.interproscan.tsv, Athaliana.ko.txt
 
-ncbi_assemblies:
-  - GCF_000001735.4
-  - GCF_000002595.2
-
-ncbi_genomes:
-    Athaliana:
-        ncbi_assembly: "data/ncbi_download/GCF_000001735.4.zip"
-        assembly_id: "GCF_000001735.4"      
-        outgroup: "Creinhardtii"
-        interproscan: "data/Athaliana.interproscan.tsv"
-        KEGG: "data/Athaliana.ko.txt"
-        feature_table: "data/ncbi_download/GCF_000001735.4_TAIR10.1_feature_table.txt.gz"
-    
-    Creinhardtii:
-        ncbi_assembly: "data/ncbi_download/GCF_000002595.2.zip"
-        assembly_id: "GCF_000002595.2"
-        outgroup: "Athaliana"
-        interproscan: "data/Creinhardtii.interproscan.tsv"
-        KEGG: "data/Creinhardtii.ko.txt"
-        feature_table: "data/ncbi_download/GCF_000002595.2_Chlamydomonas_reinhardtii_v5.5_feature_table.txt.gz"
-
-
 names:
   - Athaliana
   - Creinhardtii
+
+ncbi_genomes:
+    Athaliana:
+        assembly: "XX/XX.fasta"
+        gff: "XX/XX.gff"
+        outgroup: "Creinhardtii"
+        interproscan: "data/Athaliana.interproscan.tsv"
+        KEGG: "data/Athaliana.ko.txt"
+    Creinhardtii:
+        assembly:  "XX/XX.fasta"
+        gff: "XX/XX.gff"
+        outgroup: "Athaliana"
+        interproscan: "data/Creinhardtii.interproscan.tsv"
+        KEGG: "data/Creinhardtii.ko.txt"
 
 ################Above are the directories for fasta, interproscan, ko result you shall modify for your own data##########
 
