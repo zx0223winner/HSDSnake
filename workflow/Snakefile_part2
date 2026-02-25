@@ -17,7 +17,7 @@ configfile: "config.yaml"
 
 rule all:
 	input:
-		expand("data/intermediateData/{name}/{name}_primary.gff",
+		expand("data/intermediateData/{name}/{name}.gff",
 			name = config['names']),
 		expand("data/DupGen_finder/{name}_data/{name}.gff",
 			name = config['names']),
@@ -88,7 +88,7 @@ rule all:
 
 rule DupGen_finder_gff:
 	input:
-		gff = "data/intermediateData/{name}/{name}_primary.gff",
+		gff = "data/intermediateData/{name}/{name}.gff",
 		blast = "data/intermediateData/{name}/{name}.blast",
 		#primary_list = "data/ncbi/{name}_primary/{name}_protein.list"
 	output:
