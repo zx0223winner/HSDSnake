@@ -20,7 +20,7 @@
 > 
 > Although you will see words like ncbi in script, bear in mind this development version v3.1 is only for your customzed genome assembly data, nothing to do with NCBI.
 >
-> Check this issue first to use this development v3.1 https://github.com/zx0223winner/HSDSnake/issues/6
+> **Check this issue first to use this development** v3.1 https://github.com/zx0223winner/HSDSnake/issues/6
 
 ## Introduction
 
