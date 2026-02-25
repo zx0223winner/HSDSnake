@@ -11,7 +11,7 @@
 [![DOI](https://zenodo.org/badge/615052960.svg)](https://doi.org/10.5281/zenodo.18509877)
 
 > [!NOTE]
-> There is a different HSDSnake version v3.1 (under testing) in [developement branch](https://github.com/zx0223winner/HSDSnake/blob/development/README.md) targting for non-model species, such as those annotated via Augustus.
+> There is a different HSDSnake version v3.1 (under testing) in [developement branch](https://github.com/zx0223winner/HSDSnake/blob/development/README.md) targting for customized non-model species, such as those annotated via Augustus instead of downloaded direcetly from NCBI.
 
 ## Introduction
 
