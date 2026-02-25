@@ -6,7 +6,7 @@ names:
   - Creinhardtii
 
 # Warning! Make sure your species name above without '.', '_', for example don't use Arabidopisis_thalina or A.thalina or A.thalina_sp
-# if you really want to diff the strains from same speceis. Do it like Athaliana-sp1, Athaliana-sp2 etc.
+# if you really want to differ the strains from same speceis. Do it like Athaliana-sp1, Athaliana-sp2 etc.
 # This is because DupGeneFinder capture species name using . and _ as delimiter. I don't have an easy fix to allow more flexibility.
 
 ncbi_genomes:
