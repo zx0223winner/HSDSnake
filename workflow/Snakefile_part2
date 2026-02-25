@@ -17,9 +17,11 @@ configfile: "config.yaml"
 
 rule all:
 	input:
-		expand("data/intermediateData/{name}/{name}.gff",
-			name = config['names']),
+		#expand("data/intermediateData/{name}/{name}.gff",
+		#	name = config['names']),
 		expand("data/DupGen_finder/{name}_data/{name}.gff",
+			name = config['names']),
+		expand("data/DupGen_finder/{name}_data/{name}.blast",
 			name = config['names']),
 
 	# run the DupGen_finder scripts
@@ -92,7 +94,8 @@ rule DupGen_finder_gff:
 		blast = "data/intermediateData/{name}/{name}.blast",
 		#primary_list = "data/ncbi/{name}_primary/{name}_protein.list"
 	output:
-		"data/DupGen_finder/{name}_data/{name}.gff"
+		"data/DupGen_finder/{name}_data/{name}.gff",
+		"data/DupGen_finder/{name}_data/{name}.blast"
 	threads:
 		1
 	resources:
@@ -111,7 +114,6 @@ rule DupGen_finder_gff:
 		err = "log/DupGen_finder_gff/{name}.err"
 	shell:"""
 	mkdir -p {params.dir2}; \
-	sleep 5s; \
 	cp {input.gff} {params.dir2}/{params.species_name}.gff; \
 	cp {params.dir1}/{params.species_name}.blast {params.dir2}/{params.species_name}.blast; \
 	cp {params.dir3}/{params.outgroup_name}.gff {params.dir2}/{params.outgroup_name}.gff; \
@@ -122,6 +124,9 @@ rule DupGen_finder_gff:
 2> {log.out} \
 3> {log.err}
 """
+#	i don't know how long usually to take to run this step.
+# it is better to run this rule only, wait until all the files have been copied to a folder.
+# snakemake --profile default all -s workflow/Snakefile_part1 --configfile config.yaml --rerun-incomplete --until DupGen_finder_gff
 
 # identify the different modes of duplicated gene pairs, https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder.pl
 rule DupGen_finder:
@@ -139,7 +144,7 @@ rule DupGen_finder:
 		1
 	resources:
 		mem = 2,
-		time = "0:30:0"
+		time = "6:30:0"
 #	conda:
 #		"envs/mcscanx.yaml"
 	params:
@@ -162,7 +167,6 @@ rule DupGen_finder:
 	chmod 775 {params.MCScanX}; \
 	sh {params.file}; \
 	source ~/.bashrc; \
-	sleep 30s; \
 	perl {params.dir4}/DupGen_finder.pl \
 	-i {params.dir2} \
 	-t {params.species_name} \
@@ -171,6 +175,7 @@ rule DupGen_finder:
 > {log.out} \
 2> {log.err}
 """
+#	sleep 30s; \
 
 # Get a list of unique genes for each duplication type, https://github.com/qiao-xin/DupGen_finder/blob/master/DupGen_finder-unique.pl 
 rule DupGen_finder_unique:
@@ -188,7 +193,7 @@ rule DupGen_finder_unique:
 		1
 	resources:
 		mem = 2,
-		time = "0:30:0"
+		time = "6:30:0"
 #	conda:
 #		"envs/mcscanx.yaml"
 	params:
@@ -205,7 +210,6 @@ rule DupGen_finder_unique:
 		err = "log/DupGen_finder_unique/{name}.err"
 	shell:"""
 	mkdir -p {params.dir5}; \
-	sleep 30s; \
 	perl {params.dir4}/DupGen_finder-unique.pl \
 	-i {params.dir2} \
 	-t {params.species_name} \
@@ -214,6 +218,7 @@ rule DupGen_finder_unique:
 > {log.out} \
 2> {log.err}
 """
+#	sleep 30s; \
 
 # col_inter = lambda wc: "data/DupGen_finder/" + config['ncbi_genomes'][wc.name]['self'] + "_result/" + config['ncbi_genomes'][wc.name]['self'] +"_" + config['ncbi_genomes'][wc.name]['outgroup'] + ".collinearity"
 rule ka_and_ks_collinearity:
@@ -225,7 +230,7 @@ rule ka_and_ks_collinearity:
 		1
 	resources:
 		mem = 2,
-		time = "0:30:0"
+		time = "6:30:0"
 	conda:
 		"envs/bioperl.yaml"
 	params:
@@ -242,7 +247,6 @@ rule ka_and_ks_collinearity:
 		err = "log/ka_and_ks_collinearity/{name}.err"
 	shell:"""
 	cp {params.dir1}/{params.species_name}.cds {params.dir5}/{params.species_name}.cds; \
-	sleep 30s; \
 	perl {params.dir4}/add_ka_and_ks_to_collinearity_Yn00.pl \
 	-i {input} \
 	-d {params.dir5}/{params.species_name}.cds \
@@ -250,6 +254,8 @@ rule ka_and_ks_collinearity:
 > {log.out} \
 2> {log.err}
 """
+
+#	sleep 30s; \
 
 # due to the perl script: add_ka_and_ks_to_collinearity_Yn00.pl, which may has some temp files left in main dir, which can be safefly removed as your wish
 #	rm *.aln; \
