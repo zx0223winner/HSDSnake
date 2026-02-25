@@ -10,6 +10,8 @@
 [![Issues](https://img.shields.io/github/issues/zx0223winner/hsdsnake)](https://github.com/zx0223winner/hsdsnake/issues)
 [![DOI](https://zenodo.org/badge/615052960.svg)](https://doi.org/10.5281/zenodo.18509877)
 
+> [!NOTE]
+> There is a different HSDSnake version (test stage) in developement branch targting for non-model species, such as those annotated via Augustus.
 
 ## Introduction
 
