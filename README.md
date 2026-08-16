@@ -32,6 +32,7 @@
 4. **Review for the duplication tools** - A mini-review of online resources for intra-species detection of gene duplications. *(Zhang et al. 2022, Frontiers in Genetics)*
 4. **HSDecipher** - an updated protocol for downstream analysis of gene duplicates. *(Zhang et al. 2023, StarProtocols (Cell Press))*
 5. **HSDSnake** - a Snakemake pipeline tool for classifying duplicate pairs, computing Ka/Ks ratios and function comparison (such as PFAM, KEGG etc.) from inter- and intra-species. It not only integrates tools developed previously, namely the resources as described above, but also integrates scripts from other recently developed methods and tools, such as DupGen_finder and MCScanX. *(Zhang et al. 2025, Bioinformatics (Oxford Press))*
+2026. **HSDSnake development version** Important updates The development version v3.1 is targeting for non-model species, such as those annotated via Augustus. This version can be downloaded from here ([Development branch](https://github.com/zx0223winner/HSDSnake/tree/development)).
 
 
 
